@@ -1,0 +1,254 @@
+#+TITLE: Emacs' Preamble
+#+AUTHOR: Nikhil Gupta
+#+EMAIL: me@nikhgupta.com
+#+DATE: 2013-09-21 Sun
+#+DESCRIPTION: Configuration for Emacs in a literal-programming (self-documenting) style.
+#+KEYWORDS: org babel emacs configuration
+#+LANGUAGE: en
+#+OPTIONS:   H:3 num:nil toc:2 \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport notangle
+#+LINK_UP:
+#+LINK_HOME:
+#+STARTUP: hidestars odd content noinlineimages latexpreview nohideblocks
+
+* Motivation
+
+  I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of
+  the awesome [[http://orgmode.org][org-mode]] functionality, it provides. Definitely, I have
+  been impressed. People were right /for once/! I have, only, been using
+  Emacs for a couple of weeks, and I'm already in love with it,
+  primarily, because:
+  - it has the neatest organizer in this world: the =org-mode=.
+  - it uses =elisp= to programmatically change itself.
+
+  So, soon I was dwelling inside the dark world of getting my new
+  editor resonate with myself. I tried several starter packages, /viz./:
+  - [[https://github.com/overtone/emacs-live][Emacs Live]]
+  - [[http://github.com/bbatsov/prelude][Emacs Prelude]]
+  - [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
+  - [[https://github.com/purcell/emacs.d][@purcell's emacs configuration]]
+
+  And, I really enjoyed my couple of days of flirting with these kits,
+  and they were really nice, but somehow, they did not represent
+  me.
+
+  #+BEGIN_QUOTE
+  My editor felt like someone else' baby in my hands - it was
+  adorable, and cute and what not, but it wasn't mine. :)
+  #+END_QUOTE
+
+  So, I started working on my own take at Emacs' configuration, and
+  proudly called it [[http://github.com/nikhgupta/preamble][Emacs' Preamble]] - made it, remade it, and remade
+  it again and again and each time, I switched the way it represented
+  itself. I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], and
+  wanted my own to be based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
+
+* Requirements
+  I am really unsure about the requirements, but I'm using this
+  configuration in *Mac OSX 10.8.2 (Mountain Lion)*, *GNU Emacs
+  24.1.1*, and *org-mode v8.2*.
+
+  #+BEGIN_QUOTE
+  If you intend to use this configuration for yourself, then
+  /hopefully/, the same should work without giving you any headaches,
+  if you are on a *Mac OSX*. Otherwise, feel free to pull your hair,
+  but don't even dare come and blame me for your /hair losses/, later!
+
+  *If I were you, I would create my own baby!*
+  #+END_QUOTE
+
+* Philosophy
+  =org-babel= is /awesome/. It empowers Org-mode to execute source
+  code within Org-mode documents. It is built upon the principles of
+  [[http://en.wikipedia.org/wiki/Literate_programming][Literate Programming]], and can embed multiple languages within a
+  single document.
+
+  Extending upon the same, the current Org-mode file documents my
+  configuration for Emacs, sanely named as *Emacs' Preamble*. The
+  source code inside =elisp= source blocks is /tangled/ by Babel, and
+  is then loaded as configuration via =org-babel-load-file= function.
+
+* Initializing Configuration
+  [[file:init.el][It all started with a big-bang!]]
+  (oh, yes! I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].)
+  The above file, basically, checks to see whether the Org-mode version
+  is above =8.0=. If not, it upgrades Org-mode by installing it via
+  Emacs' Package Manager, and then tangles and loads =elisp= source
+  codes inside the current file by using =org-babel-load-file=
+  function.
+
+  At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs Server]] running on my machine, when
+  it boots up (I, later, plan to run it on my VPS, and connect
+  remotely), and use the =emacsclient= commands to connect to it. This
+  way, this configuration is loaded/tangled only once, providing
+  super-fast experience for my /use-cases/.
+
+*** Compatibility
+  Since, this configuration uses features new to =Emacs v24=, and
+  since I don't have time enough to work out a /compatible/
+  configuration for older version of Emacs, display a friendly
+  warning, if the Emacs version is below =v24=.
+
+  #+BEGIN_SRC emacs-lisp
+  (when (version< emacs-version "24")
+    (error "Only Emacs version 24 and up are supported."))
+  #+END_SRC
+
+*** Benchmarking
+    Since, I am a quantified-geek, I love to measure various things. Why not measure time taken by our Emacs configuration, as well?
+
+    The functions below enable us to measure the time taken by various features in _require_(ing) them, as well as total time taken by the Emacs to load this configuration.
+
+    #+BEGIN_SRC emacs-lisp
+    (defun preamble-time-subtract-millis (b a)
+        (* 1000.0 (float-time (time-subtract b a))))
+
+    (defvar preamble-require-times nil
+        "A list of (FEATURE . LOAD-DURATION).
+      LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
+
+    (defun preamble-load-time()
+      "Return total load-time taken by this configuration."
+      (preamble-time-subtract-millis (current-time) before-init-time))
+
+    (defadvice require
+      (around build-require-times (feature &optional filename noerror) activate)
+      "Note in `preamble-require-times' the time taken to require each feature."
+      (let* ((already-loaded (memq feature features))
+             (require-start-time (and (not already-loaded) (current-time))))
+        (prog1
+            ad-do-it
+          (when (and (not already-loaded) (memq feature features))
+            (add-to-list 'preamble-require-times
+                         (cons feature
+                               (preamble-time-subtract-millis (current-time)
+                                                               require-start-time))
+                         t)))))
+    #+END_SRC
+
+*** Avoid Screen Flickers
+    Now that we have =Emacs v24=, disable some of the GUI features early
+    in the startup to ensure that the screen does not flicker when
+    turning them off, otherwise.
+
+    #+BEGIN_SRC emacs-lisp
+    (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+    (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+    (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+    #+END_SRC
+
+    Also, do not display the ugly splash screen.
+    #+BEGIN_SRC emacs-lisp
+    (setq inhibit-startup-message 't)
+    #+END_SRC
+
+*** TODO remove the following settings, when configuration is complete.
+    #+BEGIN_SRC emacs-lisp
+    (load-theme 'misterioso 't)
+    (auto-fill-mode 't)
+    #+END_SRC
+
+*** Variables, Constants, etc.
+    In order to play nice with the rest of the configuration, define
+    some constants, variables, etc.
+
+    #+BEGIN_SRC emacs-lisp
+    (defvar preamble-dir (file-name-directory load-file-name)
+      "The root directory for Emacs' Preamble configuration.")
+    (defvar preamble-vendor-dir (concat preamble-dir "/vendors")
+      "The directory which stores modules from various vendors.")
+    #+END_SRC
+
+    Lets define some constants based on kind of operating system, application,
+    and features, we have.
+
+    #+BEGIN_SRC emacs-lisp
+    (defconst *is-mac* (eq system-type 'darwin))
+    (defconst *is-linux* (eq system-type 'gnu/linux))
+    (defconst *is-windows* (eq system-type 'windows-nt))
+    (defconst *is-cygwin* (eq system-type 'cygwin))
+    (defconst *is-mac-gui* (and *is-mac* window-system))
+    (defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+    (defconst *spell-check-support-enabled* nil)
+    #+END_SRC
+
+*** =eval-after-load= Overloading
+    We define a macro named *after*, which evaluates the given =elisp=
+    statements, after a particular `feature' has been loaded.
+
+    #+BEGIN_SRC emacs-lisp
+    (defmacro after (feature &rest body)
+      "After FEATURE is loaded, evaluate BODY."
+      (declare (indent defun))
+      `(eval-after-load ,feature
+        '(progn ,@body)))
+    #+END_SRC
+
+*** Load Path
+    Next, we add some functions which load =*.el= files and subdirectories
+    inside a given directory to the `load-path'. We use these functions to add
+    some files/dirs to the `load-path', as required.
+
+    #+BEGIN_SRC emacs-lisp
+    (defun preamble-load-all-elisp-files (dir)
+      "Load all Elisp files inside DIR."
+      (mapc 'load (directory-files dir 't "^[^#].*el$")))
+
+    (defun preamble-add-subfolders-to-load-path (parent-dir)
+     "Add all level PARENT-DIR subdirs to the `load-path'."
+     (dolist (f (directory-files parent-dir))
+       (let ((name (expand-file-name f parent-dir)))
+         (when (and (file-directory-p name)
+                    (not (equal f ".."))
+                    (not (equal f ".")))
+           (add-to-list 'load-path name)
+           (preamble-add-subfolders-to-load-path name)))))
+
+    ;; add subdirectories of ./vendors to `load-path'
+    (preamble-add-subfolders-to-load-path preamble-vendor-dir)
+    #+END_SRC
+
+*** Custom File
+    Emacs uses a /custom file/ to store changes done via the Emacs
+    Customization method. We are, simply, setting it up below, so that
+    all the custom configuration exists in a separate file.
+
+    #+BEGIN_SRC emacs-lisp
+    (setq custom-file (expand-file-name "custom.el" preamble-dir))
+    (load custom-file)
+    #+END_SRC
+
+*** General Configuration
+    This section sets up generic configuration for Emacs' Preamble.
+
+    #+BEGIN_SRC emacs-lisp
+    ;; reduce the frequency of garbage collection (new: 50MB, default: 0.76MB)
+    (setq gc-cons-threshold 50000000)
+    ;; require Common Lisp (http://common-lisp.net)
+    (eval-when-compile (require 'cl))
+    #+END_SRC
+
+* Updates
+  Emacs' Preamble is really smart! It can update itself, on the go.
+
+  #+BEGIN_SRC emacs-lisp
+  (defun preamble-recompile-init ()
+    "Byte-compile all your dotfiles again."
+    (interactive)
+    (byte-recompile-directory preamble-dir 0))
+
+  (defun preamble-update ()
+    "Update Preamble to its latest version."
+    (interactive)
+    (when (y-or-n-p "Do you want to update Preamble? ")
+      (message "Updating Preamble...")
+      (cd preamble-dir)
+      (shell-command "git pull")
+      (preamble-recompile-init)
+      (message "Update finished. Restart Emacs to complete the process.")))
+  #+END_SRC
+
+*** TODO there should be a scheduler to automatically check for updates.

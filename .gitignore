@@ -1,3 +1,6 @@
 elpa/
 *.html
 *~
+*.el
+!/init.el
+!/custom.el

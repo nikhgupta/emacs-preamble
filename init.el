@@ -58,10 +58,12 @@
       (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
       (package-refresh-contents)
       (package-install 'org-plus-contrib))
-    (message "Great. We can, now, proceed to literally load our configuration. :)")))
+    (message "Great. We can, now, proceed to literally load our configuration. :)"))
+  (message "--------------------------------------------------------------------"))
 
 ;; load our configuration file
-(add-hook 'after-init-hook
-  (lambda ()
-    (org-babel-load-file
-      (expand-file-name "preamble.org" preamble-directory))))
+(org-babel-load-file (expand-file-name "readme.org" preamble-directory))
+
+(message "--------------------------------------------------------------------")
+(message "Welcome to Emacs' Preamble.")
+(message "Emacs' Preamble was loaded in %.2fms." (preamble-load-time))
