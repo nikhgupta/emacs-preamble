@@ -18,26 +18,71 @@
   
   I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of
   the awesome [[http://orgmode.org][org-mode]] functionality, it provides. Definitely, I have
-  been impressed. People were right, for once! I have only been using
+  been impressed. People were right /for once/! I have, only, been using
   Emacs for a couple of weeks, and I'm already in love with it,
   primarily, because:
-  - it has the neatest organizer in this world: the =org-mode=
-  - it uses =elisp= to programmatically change itself
+  - it has the neatest organizer in this world: the =org-mode=.
+  - it uses =elisp= to programmatically change itself.
 
   So, soon I was dwelling inside the dark world of getting my new
-  editor resonate with myself. I tried several starter packages, viz.:
-  - [[http://github.com/bbatsov/prelude][Emacs Prelude]]
-  - [[https://github.com/purcell/emacs.d][@purcell's emacs configuration]]
+  editor resonate with myself. I tried several starter packages, /viz./:
   - [[https://github.com/overtone/emacs-live][Emacs Live]]
+  - [[http://github.com/bbatsov/prelude][Emacs Prelude]]
   - [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
+  - [[https://github.com/purcell/emacs.d][@purcell's emacs configuration]]
 
   And, I really enjoyed my couple of days of flirting with these kits,
   and they were really nice, but somehow, they did not represent
-  me. My editor felt like someone else' baby in my hands - it was
+  me.
+
+  #+BEGIN_QUOTE
+  My editor felt like someone else' baby in my hands - it was
   adorable, and cute and what not, but it wasn't mine. :)
+  #+END_QUOTE
 
   So, I started working on my own take at Emacs' configuration, and
   proudly called it [[http://github.com/nikhgupta/preamble][Emacs' Preamble]] - made it, remade it, and remade
   it again and again and each time, I switched the way it represented
   itself. I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], and
-  wanted my own to be based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]].
+  wanted my own to be based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
+
+* Requirements
+  I am really unsure about the requirements, but I'm using this
+  configuration in *Mac OSX 10.8.2 (Mountain Lion)*, *GNU Emacs
+  24.1.1*, and *org-mode v8.2*.
+
+  #+BEGIN_QUOTE
+  If you intend to use this configuration for yourself, then
+  /hopefully/, the same should work without giving you any headaches,
+  if you are on a *Mac OSX*. Otherwise, feel free to pull your hair,
+  but don't even dare come and blame me for your /hair losses/, later!
+
+  *If I were you, I would create my own baby!*
+  #+END_QUOTE
+
+* Philosophy
+  =org-babel= is /awesome/. It empowers Org-mode to execute source
+  code within Org-mode documents. It is built upon the principles of
+  [[http://en.wikipedia.org/wiki/Literate_programming][Literate Programming]], and can embed multiple languages within a
+  single document.
+
+  Extending upon the same, the current Org-mode file documents my
+  configuration for Emacs, sanely named as *Emacs' Preamble*. The
+  source code inside =elisp= source blocks is /tangled/ by Babel, and
+  is then loaded as configuration via =org-babel-load-file= function.
+
+* Initializing Configuration
+  [[http://github.com/nikhgupta/preamble/blob/master/init.el][It all started with the big-bang!]]
+  (oh, yes! I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].)
+  The above file, basically, check to see whether the Org-mode version
+  is above =8.0=. If not, it upgrades Org-mode by installing it via
+  Emacs' Package Manager, and then tangles and loads =elisp= source
+  codes inside the current file by using =org-babel-load-file=
+  function.
+
+  At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs Server]] running on my machine, when
+  it boots up (I, later, plan to run it on my VPS, and connect
+  remotely), and use the =emacsclient= commands to connect to it. This
+  way, this configuration is loaded/tangled only once, providing
+  super-fast experience for my /use-cases/.
+
