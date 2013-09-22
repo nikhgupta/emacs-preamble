@@ -11,7 +11,7 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport notangle
 #+LINK_UP:
-#+LINK_HOME:
+#+Link_HOME:
 #+STARTUP: hidestars odd content noinlineimages latexpreview nohideblocks
 
 * Motivation					   :writeup:thoughts:prelude:
@@ -151,7 +151,6 @@
 
 *** TODO remove the following settings, when configuration is complete. :fixup:
     #+BEGIN_SRC emacs-lisp
-    (load-theme 'misterioso 't)
     (auto-fill-mode 't)
     #+END_SRC
 
@@ -522,6 +521,36 @@
         
         (setq ibuffer-filter-group-name-face 'font-lock-doc-face)
       #+END_SRC
+***** [[http://www.emacswiki.org/emacs/InteractivelyDoThings][IDO Mode]] and [[http://www.emacswiki.org/emacs/Smex][Smex]]
+      IDO mode is, simply, amazin'! It lets us do things interactively
+      with buffers and files. When combined with [[https://github.com/technomancy/ido-ubiquitous][IDO Ubiquitous]] and
+      [[https://github.com/nonsequitur/smex][Smex]], it creates a powerful combination of fuzzy-file searching
+      and the same power is available for executings commands, as well
+      as a heap of other places.
+
+      #+BEGIN_SRC emacs-lisp
+        (preamble/require-packages '( smex idomenu ido-ubiquitous))
+        
+        ;;; configuration
+        (ido-mode 't)                            ;; enable ido mode
+        (ido-everywhere 't)                      ;; use ido-mode wherever possible
+        (ido-ubiquitous-mode 't)                 ;; enable ido-ubiquitous
+        (setq ido-enable-flex-matching 't)       ;; enable fuzzy search
+        (setq ido-use-filename-at-point 'nil)    ;; look for filename at point
+        (setq ido-use-virtual-buffers 't)        ;; allow me to open closed buffers, even
+        
+        ;; switch to merged work directories during file input when no match is found
+        (setq ido-auto-merge-work-directories-length 0)
+        ;; allow the same buffer to be open in different frames
+        (setq ido-default-buffer-method 'selected-window)
+        
+        (defun preamble/ido-choose-from-recentf ()
+          "Use ido to select a recently opened file from the `recentf-list'."
+          (interactive)
+          (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
+            (ido-switch-buffer)
+            (find-file (ido-completing-read "Open file: " recentf-list nil t))))
+      #+END_SRC
 *** In-built Features						    :ehanced:
 ***** [[http://www.emacswiki.org/emacs/IncrementalSearch][Incremental Search]]
       =isearch= is the Incremental Search feature of Emacs, and while it
@@ -598,7 +627,7 @@
       Uniquify is a built-in library that makes buffer names unique,
       when two files with same name are open, so as to make them
       distinguishable.
-      
+     
       #+BEGIN_SRC emacs-lisp
         (require 'uniquify)
         
@@ -673,9 +702,10 @@
             (define-key nxml-mode-map (kbd "M-h") nil))))
     #+END_SRC
 * Key Bindings
+
   #+BEGIN_SRC emacs-lisp
     (global-set-key (kbd "C-x o") 'switch-window)
-
+    (global-set-key [(meta f11)] 'preamble/ido-choose-from-recentf)
     (global-set-key (kbd "C-x C-b") 'ibuffer)
 
     (global-set-key (kbd "M-/") 'hippie-expand)
