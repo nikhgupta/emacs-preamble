@@ -10,11 +10,9 @@
 ;; This file is not part of GNU Emacs.
 
 ;;; Commentary:
-
 ;; This file simply loads the `emacs.org' file, and runs the code under it.
 
 ;;; License:
-
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
 ;; as published by the Free Software Foundation; either version 3
@@ -30,16 +28,17 @@
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
-;;; Code:
-
-
 ;;; Requirements:
-
-;; Emacs 24
+;;  Emacs: 24+
 
 ;;; Code:
+;; set path to this directory for easy use
+(defvar preamble-dir
+  (file-name-directory (file-truename load-file-name))
+  "The root directory for Emacs' Preamble configuration.")
 
-(setq preamble-directory (file-name-directory (file-truename load-file-name)))
+;; initialize our packages
+(require 'package)
 (package-initialize)
 
 ;; get the org-version but avoid calling org functions to prevent autoloading
@@ -62,8 +61,8 @@
   (message "--------------------------------------------------------------------"))
 
 ;; load our configuration file
-(org-babel-load-file (expand-file-name "readme.org" preamble-directory))
+(org-babel-load-file (expand-file-name "readme.org" preamble-dir))
 
 (message "--------------------------------------------------------------------")
 (message "Welcome to Emacs' Preamble.")
-(message "Emacs' Preamble was loaded in %.2fms." (preamble-load-time))
+(message "Emacs' Preamble was loaded in %.2fms." (preamble/load-time))
