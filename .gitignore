@@ -5,3 +5,4 @@ elpa/
 !/init.el
 !/custom.el
 *.elc
+ac-comphist.dat
