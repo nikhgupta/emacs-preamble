@@ -1,0 +1,129 @@
+#+TITLE: Emacs' Preamble's Core Functionality
+
+* Constants
+   Some constants based on the kind of operating system, application, and features, I may use:
+   #+BEGIN_SRC emacs-lisp
+     (defconst *is-mac* (eq system-type 'darwin))
+     (defconst *is-linux* (eq system-type 'gnu/linux))
+     (defconst *is-windows* (eq system-type 'windows-nt))
+     (defconst *is-cygwin* (eq system-type 'cygwin))
+     (defconst *is-mac-gui* (and *is-mac* window-system))
+     (defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+     (defconst *spell-check-support-enabled* nil)
+   #+END_SRC
+
+* Variables
+  Some variables pointing to the directory structure of Emacs' Preamble:
+  #+BEGIN_SRC emacs-lisp
+    (defvar preamble-vendor-dir (concat preamble-dir "/vendors")
+      "The directory which contains files from our vendors.")
+  #+END_SRC
+
+* Macros
+   We define a macro named =after=, which evaluates the given =elisp= statements, after a particular
+   Emacs' =feature= has been loaded.
+   #+BEGIN_SRC emacs-lisp
+     (defmacro after (feature &rest body)
+       "After FEATURE is loaded, evaluate BODY."
+       (declare (indent defun))
+       `(eval-after-load ,feature
+         '(progn ,@body)))
+   #+END_SRC
+
+* Functions
+  The following functions load =*.el= files and subdirectories, resp., inside a given directory to
+  the =load-path=. They can be used to add some files/dirs to the =load-path=, as required.
+
+  #+BEGIN_SRC emacs-lisp
+    (defun preamble/load-all-elisp-files (dir)
+      "Load all Elisp files inside DIR."
+      (mapc 'load (directory-files dir 't "^[^#].*el$")))
+
+    (defun preamble/add-subfolders-to-load-path (parent-dir)
+     "Add all level PARENT-DIR subdirs to the `load-path'."
+     (dolist (f (directory-files parent-dir))
+       (let ((name (expand-file-name f parent-dir)))
+         (when (and (file-directory-p name)
+                    (not (equal f ".."))
+                    (not (equal f ".")))
+           (add-to-list 'load-path name)
+           (preamble/add-subfolders-to-load-path name)))))
+  #+END_SRC
+
+  The following function greets the user when Emacs' Preamble has been loaded, and also, displays
+  the time it took to load itself.
+  #+BEGIN_SRC emacs-lisp
+    ;; greet and display load time to the user
+    (defun preamble/greet-user-with-load-time ()
+      "Greet and display load time to the user."
+      (message (concat hr-rule "\n"
+                       "*Welcome to Emacs' Preamble.*\n"
+                       "Emacs' Preamble was loaded in =%.2fms=.\n"
+                       hr-rule ) (preamble/load-time)))
+
+
+  #+END_SRC
+
+  The following function evaluates a =lambda= or =function= after Emacs' initialization has
+  finished. This function along with =preamble/greet-user-with-load-time= has been used in =init.el=
+  to greet the user after Emacs' Preamble has been loaded.
+  #+BEGIN_SRC emacs-lisp
+    (defun preamble/eval-after-init (form)
+      "Add `(lambda () FORM)' to `after-init-hook'.
+      If Emacs has already finished initialization, also eval FORM immediately."
+      (let ((func (list 'lambda nil form)))
+        (add-hook 'after-init-hook func)
+        (when after-init-time
+          (eval form))))
+  #+END_SRC
+* Configuration
+** Basic Features/Packages
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "required basic features/packages, in case they were not present")
+     (eval-when-compile (require 'cl))
+   #+END_SRC
+
+** UTF8 Encoding Support
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "set support for UTF8 encoding")
+     (setq locale-coding-system 'utf-8)
+     (set-terminal-coding-system 'utf-8)
+     (set-keyboard-coding-system 'utf-8)
+     (set-selection-coding-system 'utf-8)
+     (prefer-coding-system 'utf-8)
+   #+END_SRC
+
+** General Behaviour
+   #+BEGIN_SRC emacs-lisp
+     ;; set bookmark file's path
+     (setq preamble/bookmark-file (expand-file-name ".bookmarks.el" preamble-dir))
+
+     (setq-default
+       buffers-menu-max-size 30    ; max num of entries in Buffers menu
+       compilation-scroll-output t ; scroll down to always show last line of output
+       make-backup-files nil       ; do not make backups for files
+       mouse-yank-at-point t       ; mouse yank at point instead of at click
+       save-interprogram-paste-before-kill t   ; save clipboard strings into kill ring before replacing them
+       scroll-preserve-screen-position 'always ; point always keeps its position when scrolling
+       set-mark-command-repeat-pop t           ; repeating C-SPC after popping mark pops it again
+       grep-scroll-output t
+       grep-highlight-matches t
+       bookmark-default-file preamble/bookmark-file ; default bookmark file
+       ediff-split-window-function 'split-window-horizontally
+       ediff-window-setup-function 'ediff-setup-windows-plain)
+     (preamble/checkpoint "configured general behaviour of Emacs' Preamble")
+   #+END_SRC
+** Miscelleneous
+   #+BEGIN_SRC emacs-lisp
+     (setq gc-cons-threshold 50000000) ;; new: 50MB, default: 0.76MB
+     (preamble/checkpoint "reduced the frequency of garbage collection")
+
+     ;; update file changes from disk into the buffer
+     (global-auto-revert-mode 1)
+     (setq auto-revert-verbose nil
+           global-auto-revert-non-file-buffers t)
+     (preamble/checkpoint "ensured that file changes from disk are auto-restored")
+
+     ;; do not prompt for "yes/no", but instead for "y/n"
+     (fset 'yes-or-no-p 'y-or-n-p)
+   #+END_SRC

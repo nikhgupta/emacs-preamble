@@ -1,18 +1,16 @@
-#+TITLE: Emacs' Preamble
+#+TITLE:  Emacs' Preamble
 #+AUTHOR: Nikhil Gupta
-#+EMAIL: me@nikhgupta.com
-#+DATE: 2013-09-21 Sun
-#+DESCRIPTION: Emacs' Preamble: Configuration for Emacs in a literal-programming (self-documenting) style.
-#+KEYWORDS:    org babel emacs configuration
-#+OPTIONS:     toc:3 todo:t html-style:nil
-#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
-#+EXPORT_SELECT_TAGS: export
+#+EMAIL:  me@nikhgupta.com
+#+DATE:   2013-09-21 Sun
+
+#+DESCRIPTION:         Emacs' Preamble: Configuration for Emacs in a literal-programming (self-documenting) style.
+#+KEYWORDS:            org babel emacs configuration
+#+OPTIONS:             toc:3 todo:t html-style:nil
+#+EXPORT_SELECT_TAGS:  export
 #+EXPORT_EXCLUDE_TAGS: noexport notangle
-#+LINK_UP:
-#+Link_HOME:
+
 #+HTML_HEAD: <link rel="stylesheet" href="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/styles/dark.css" />
 #+HTML_HEAD: <script type="text/javascript" src="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/highlight.pack.js"></script>
-#+STARTUP: hideblocks
 
 * Motivation
   I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of the awesome [[http://orgmode.org][org-mode]]
@@ -29,29 +27,34 @@
   - [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
   - [[http://github.com/purcell/emacs.d][@purcell's emacs configuration]]
 
-  And, I really enjoyed my couple of days of flirting with these kits, and they were really nice,
-  but somehow, they did not represent me.
+  And, I really enjoyed my couple of days of flirting with these chicks, and they were really nice
+  to me, but somehow, they were not my type. I would, definitely, enjoying dating someone else'
+  girl, but the joy, the excitement, and the wilderness someone made for you, from head to toe, is
+  an entirely different matter altogether. You would kill for such beauty.
 
   #+BEGIN_QUOTE
   My editor felt like someone else' baby in my hands - it was adorable, and cute and what not, but
-  it wasn't mine. :)
+  it wasn't bringing out the wickedness that resides in me. :)
   #+END_QUOTE
 
   So, I started working on my own take at Emacs' configuration, finally, and proudly called it
   [[http://github.com/nikhgupta/preamble][Emacs' Preamble]] - made it, remade it, and remade it again and again and each time, I switched the
-  way it represented itself. I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], and wanted my own
-  to be based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
+  way it represented itself. I, initially, started working on it along the lines of =Prelude=, and
+  then, along the lines of =@purcell's emacs.d=, but I have always like well documnted code. And,
+  since, I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], I wanted my own configuration to be
+  based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
 
 * Requirements
-  I am really unsure about the requirements, but I'm using this configuration in *Mac OSX 10.8.2
-  (Mountain Lion)*, *GNU Emacs 24.1.1*, and *org-mode v8.2*.
+  I am really unsure about the requirements, but I'm using this configuration on my *MacBook Pro
+  '13* running on *Mac OSX 10.8.2 (Mountain Lion)*, *GNU Emacs 24.1.1*, and *org-mode v8.2*.
+  (last updated on [2013-10-21 Mon])
 
   #+BEGIN_QUOTE
   If you intend to use this configuration for yourself, then /hopefully/, the same should work
   without giving you any headaches, if you are on a *Mac OSX*. Otherwise, feel free to pull your
   hair, but don't even dare come and blame me for your /hair losses/, later!
 
-  *If I were you, I would create my own baby!*
+  *If I were you, I would experiment a lot, until I find my kinda' girl!*
   #+END_QUOTE
 
 * Philosophy
@@ -63,6 +66,11 @@
   named as *Emacs' Preamble*. The source code inside =elisp= source blocks is /tangled/ by Babel,
   and is then loaded as configuration via =org-babel-load-file= function.
 
+  Sometimes, you will find references to =org-babel-load-file= function within source blocks in this
+  file. The rationality behind this being that this configuration in its entirety reached 2000+
+  lines (o'course attributable to my frequent explanations on why I did a particular thing that
+  way), and therefore, I decided to divide up *Emacs' Preamble* into smaller chunks.
+
   This configuration for Emacs, i.e. Emacs' Preamble is heavily inspired form (in order):
   - [[https://github.com/purcell/emacs.d][@purcell's emacs.d]]
 
@@ -70,261 +78,87 @@
   [[file:init.el][It all started with a big-bang!]]
   (oh, yes! I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].)
 
-  The above file, basically, checks to see whether the Org-mode version is above =8.0=. If not, it
-  upgrades Org-mode by installing it via Emacs' Package Manager, and then tangles and loads =elisp=
-  source codes inside the current file by using =org-babel-load-file= function.
+  Emacs loads up =init.el= (linked above) to read the configuration, which acts as an entry point to
+  this =org-mode= file. Apart from this, =init.el= checks to see whether the Org-mode version is
+  above =8.0=. If not, it upgrades Org-mode by installing it via Emacs' Package Manager, and then
+  tangles and loads =elisp= source codes inside the current file by using a smart variation of
+  =org-babel-load-file= function, namely =preamble/org-babel-load-file=.
+
+  =preamble/org-babel-load-file= function makes sure that the file loading is fast, by only tangling
+  the =.org= files when the configuration has changed from last known state. It does so by
+  maintaining MD5 hash of the various =.org= files.
 
   At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs Server]] running on my machine, when it boots up (I, later, plan to
   run it on my VPS, and connect remotely), and use the =emacsclient= commands to connect to it. This
   way, this configuration is loaded/tangled only once, providing super-fast experience for my
   /use-cases/.
 
-** Tangled?
-   O'course, =org-mode= loves to tangle things, but it might get tangled itself in tangling the
-   things, I have tangled here for tangling. Therefore, we specify what we want it to tangle:
-   #+BEGIN_SRC emacs-lisp
-     (org-babel-tangle-file "readme.org" "readme.el" "emacs-lisp")
-   #+END_SRC
-** Compatibility                                              :compatibility:
-   Since, this configuration uses features new to =Emacs v24=, and since I don't have time enough to
-   work out a /compatible/ configuration for older version of Emacs, display a friendly warning, if
-   the Emacs version is below =v24=.
+** TODO tangling should happen only when configuration changes
+   I'm planning to add this feature to =init.el=, so as to increase load times even when starting
+   the server. A suitable working for this can be to keep MD5 checksums for all =*.org= file in this
+   directory and match them up when starting the server. If the checksums differ, we use the
+   =org-babel-load-file= function to load the =.org= file, otherwise, we simply load the
+   (un)compiled =.el= or =.elc= file. This function, named =preamble/org-babel-load-file= will need
+   to be defined in =init.el=, and in a manner, would overload the =org-babel-load-file= function.
 
-   #+BEGIN_SRC emacs-lisp
-     ;; display an error if emacs-version is less than 24.
-     (when (version< emacs-version "24")
-       (error "Only Emacs version 24 and up are supported."))
-   #+END_SRC
-
-** Debugging                                  :quantified:benchmark:debugger:
-   When working with such a configuration as this one, I often tend to pull my hair out.. This
-   section helps me track down possible causes of such erratic behaviour of mine and be more
-   insane, instead. Also, I hate those pesky plugins which make my Emacs' Preamble far too
-   slow. This section, further, helps me benchmark my configuration for the exact same purpose.
-
-   The settings of this section are turned on or off via the following variable:
-
-   #+BEGIN_SRC emacs-lisp
-     (setq debug-on-error 'nil)  ; set this to 'nil to disable this section
-   #+END_SRC
-
-*** Checkpoints
-    Since, this is one huge file, it is often hard to debug where a particular error has occurred,
-    and therefore, I need some visual clue of some type, a.k.a. =checkpoints=. The following
-    functions, together, help me with that. I can, simply, make a call to the =preamble/checkpoint=
-    function, in order to echo something inside my =*Messages*= buffer, and immediately, know nearby
-    location of where Emacs has stopped loading this configuration. Not to mention, these
-    checkpoints, further, help me by acting as indirect comments.
-
-    #+BEGIN_SRC emacs-lisp
-      ;; subtract two time entities
-      (defun preamble/time-subtract-millis (b a)
-        "Function that can subtract time string A from time string B."
-        (* 1000.0 (float-time (time-subtract b a))))
-
-      ;; convenient function to measure load-time since initialization
-      (defun preamble/load-time()
-        "Return total load-time from the initialization."
-        (preamble/time-subtract-millis (current-time) before-init-time))
-
-      ;; function to display which section is being loaded..
-      (defun preamble/checkpoint (msg)
-        "Echo MSG to *Messages*, thereby, making it act as a checkpoint."
-        (if debug-on-error (message "- At =%.2fms=, I %s.." (preamble/load-time) msg)))
-
-      ;; an example of above
-      (preamble/checkpoint "initialized benchmarking")
-    #+END_SRC
-
-*** Benchmarking
-    Moreover, since, I am a quantified-geek, I love to measure various things. Why not measure time
-    taken by our Emacs configuration, as well?
-
-    This section, also, enables me to measure the time taken by various features in require'ing
-    them, as well as total time taken by the Emacs to load this configuration. When Emacs load this
-    configuration, it displays which features were =require='d, and how much time that took. This
-    is, especially, useful for debugging which module is making our Emacs startup, so slow.
-
-    #+BEGIN_SRC emacs-lisp
-      ;; function to display how much time a particular feature took to require..
-      (defun preamble/require-time-message(package time)
-        (if debug-on-error ( message
-                             "- At =%.2fms=, I required a feature: =%s=, which took me =%0.2fms=."
-                             (preamble/load-time) package time)))
-
-      (defvar preamble/require-times nil
-        "A list of (FEATURE . LOAD-DURATION).
-        LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
-
-      (defadvice require
-        (around build-require-times (feature &optional filename noerror) activate)
-        "Note in `preamble/require-times' the time taken to require each feature."
-        (let* ((already-loaded (memq feature features))
-               (require-start-time (and (not already-loaded) (current-time))))
-          (prog1
-              ad-do-it
-            (when (and (not already-loaded) (memq feature features) debug-on-error)
-                (setq feature-required-time
-                      (preamble/time-subtract-millis (current-time) require-start-time))
-                (preamble/require-time-message feature feature-required-time)
-                (add-to-list 'preamble/require-times
-                           (cons feature
-                                 (preamble/time-subtract-millis (current-time)
-                                                                require-start-time))
-                           t)))))
-    #+END_SRC
-
-** Avoid Screen Flickers                               :gui:perfection:modes:
-   Now that, I have =Emacs v24= with me, I would first disable some of the GUI features early in
-   the startup so as to ensure that the screen does not flicker when turning them off, otherwise.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "disabled some GUI features, so as to avoid screen-flickering")
-     (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-     (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-     (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-   #+END_SRC
-
-   Also, do not display the ugly splash screen.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "disabled the ugly splash screen")
-     (setq inhibit-startup-message 't)
-   #+END_SRC
-
-** TODO remove the following settings, when configuration is complete. :fixup:
-
+** TODO remove the following settings, when configuration is complete.
    #+BEGIN_SRC emacs-lisp
      (auto-fill-mode 't)
      (global-linum-mode 1)
      (xterm-mouse-mode 1)
      (setq-default fill-column 100)
    #+END_SRC
-
-** Constants/Variables Used
-   Lets, define some very basic variables for important directories.
-
+** Compatibility
+   Since, this configuration uses features new to =Emacs v24=, and since I don't have time enough to
+   work out a /compatible/ configuration for older version of Emacs (and not even steal them),
+   display a friendly warning, if the Emacs version is below =v24=.
    #+BEGIN_SRC emacs-lisp
-     (defvar preamble-dir
-       (file-name-directory (file-truename load-file-name))
-       "The root directory for Emacs' Preamble configuration.")
-
-     (defvar preamble-vendor-dir (concat preamble-dir "/vendors")
-       "The directory which contains files from our vendors.")
+     ;; display an error if emacs-version is less than 24.
+     (when (version< emacs-version "24")
+       (error "Only Emacs version 24 and up are supported."))
    #+END_SRC
 
-   Also, I would define some constants based on the kind of operating system, application, and
-   features, I may use.
-
+** Avoid Screen Flickers
+   Now that, I have =Emacs v24= with me, I would like to first disable some of the GUI features
+   early in the startup. These GUI features can cause screen to flicker otherwise, as they are
+   loaded and then unloaded, making them appear for a tiny fraction of time.
    #+BEGIN_SRC emacs-lisp
-     (defconst *is-mac* (eq system-type 'darwin))
-     (defconst *is-linux* (eq system-type 'gnu/linux))
-     (defconst *is-windows* (eq system-type 'windows-nt))
-     (defconst *is-cygwin* (eq system-type 'cygwin))
-     (defconst *is-mac-gui* (and *is-mac* window-system))
-     (defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
-     (defconst *spell-check-support-enabled* nil)
+     (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))     ; disable menu-bar
+     (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))     ; disable tool-bar
+     (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ; disable scroll-bars
+     (setq inhibit-startup-message 't)                    ; disable Emacs' splash screen
    #+END_SRC
 
-** =eval-after-load= easily                                          :tricks:
-   We define a macro named =after=, which evaluates the given =elisp= statements, after a
-   particular Emacs' =feature= has been loaded.
-
+** Debugging
+   When working with such a configuration as this one, I often tend to pull my hair out.. This
+   section helps me track down possible causes of such erratic behaviour of mine and be more
+   insane, instead. Also, I hate those pesky plugins which make my Emacs' Preamble far too
+   slow. This section, further, helps me benchmark my configuration for the exact same purpose.
    #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "overloaded =eval-after-load= function")
-     (defmacro after (feature &rest body)
-       "After FEATURE is loaded, evaluate BODY."
-       (declare (indent defun))
-       `(eval-after-load ,feature
-         '(progn ,@body)))
+     (setq debug-on-error 'nil)  ; set this to 'nil to disable this section
+     (preamble/org-babel-load-file "core/debugger")
    #+END_SRC
 
-** Load Path                                               :functions:tricks:
-   Next, we add some functions which load =*.el= files and subdirectories inside a given directory
-   to the =load-path=. We use these functions to add some files/dirs to the =load-path=, as
-   required.
-
+** Core Functionality
+   This section, basically, requires another =org-babel= [[file:./preamble/preamble-core.org][file]], which in turn, contains code that
+   defines some variables, constants, macros, functions, etc. which are core to the functionality of
+   Emacs' Preamble.
    #+BEGIN_SRC emacs-lisp
-     (defun preamble/load-all-elisp-files (dir)
-       "Load all Elisp files inside DIR."
-       (mapc 'load (directory-files dir 't "^[^#].*el$")))
-
-     (defun preamble/add-subfolders-to-load-path (parent-dir)
-      "Add all level PARENT-DIR subdirs to the `load-path'."
-      (dolist (f (directory-files parent-dir))
-        (let ((name (expand-file-name f parent-dir)))
-          (when (and (file-directory-p name)
-                     (not (equal f ".."))
-                     (not (equal f ".")))
-            (add-to-list 'load-path name)
-            (preamble/add-subfolders-to-load-path name)))))
-
+     (preamble/checkpoint "added core functionality to myself.")
+     (preamble/org-babel-load-file "core/basics")
      (preamble/checkpoint "added subdirectories of =./vendors= to =load-path=")
      (preamble/add-subfolders-to-load-path preamble-vendor-dir)
    #+END_SRC
 
 ** Custom File
    Emacs uses a /custom file/ to store changes done via [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Emacs' Easy Customization]] method. We are,
-   simply, setting it up below, so that all the custom configuration exists in a separate file.
-
+   simply, setting it up below, so that all the custom configuration exists in a separate file,
+   which will not be under version control, and hence, customizable freely by anyone using Emacs'
+   Preamble.
    #+BEGIN_SRC emacs-lisp
      (preamble/checkpoint "set up location for custom file")
      (setq custom-file (expand-file-name "custom.el" preamble-dir))
      (load custom-file)
-   #+END_SRC
-
-** Custom Functions
-   #+BEGIN_SRC emacs-lisp
-     (defun preamble/eval-after-init (form)
-       "Add `(lambda () FORM)' to `after-init-hook'.
-       If Emacs has already finished initialization, also eval FORM immediately."
-       (let ((func (list 'lambda nil form)))
-         (add-hook 'after-init-hook func)
-         (when after-init-time
-           (eval form))))
-   #+END_SRC
-** General Behaviour
-   This section sets up generic behaviour for Emacs' Preamble.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "gave directions to require [[http://common-lisp.net][Common Lisp]]")
-     (eval-when-compile (require 'cl))
-
-     (preamble/checkpoint "set support for UTF8 encoding")
-     (setq locale-coding-system 'utf-8)
-     (set-terminal-coding-system 'utf-8)
-     (set-keyboard-coding-system 'utf-8)
-     (set-selection-coding-system 'utf-8)
-     (prefer-coding-system 'utf-8)
-
-     (preamble/checkpoint "reduced the frequency of garbage collection")
-     ; new: 50MB, default: 0.76MB
-     (setq gc-cons-threshold 50000000)
-
-     (setq preamble/bookmark-file
-       (expand-file-name ".bookmarks.el" user-emacs-directory))
-
-     (preamble/checkpoint "ensured that file changes from disk are auto-restored")
-     (global-auto-revert-mode 1)   ; restore changes from disk in buffer
-     (setq global-auto-revert-non-file-buffers t
-           auto-revert-verbose nil)
-
-     (preamble/checkpoint "configured general behaviour of Emacs' Preamble")
-     (setq-default
-       buffers-menu-max-size 30    ; max num of entries in Buffers menu
-       compilation-scroll-output t ; scroll down to always show last line of output
-       make-backup-files nil       ; do not make backups for files
-       mouse-yank-at-point t       ; mouse yank at point instead of at click
-       save-interprogram-paste-before-kill t   ; save clipboard strings into kill ring before replacing them
-       scroll-preserve-screen-position 'always ; point always keeps its position when scrolling
-       set-mark-command-repeat-pop t           ; repeating C-SPC after popping mark pops it again
-       grep-scroll-output t
-       grep-highlight-matches t
-       bookmark-default-file preamble/bookmark-file ; default bookmark file
-       ediff-split-window-function 'split-window-horizontally
-       ediff-window-setup-function 'ediff-setup-windows-plain)
-
-     (fset 'yes-or-no-p 'y-or-n-p)
    #+END_SRC
 
 * Packages
@@ -334,10 +168,7 @@
 
 ** Repositories
    I am using [[http://www.emacswiki.org/emacs-en/Marmalade][Marmalade]], [[http://www.emacswiki.org/emacs-en/MELPA][MELPA]], & [[http://orgmode.org/elpa.html][Org ELPA]] repositories, for my purposes.
-
    #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "added more repositories to Emacs' Package Manager")
-
      (require 'package)
      (setq package-archives
        '(("marmalade" . "http://marmalade-repo.org/packages/")
@@ -345,9 +176,10 @@
          ("melpa"     . "http://melpa.milkbox.net/packages/")))
 
      (package-initialize)
+     (preamble/checkpoint "added more repositories to Emacs' Package Manager")
    #+END_SRC
 
-** On Demand Installation                                  :functions:tricks:
+** On Demand Installation
    I have added some convenient functions to install a package, only when it is explicitely told to
    do so, which means that instead of writing a list of our packages (that need to be installed and
    checked on every run of Emacs) in this section, we are now able to =install= them right along
@@ -381,13 +213,12 @@
   #+END_QUOTE
 
   This is true, since I work for almost 12-16 hours on my computer, with almost 70% time either in
-  my Shell or in my Editor, and hence, these two things need to be so adorable, and so damn
+  my Shell or in my Editor. And, hence, these two things need to be so adorable, and so damn
   impressive, that I would never want to leave them alone.
 
-** Themes                                          :themes:functions:package:
+** Themes
    Firstly, lets add some themes to Emacs' Preamble - that way, things should get a major overhaul
    and already, help us through half the work of making it look pretty.
-
    #+BEGIN_SRC emacs-lisp
      (preamble/checkpoint "installed some themes /(duh! dunno, was that even required?)/")
      (preamble/require-packages '( zenburn-theme noctilux-theme sublime-themes
@@ -415,7 +246,7 @@
      (setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
    #+END_SRC
 
-** Appearance                                               :modes:functions:
+** Appearance
    I have defined some modes and settings below, that directly have an effect on the appearance of
    Emacs' Preamble. O'course, this is as per my taste, and bound to change like seasons on this
    earth.
@@ -1328,78 +1159,11 @@
     #+END_SRC
 
 * Org Mode
-  I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
-  want to capture links from my Mac applications and add them to =org-mode=, as well as with
-  =iCal=. Moreover, I often require to put a file-system subtree inside my =org-mode= documents.
-
+  Org Mode configuration is loaded from another =org-mode= [[file:./modules/org-mode.org][file]], which basically sets up required
+  packages, functions, hooks, configuration, etc. for =org-mode=. This way, I am able to keep
+  configuration of =org-mode= into a separate city of its own.
   #+BEGIN_SRC emacs-lisp
-    (preamble/require-package 'org-fstree)
-    (when *is-mac*
-      (preamble/require-packages '(org-mac-link org-mac-iCal)))
-  #+END_SRC
-
-  I will, then, define some configuration for =org-mode= to behave nicely with me.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "configured =org-mode= to behave nicely with us")
-    (setq org-log-done t                       ; information to record when task moves to DONE state
-          org-completion-use-ido t             ; use ido-completion when possible
-          org-agenda-start-on-weekday nil
-          org-agenda-span 14
-          org-agenda-include-diary t
-          org-edit-timestamp-down-means-later t ; S-down will increase time in timestamp
-          org-agenda-window-setup 'current-window
-          org-fast-tag-selection-single-key 'expert ; fast tag selection
-          org-export-kill-product-buffer-when-displayed t
-          org-src-fontify-natively t
-          org-tags-column -100)
-  #+END_SRC
-
-  For [[http://www.gnu.org/software/emacs/manual/html_node/org/Capture-_002d-Refile-_002d-Archive.html][refiling purposes]], I have defined some configuration to allow it easily.
-  #+BEGIN_SRC emacs-lisp
-    ; refile targets include this file and any file contributing to the agenda - up to 5 levels deep
-    (setq org-refile-targets (quote ((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))))
-    ; targets start with the file name - allows creating level 1 tasks
-    (setq org-refile-use-outline-path (quote file))
-    ; targets complete in steps so we start with filename, TAB shows the next level of targets etc
-    (setq org-outline-path-complete-in-steps t)
-  #+END_SRC
-
-  I have, also, added some tags to match my workflow, like so:
-  #+BEGIN_SRC emacs-lisp
-    (setq org-todo-keywords
-          (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!/@)")
-                  (sequence "REPORT(r!)" "BUG(b!/@)" "KNOWNCAUSE(k!/@)" "|" "FIXED(f!/@)")
-                  (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
-  #+END_SRC
-
-  Next, I heavily make use of =org-clock=, and hence, have defined some configuration for the same.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "configured =org-clock= as per our taste")
-    ;; save the running clock and all clock history when exiting Emacs, load it on startup
-    (setq org-clock-persist t)
-    (setq org-clock-in-resume t)
-    (setq org-clock-persistence-insinuate t)
-
-    ;; change task state to STARTED when clocking in
-    (setq org-clock-in-switch-to-state "STARTED")
-    ;; save clock data and notes in the LOGBOOK drawer
-    (setq org-clock-into-drawer t)
-    ;; removes clocked tasks with 0:00 duration
-    (setq org-clock-out-remove-zero-time-clocks t)
-
-    ;; show the clocked-in task - if any - in the header line
-    (defun preamble/show-org-clock-in-header-line ()
-      (setq-default header-line-format '((" " org-mode-line-string " "))))
-    (defun preamble/hide-org-clock-from-header-line ()
-      (setq-default header-line-format nil))
-
-    (add-hook 'org-clock-in-hook 'preamble/show-org-clock-in-header-line)
-    (add-hook 'org-clock-out-hook 'preamble/hide-org-clock-from-header-line)
-    (add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
-
-    (after 'org-clock
-      (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
-      (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
+    (preamble/org-babel-load-file "modules/org-mode")
   #+END_SRC
 * Programming
   This section contains various packages and their settings related to programming.
@@ -1817,101 +1581,11 @@
           (define-key nxml-mode-map (kbd "M-h") nil)))
     #+END_SRC
 * Key Bindings
+  Key Bindings are loaded from another =org-mode= [[file:./preamble/keybindings.org][file]], which basically lists them as an =org-mode=
+  table, and then, uses a function to define the keybindings on the fly.
   #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "Setting up Key Bindings..")
-
-    (after 'org
-      (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
-      (when *is-mac*
-        (define-key org-mode-map (kbd "M-h") nil)
-        (autoload 'omlg-grab-link "org-mac-link")
-        (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
-
-    (define-key global-map "\C-cl" 'org-store-link)
-    (define-key global-map "\C-ca" 'org-agenda)
-
-    ;; Convenient binding for vc-git-grep
-    (global-set-key (kbd "C-x v f") 'vc-git-grep)
-    (global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
-    (global-set-key (kbd "C-x g") 'magit-status)
-
-    (global-set-key [remap query-replace-regexp] 'vr/query-replace)
-    (global-set-key [remap replace-regexp] 'vr/replace)
-
-    (global-set-key (kbd "C-c p") 'duplicate-line-or-region)
-
-    (global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
-
-    (after 'move-text (move-text-default-bindings))
-    (global-set-key [M-S-up] 'move-text-up)
-    (global-set-key [M-S-down] 'move-text-down)
-
-    (global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
-
-    (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
-
-    (global-set-key [remap query-replace-regexp] 'vr/query-replace)
-    (global-set-key [remap replace-regexp] 'vr/replace)
-
-    ;; indent whole file according to its major-mode
-    (global-set-key (kbd "C-c C-\\") '(lambda() (interactive) (indent-region (point-min) (point-max))))
-    (global-set-key (kbd "C-=") 'er/expand-region)
-    ;; To be able to M-x without meta
-    (global-set-key (kbd "C-x C-m") 'execute-extended-command)
-
-    ;; Vimmy alternatives to M-^ and C-u M-^
-    (global-set-key (kbd "C-c j") 'join-line)
-    (global-set-key (kbd "C-c J") (lambda () (interactive) (join-line 1)))
-
-    (global-set-key (kbd "C-.") 'set-mark-command)
-    (global-set-key (kbd "C-x C-.") 'pop-global-mark)
-
-    (global-set-key (kbd "C-;") 'ace-jump-mode)
-    (global-set-key (kbd "C-:") 'ace-jump-word-mode)
-
-
-    ;; multiple-cursors
-    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-    (global-set-key (kbd "C-+") 'mc/mark-next-like-this)
-    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-    ;; From active region to multiple cursors:
-    (global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
-    (global-set-key (kbd "C-c c c") 'mc/edit-lines)
-    (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
-    (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
-    (global-set-key (kbd "M-Z") 'zap-up-to-char)
-    (global-set-key (kbd "RET") 'newline-and-indent)
-    (global-set-key (kbd "C-M-=") 'preamble/increase-default-font-height)
-    (global-set-key (kbd "C-M--") 'preamble/decrease-default-font-height)
-    (global-set-key (kbd "<f7>") 'preamble/split-window)
-    (global-set-key (kbd "<f6>")
-                    (lambda ()
-                      (interactive)
-                      (switch-to-buffer nil)))
-
-
-    (global-set-key (kbd "M-x") 'smex)
-    (global-set-key (kbd "C-x o") 'switch-window)
-    (global-set-key [(meta f11)] 'preamble/ido-choose-from-recentf)
-    (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-    (global-set-key (kbd "M-/") 'hippie-expand)
-
-    ;; stop C-z from minimizing windows under OS X
-    (global-set-key (kbd "C-z") '(lambda ()
-                                   (interactive) (unless *is-mac-gui*) (suspend-frame)))
-
-    (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
-      ;; Command-Option-f to toggle fullscreen mode
-      ;; Hint: Customize `ns-use-native-fullscreen'
-      (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
-
-    (global-set-key (kbd "M-C-8") '(lambda () (interactive) (adjust-opacity nil -5)))
-    (global-set-key (kbd "M-C-9") '(lambda () (interactive) (adjust-opacity nil 5)))
-    (global-set-key (kbd "M-C-0") '(lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+    (preamble/org-babel-load-file "core/keybindings")
   #+END_SRC
-** BUG pressing C-z will still minimize the window when using Emacs' GUI
 * Server
   Allow =emacsclient= to connect to the current =emacs= instance.
   #+BEGIN_SRC emacs-lisp

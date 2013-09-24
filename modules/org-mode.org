@@ -1,0 +1,87 @@
+#+TITLE: Emacs' Preamble's Org Mode Configuration
+
+* Packages
+  I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
+  want to capture links from my Mac applications and add them to =org-mode=, as well as with
+  =iCal=. Moreover, I often require to put a file-system subtree inside my =org-mode=
+  documents. Therefore, I have defined the following additional packages for =org-mode=:
+
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'org-fstree)
+    (when *is-mac*
+      (preamble/require-packages '(org-mac-link org-mac-iCal)))
+  #+END_SRC
+
+* Functions
+  #+BEGIN_SRC emacs-lisp
+    ;; show the clocked-in task - if any - in the header line
+    (defun preamble/show-org-clock-in-header-line ()
+      (setq-default header-line-format '((" " org-mode-line-string " "))))
+    (defun preamble/hide-org-clock-from-header-line ()
+      (setq-default header-line-format nil))
+  #+END_SRC
+
+* Hooks
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'org-clock-in-hook 'preamble/show-org-clock-in-header-line)
+    (add-hook 'org-clock-out-hook 'preamble/hide-org-clock-from-header-line)
+    (add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
+  #+END_SRC
+* Configuration
+  I will, then, define some configuration for =org-mode= to behave nicely with me.
+  #+BEGIN_SRC emacs-lisp
+    (setq org-log-done t                       ; information to record when task moves to DONE state
+          org-completion-use-ido t             ; use ido-completion when possible
+          org-agenda-start-on-weekday nil
+          org-agenda-span 14
+          org-agenda-include-diary t
+          org-edit-timestamp-down-means-later t ; S-down will increase time in timestamp
+          org-agenda-window-setup 'current-window
+          org-fast-tag-selection-single-key 'expert ; fast tag selection
+          org-export-kill-product-buffer-when-displayed t
+          org-src-fontify-natively t
+          org-tags-column -100)
+  #+END_SRC
+
+  For [[http://www.gnu.org/software/emacs/manual/html_node/org/Capture-_002d-Refile-_002d-Archive.html][refiling purposes]], I have defined some configuration to allow it easily.
+  #+BEGIN_SRC emacs-lisp
+    ; refile targets include this file and any file contributing to the agenda - up to 5 levels deep
+    (setq org-refile-targets (quote ((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))))
+    ; targets start with the file name - allows creating level 1 tasks
+    (setq org-refile-use-outline-path (quote file))
+    ; targets complete in steps so we start with filename, TAB shows the next level of targets etc
+    (setq org-outline-path-complete-in-steps t)
+  #+END_SRC
+
+  I have, also, added some tags to match my workflow, like so:
+  #+BEGIN_SRC emacs-lisp
+    (setq org-todo-keywords
+          (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!/@)")
+                  (sequence "REPORT(r!)" "BUG(b!/@)" "KNOWNCAUSE(k!/@)" "|" "FIXED(f!/@)")
+                  (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
+  #+END_SRC
+
+  Next, I heavily make use of =org-clock=, and hence, have defined some configuration for the same.
+  #+BEGIN_SRC emacs-lisp
+    ;; save the running clock and all clock history when exiting Emacs, load it on startup
+    (setq org-clock-persist t)
+    (setq org-clock-in-resume t)
+    (setq org-clock-persistence-insinuate t)
+
+    ;; change task state to STARTED when clocking in
+    (setq org-clock-in-switch-to-state "STARTED")
+    ;; save clock data and notes in the LOGBOOK drawer
+    (setq org-clock-into-drawer t)
+    ;; removes clocked tasks with 0:00 duration
+    (setq org-clock-out-remove-zero-time-clocks t)
+  #+END_SRC
+* Mode Level Key Bindings
+  #+BEGIN_SRC emacs-lisp
+    (after 'org-clock
+      (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
+      (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
+  #+END_SRC
+* Epilogue
+  #+BEGIN_SRC emacs-lisp
+    (preamble/checkpoint "configured =org-mode= to behave nicely with us")
+  #+END_SRC

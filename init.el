@@ -36,6 +36,8 @@
 (defvar preamble-dir
   (file-name-directory (file-truename load-file-name))
   "The root directory for Emacs' Preamble configuration.")
+;; a simple variable filled with dashes (used inside our messages)
+(defvar hr-rule "----------------------------------------------------------")
 
 ;; initialize our packages
 (require 'package)
@@ -50,25 +52,26 @@
          (match-string 1))))
 
   ;; update org-mode to v8.0+, if required.
-  (message "Found your org-mode version to be %s." org-version)
   (if (version< org-version "8.0")
       (progn
+        (message (concat hr-rule "\nFound your org-mode version to be %s.") org-version)
         (message "Upgrading your org-mode version..")
         (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
         (package-refresh-contents)
-        (package-install 'org-plus-contrib))
-    (message "Great. We can, now, proceed to literally load our configuration. :)")))
+        (package-install 'org-plus-contrib)
+        (message (concat "Great! We can, now, proceed to load Emacs' Preamble. :)\n"
+                         hr-rule)))))
+
+;; improve performance by overloading org-babel-load-file function
+(defun preamble/org-babel-load-file (filename)
+  "Overload the `org-babel-load-file' function.
+Quickly load Emacs' Preamble's configuration file named FILENAME."
+  (org-babel-load-file (expand-file-name (concat filename ".org") preamble-dir)))
 
 ;; load our configuration file
-(org-babel-load-file (expand-file-name "readme.org" preamble-dir))
+(preamble/org-babel-load-file "preamble")
 
-;; greet and display load time to the user
-(defun preamble/greet-user()
-  "Greet and display load time to the user."
-  (message (concat "--------------------------------------------------------------------\n"
-                   "*Welcome to Emacs' Preamble.*\n"
-                   "Emacs' Preamble was loaded in =%.2fms=.") (preamble/load-time)))
+;; greet user and display load time of Emacs' Preamble
+(preamble/eval-after-init (run-at-time 2 nil 'preamble/greet-user))
 
-(preamble/eval-after-init
- (run-at-time 2 nil 'preamble/greet-user))
 ;;; init.el ends here

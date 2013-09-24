@@ -1,0 +1,101 @@
+#+TITLE: Emacs' Preamble's Key Bindings
+
+* Functions
+* Listings
+  #+BEGIN_SRC emacs-lisp
+    (preamble/checkpoint "Setting up Key Bindings..")
+
+    (after 'org
+      (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
+      (when *is-mac*
+        (define-key org-mode-map (kbd "M-h") nil)
+        (autoload 'omlg-grab-link "org-mac-link")
+        (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
+
+    (define-key global-map "\C-cl" 'org-store-link)
+    (define-key global-map "\C-ca" 'org-agenda)
+
+    ;; Convenient binding for vc-git-grep
+    (global-set-key (kbd "C-x v f") 'vc-git-grep)
+    (global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
+    (global-set-key (kbd "C-x g") 'magit-status)
+
+    (global-set-key [remap query-replace-regexp] 'vr/query-replace)
+    (global-set-key [remap replace-regexp] 'vr/replace)
+
+    (global-set-key (kbd "C-c p") 'duplicate-line-or-region)
+
+    (global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
+
+    (after 'move-text (move-text-default-bindings))
+    (global-set-key [M-S-up] 'move-text-up)
+    (global-set-key [M-S-down] 'move-text-down)
+
+    (global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
+
+    (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
+
+    (global-set-key [remap query-replace-regexp] 'vr/query-replace)
+    (global-set-key [remap replace-regexp] 'vr/replace)
+
+    ;; indent whole file according to its major-mode
+    (global-set-key (kbd "C-c C-\\") '(lambda() (interactive) (indent-region (point-min) (point-max))))
+    (global-set-key (kbd "C-=") 'er/expand-region)
+    ;; To be able to M-x without meta
+    (global-set-key (kbd "C-x C-m") 'execute-extended-command)
+
+    ;; Vimmy alternatives to M-^ and C-u M-^
+    (global-set-key (kbd "C-c j") 'join-line)
+    (global-set-key (kbd "C-c J") (lambda () (interactive) (join-line 1)))
+
+    (global-set-key (kbd "C-.") 'set-mark-command)
+    (global-set-key (kbd "C-x C-.") 'pop-global-mark)
+
+    (global-set-key (kbd "C-;") 'ace-jump-mode)
+    (global-set-key (kbd "C-:") 'ace-jump-word-mode)
+
+
+    ;; multiple-cursors
+    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-+") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+    ;; From active region to multiple cursors:
+    (global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
+    (global-set-key (kbd "C-c c c") 'mc/edit-lines)
+    (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
+    (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+    (global-set-key (kbd "M-Z") 'zap-up-to-char)
+    (global-set-key (kbd "RET") 'newline-and-indent)
+    (global-set-key (kbd "C-M-=") 'preamble/increase-default-font-height)
+    (global-set-key (kbd "C-M--") 'preamble/decrease-default-font-height)
+    (global-set-key (kbd "<f7>") 'preamble/split-window)
+    (global-set-key (kbd "<f6>")
+                    (lambda ()
+                      (interactive)
+                      (switch-to-buffer nil)))
+
+
+    (global-set-key (kbd "M-x") 'smex)
+    (global-set-key (kbd "C-x o") 'switch-window)
+    (global-set-key [(meta f11)] 'preamble/ido-choose-from-recentf)
+    (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+    (global-set-key (kbd "M-/") 'hippie-expand)
+
+    ;; stop C-z from minimizing windows under OS X
+    (global-set-key (kbd "C-z") '(lambda ()
+                                   (interactive) (unless *is-mac-gui*) (suspend-frame)))
+
+    (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+      ;; Command-Option-f to toggle fullscreen mode
+      ;; Hint: Customize `ns-use-native-fullscreen'
+      (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+
+    (global-set-key (kbd "M-C-8") '(lambda () (interactive) (adjust-opacity nil -5)))
+    (global-set-key (kbd "M-C-9") '(lambda () (interactive) (adjust-opacity nil 5)))
+    (global-set-key (kbd "M-C-0") '(lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+  #+END_SRC
+* Tasks
+** BUG pressing C-z will still minimize the window when using Emacs' GUI
+** TODO listing in this file should be created as an =org-mode= table
