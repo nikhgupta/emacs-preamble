@@ -6,3 +6,5 @@ elpa/
 !/custom.el
 *.elc
 ac-comphist.dat
+.session
+.emacs.desktop

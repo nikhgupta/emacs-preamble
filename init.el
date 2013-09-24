@@ -43,26 +43,32 @@
 
 ;; get the org-version but avoid calling org functions to prevent autoloading
 (let ((org-version
-  (with-temp-buffer
-    (require 'find-func)
-    (insert-file-contents (find-library-name "org-version"))
-    (re-search-forward "(org-release \"\\(.*?\\)\")")
-    (match-string 1))))
+       (with-temp-buffer
+         (require 'find-func)
+         (insert-file-contents (find-library-name "org-version"))
+         (re-search-forward "(org-release \"\\(.*?\\)\")")
+         (match-string 1))))
 
   ;; update org-mode to v8.0+, if required.
   (message "Found your org-mode version to be %s." org-version)
   (if (version< org-version "8.0")
-    (progn
-      (message "Upgrading your org-mode version..")
-      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-      (package-refresh-contents)
-      (package-install 'org-plus-contrib))
-    (message "Great. We can, now, proceed to literally load our configuration. :)"))
-  (message "--------------------------------------------------------------------"))
+      (progn
+        (message "Upgrading your org-mode version..")
+        (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+        (package-refresh-contents)
+        (package-install 'org-plus-contrib))
+    (message "Great. We can, now, proceed to literally load our configuration. :)")))
 
 ;; load our configuration file
 (org-babel-load-file (expand-file-name "readme.org" preamble-dir))
 
-(message "--------------------------------------------------------------------")
-(message "Welcome to Emacs' Preamble.")
-(message "Emacs' Preamble was loaded in %.2fms." (preamble/load-time))
+;; greet and display load time to the user
+(defun preamble/greet-user()
+  "Greet and display load time to the user."
+  (message (concat "--------------------------------------------------------------------\n"
+                   "*Welcome to Emacs' Preamble.*\n"
+                   "Emacs' Preamble was loaded in =%.2fms=.") (preamble/load-time)))
+
+(preamble/eval-after-init
+ (run-at-time 2 nil 'preamble/greet-user))
+;;; init.el ends here
