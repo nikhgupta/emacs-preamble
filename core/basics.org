@@ -76,7 +76,7 @@
         (when after-init-time
           (eval form))))
   #+END_SRC
-* Configuration
+* General
 ** Basic Features/Packages
    #+BEGIN_SRC emacs-lisp
      (preamble/checkpoint "required basic features/packages, in case they were not present")

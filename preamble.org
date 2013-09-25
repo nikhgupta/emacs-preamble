@@ -66,7 +66,8 @@
   named as *Emacs' Preamble*. The source code inside =elisp= source blocks is /tangled/ by Babel,
   and is then loaded as configuration via =org-babel-load-file= function.
 
-  Sometimes, you will find references to =org-babel-load-file= function within source blocks in this
+  Sometimes, you will find references to =preamble/org-babel-load-file= function within source
+  blocks in this file, which (among other things) tells =org-babel= to include/load another
   file. The rationality behind this being that this configuration in its entirety reached 2000+
   lines (o'course attributable to my frequent explanations on why I did a particular thing that
   way), and therefore, I decided to divide up *Emacs' Preamble* into smaller chunks.
@@ -144,10 +145,10 @@
    defines some variables, constants, macros, functions, etc. which are core to the functionality of
    Emacs' Preamble.
    #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "added core functionality to myself.")
      (preamble/org-babel-load-file "core/basics")
-     (preamble/checkpoint "added subdirectories of =./vendors= to =load-path=")
+     (preamble/checkpoint "added core functionality to myself.")
      (preamble/add-subfolders-to-load-path preamble-vendor-dir)
+     (preamble/checkpoint "added subdirectories of =./vendors= to =load-path=")
    #+END_SRC
 
 ** Custom File
@@ -156,9 +157,9 @@
    which will not be under version control, and hence, customizable freely by anyone using Emacs'
    Preamble.
    #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "set up location for custom file")
      (setq custom-file (expand-file-name "custom.el" preamble-dir))
      (load custom-file)
+     (preamble/checkpoint "set up location for custom file")
    #+END_SRC
 
 * Packages
@@ -166,10 +167,13 @@
   (anything else, does not make sense, anyways). However, I must, first, tell it to use more sources
   to search for a required package (a.k.a. =yum=):
 
-** Repositories
    I am using [[http://www.emacswiki.org/emacs-en/Marmalade][Marmalade]], [[http://www.emacswiki.org/emacs-en/MELPA][MELPA]], & [[http://orgmode.org/elpa.html][Org ELPA]] repositories, for my purposes.
+
+   Moreover, [[file:./core/packages.org][./core/packages.org]] defines some functions that are really useful, esp. the
+   =preamble/require-package= function, which executes an =on-demand installation= of a package.
    #+BEGIN_SRC emacs-lisp
      (require 'package)
+     (preamble/org-babel-load-file "core/packages")
      (setq package-archives
        '(("marmalade" . "http://marmalade-repo.org/packages/")
          ("org"       . "http://orgmode.org/elpa/")
@@ -177,32 +181,6 @@
 
      (package-initialize)
      (preamble/checkpoint "added more repositories to Emacs' Package Manager")
-   #+END_SRC
-
-** On Demand Installation
-   I have added some convenient functions to install a package, only when it is explicitely told to
-   do so, which means that instead of writing a list of our packages (that need to be installed and
-   checked on every run of Emacs) in this section, we are now able to =install= them right along
-   with the rest of their configuration. This is called *On Demand Installation* of the packages.
-
-   #+BEGIN_SRC emacs-lisp
-     ;; on-demand installation of a package
-     (defun preamble/require-package (package &optional min-version no-refresh)
-       "Install given PACKAGE, optionally requiring MIN-VERSION.
-       If NO-REFRESH is non-nil, the available package lists will not be
-       re-downloaded in order to locate PACKAGE."
-       (if (package-installed-p package min-version)
-           t
-         (if (or (assoc package package-archive-contents) no-refresh)
-             (package-install package)
-           (progn
-             (package-refresh-contents)
-             (preamble/require-package package min-version t)))))
-
-     ;; on-demand installation of multiple packages
-     (defun preamble/require-packages(packages-list)
-       "Install packages from a given PACKAGES-LIST, using `preamble-require-package' function."
-       (mapc #'preamble/require-package packages-list))
    #+END_SRC
 
 * User Interface
@@ -216,223 +194,14 @@
   my Shell or in my Editor. And, hence, these two things need to be so adorable, and so damn
   impressive, that I would never want to leave them alone.
 
-** Themes
-   Firstly, lets add some themes to Emacs' Preamble - that way, things should get a major overhaul
-   and already, help us through half the work of making it look pretty.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "installed some themes /(duh! dunno, was that even required?)/")
-     (preamble/require-packages '( zenburn-theme noctilux-theme sublime-themes
-                                   color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow ))
+  #+BEGIN_SRC emacs-lisp
+    (preamble/org-babel-load-file "core/themes")
+    (preamble/org-babel-load-file "core/appearance")
 
-     ;; quick access for some themes, I use often.
-     (defun light() "Activate a light color theme."
-       (interactive) (color-theme-sanityinc-solarized-light))
-     (defun dark() "Activate a dark color theme."
-       (interactive) (color-theme-sanityinc-solarized-dark))
-     (defun eighties() "Activate an 80's theme."
-       (interactive) (color-theme-sanityinc-tomorrow-eighties))
-
-     ;; ensures that themes will be applied even if they have not been customized
-     (defun preamble/reapply-themes ()
-       "Forcibly load the themes listed in `custom-enabled-themes'."
-       (dolist (theme custom-enabled-themes)
-         (unless (custom-theme-p theme) (load-theme theme)))
-       (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
-
-     ;; lets run the above function after Emacs has loaded this configuration.
-     (add-hook 'after-init-hook 'preamble/reapply-themes)
-
-     (preamble/checkpoint "set up a default theme")
-     (setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
-   #+END_SRC
-
-** Appearance
-   I have defined some modes and settings below, that directly have an effect on the appearance of
-   Emacs' Preamble. O'course, this is as per my taste, and bound to change like seasons on this
-   earth.
-
-   At the moment, =line numbers= and =column numbers= are displayed, as I really find them very
-   useful. Moreover, =trailing-whitespace= is highlighted, =cursor= blinks, =continuation lines=
-   are displayed, and so on..
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "configured Emacs' Preamble for better appearance")
-     (global-linum-mode 1)           ; display line numbers
-     (column-number-mode 1)          ; display column number in mode line
-
-     ;; other configuration
-     (setq-default
-      blink-cursor-delay 0        ; seconds after which cursor starts to blink
-      blink-cursor-interval 0.4   ; length of cursor blink interval
-      line-spacing 0.2            ; space to put between lines
-      tooltip-delay 1.5           ; seconds to wait before displaying tooltip
-      visible-bell t              ; try to flash the frame to represent bell
-      truncate-lines nil          ; display continuation lines
-      truncate-partial-width-windows nil)
-
-     ;; function to adjust opacity of the current frame by some value
-     (defun preamble/adjust-opacity (frame incr)
-       (let* ((oldalpha (or (frame-parameter frame 'alpha) 100))
-              (newalpha (+ incr oldalpha)))
-         (when (and (<= frame-alpha-lower-limit newalpha) (>= 100 newalpha))
-           (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
-   #+END_SRC
-
-*** WhiteSpace
-    I despise =whitespace=, esp. the freaky trailing ones. So, I explicitely set them to be visible,
-    and automatically remove them when buffer is saved. However, I would not like to see =trailing
-    whitespace= in SQLi, inf-ruby, etc.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured whitespace related settings")
-      (setq show-trailing-whitespace 't)
-
-      ;; delete trailing whitespace when buffer is saved
-      (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-      ;; do not show trailing whitespace in some modes
-      (dolist (hook '(term-mode-hook comint-mode-hook compilation-mode-hook))
-        (add-hook hook (lambda () (setq show-trailing-whitespace nil))))
-    #+END_SRC
-
-*** Fonts
-    I am, often, working on multiple monitors, and need to increase/reduce size of my fonts. For
-    that particular purpose, I have defined the following functions to increase/reduce the font
-    sizes, as per my needs.
-
-    #+BEGIN_SRC emacs-lisp
-      (defun preamble/font-name-replace-size (font-name new-size)
-        (let ((parts (split-string font-name "-")))
-          (setcar (nthcdr 7 parts) (format "%d" new-size))
-          (mapconcat 'identity parts "-")))
-
-      (defun preamble/increment-default-font-height (delta)
-        "Adjust the default font height by DELTA on every frame.
-      Emacs will keep the pixel size of the frame approximately the
-      same.  DELTA should be a multiple of 10, to match the units used
-      by the :height face attribute."
-        (let* ((new-height (+ (face-attribute 'default :height) delta))
-               (new-point-height (/ new-height 10)))
-          (dolist (f (frame-list))
-            (with-selected-frame f
-              ;; Latest 'set-frame-font supports a "frames" arg, but
-              ;; we cater to Emacs 23 by looping instead.
-              (set-frame-font (preamble/font-name-replace-size
-                               (face-font 'default)
-                               new-point-height)
-                              t)))
-          (set-face-attribute 'default nil :height new-height)
-          (message "default font size is now %d" new-point-height)))
-
-      (defun preamble/increase-default-font-height ()
-        (interactive)
-        (preamble/increment-default-font-height 10))
-
-      (defun preamble/decrease-default-font-height ()
-        (interactive)
-        (preamble/increment-default-font-height -10))
-    #+END_SRC
-
-** Frame and Windows
-   Frames in Emacs are, basically, today's world concept of *Windows*, i.e. an Emacs' frame is in
-   naive terms the application window for Emacs. It can either be created inside Terminal by calling
-   =emacsclient -t=, or as a GUI application by calling =emacsclient -c=. The code given below
-   defines general settings for such a frame:
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "ensured that condensed file name is shown as frame's title..")
-     (setq frame-title-format
-       '((:eval (if (buffer-file-name)
-         (abbreviate-file-name (buffer-file-name)) "%b"))))
-
-     (preamble/checkpoint "ensured that Emacs' Preamble is started maximized..")
-     (custom-set-variables '(initial-frame-alist
-       (quote ((fullscreen . maximized)))))
-   #+END_SRC
-
-*** Hooks                                                             :hooks:
-    Since, I use both the GUI as well as the Terminal version of Emacs, depending upon the task at
-    hand, I have set up two different hooks that are binded to the =after-make-frame-functions=
-    hook. Furthermore, one of these hooks pertains to the GUI version, while the other one pertains
-    to the Terminal version of Emacs. These hooks are run when a new frame is created by Emacs.
-
-    #+BEGIN_SRC emacs-lisp
-      (defvar preamble/after-make-console-frame-hooks '()
-        "Hooks to run after creating a new TTY frame")
-      (defvar preamble/after-make-window-system-frame-hooks '()
-        "Hooks to run after creating a new window-system frame")
-
-      (defun preamble/run-after-make-frame-hooks (frame)
-        "Run configured hooks in response to the newly-created FRAME.
-      Selectively runs either `preamble/after-make-console-frame-hooks' or
-      `preamble/after-make-window-system-frame-hooks'"
-        (with-selected-frame frame
-          (run-hooks (if window-system
-                         'preamble/after-make-window-system-frame-hooks
-                       'preamble/after-make-console-frame-hooks))))
-
-      (add-hook 'after-make-frame-functions 'preamble/run-after-make-frame-hooks)
-    #+END_SRC
-
-*** Terminal Frames                                               :tty:hooks:
-    When making new Terminal, i.e. =tty= frames in Emacs, I want to ensure that I am able to use
-    mouse there, as well as paste by clicking mouse middle button.
-
-    #+BEGIN_SRC emacs-lisp
-      (add-hook 'preamble/after-make-console-frame-hooks
-        (lambda ()
-          (preamble/checkpoint "enabled mouse support in terminal session..")
-          (xterm-mouse-mode 1)
-          (when (fboundp 'mwheel-install) (mwheel-install))))
-    #+END_SRC
-
-*** GUI Frames                                                          :gui:
-    When making new GUI frames in Emacs, I want to disable certain GUI features, as well as add some
-    customizations pertaining to the Emacs GUI.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "suppressed some GUI features, I really hated..")
-      (setq use-file-dialog 'nil) ; use mini-buffer for file dialogs
-      (setq use-dialog-box  'nil) ; use mini-buffer for everythin' else..
-      (eval '(setq inhibit-startup-echo-area-message "nikhgupta"))
-
-      ;; show an indicator in left fringe for lines not in buffer
-      (setq indicate-empty-lines t)
-    #+END_SRC
-
-*** Windows                                                   :modes:package:
-    Switching windows, when more than 2 of them are open, with =C-x o= is a real pain in the fingers
-    and eyes, therefore, I make use of the really nice [[http://github.com/dimitri/switch-window][switch-window]] package, as well as the
-    =winner-mode= built-in Emacs. Winner Mode allows us to /undo/ (and /redo/) changes in the window
-    configuration with the key commands =C-c left=, and =C-c right= (which, is pretty neat!)
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "activated Winner Mode..")
-      (when (fboundp 'winner-mode) (winner-mode 1))
-
-      (preamble/checkpoint "configured `switch-window' package..")
-      (preamble/require-package 'switch-window)
-      (require 'switch-window)
-
-      ;; we must bind the "C-x o" key appropriately, now.
-      (setq switch-window-shortcut-style 'quail)
-    #+END_SRC
-
-    Define a really handy function to quickly split the current window to open the most recent
-    buffer.
-    #+BEGIN_SRC emacs-lisp
-      ;; Borrowed from http://postmomentum.ch/blog/201304/blog-on-emacs
-      (defun preamble/split-window()
-        "Split the window to see the most recent buffer in the other window.
-      Call a second time to restore the original window configuration."
-        (interactive)
-        (if (eq last-command 'preamble/split-window)
-            (progn
-              (jump-to-register :preamble/split-window)
-              (setq this-command 'preamble/unsplit-window))
-          (window-configuration-to-register :preamble/split-window)
-          (switch-to-buffer-other-window nil)))
-    #+END_SRC
+    ;; setup a default theme
+    (setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
+    (preamble/checkpoint "")
+  #+END_SRC
 
 * Modules
 
@@ -919,60 +688,22 @@
    #+BEGIN_SRC emacs-lisp
      (preamble/require-packages '(regex-tool))
    #+END_SRC
-* Version Management
+** Version Management
   Version management is the heart of my projects, in particular, [[http://git-scm.com/][git]]. This section defines various
   settings so as to allow me to version control my projects from within Emacs' Preamble.
-
-  Enable some packages that will be required for such configuration.
   #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "enabled version management inside Emacs")
-    (preamble/require-packages '(
-      magit                  ;; awesome git interface inside Emacs
-      git-blame              ;; emacs frontend for `git-blame' tool
-      gitignore-mode         ;; major mode for gitignore
-      gitconfig-mode         ;; major mode for gitconfig
-      git-commit-mode        ;; major mode for git commit
-      git-rebase-mode        ;; major mode for git rebase
-      git-messenger          ;; display why a line was changed as per git commits
-      git-gutter-fringe      ;; display git status of lines in gutter
-      yagist                 ;; gist management
-      github-browse-file     ;; view the file we're editing in Github
-      bug-reference-github   ;; Automatically set bug-reference-url-format and enable
-                             ;; bug-reference-prog-mode buffers from Github repositories.
-    ))
-
-    ;; activate `bug-reference-github' in programming mode
-    (after 'bug-reference-github
-      (add-hook 'prog-mode-hook 'bug-reference-prog-mode))
-
+    (preamble/org-babel-load-file "modules/git.org")
+    (preamble/checkpoint "added git for version management")
   #+END_SRC
 
-  Now, all I need is to setup [[https://github.com/magit/magit][magit]] as I intend it to perform inside my workflow.
-   #+BEGIN_SRC emacs-lisp
-     (setq-default
-      magit-save-some-buffers nil
-      magit-process-popup-time 10
-      magit-diff-refine-hunk t
-      magit-completing-read-function 'magit-ido-completing-read)
-
-     (after 'magit
-       ;; don't let magit-status mess up window configurations
-       ;; http://whattheemacsd.com/setup-magit.el-01.html
-       (defadvice magit-status (around magit-fullscreen activate)
-         (window-configuration-to-register :magit-fullscreen)
-         ad-do-it
-         (delete-other-windows))
-
-       (defadvice magit-quit-window (around magit-restore-screen activate)
-         ad-do-it
-         (jump-to-register :magit-fullscreen)))
-
-     ;;; when we start working on git-backed files, use git-wip if available
-     (after 'vc-git
-       (global-magit-wip-save-mode)
-       (diminish 'magit-wip-save-mode))
-   #+END_SRC
-
+** Org Mode
+  Org Mode configuration is loaded from another =org-mode= [[file:./modules/org-mode.org][file]], which basically sets up required
+  packages, functions, hooks, configuration, etc. for =org-mode=. This way, I am able to keep
+  configuration of =org-mode= into a separate city of its own.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/org-babel-load-file "modules/org-mode")
+    (preamble/checkpoint "configured =org-mode= to behave nicely with us")
+  #+END_SRC
 * Editing
 ** Related Modules
   Given below are some of the modules that are required for a better editing experience. Most of
@@ -1158,13 +889,6 @@
          (indent-according-to-mode)))
     #+END_SRC
 
-* Org Mode
-  Org Mode configuration is loaded from another =org-mode= [[file:./modules/org-mode.org][file]], which basically sets up required
-  packages, functions, hooks, configuration, etc. for =org-mode=. This way, I am able to keep
-  configuration of =org-mode= into a separate city of its own.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/org-babel-load-file "modules/org-mode")
-  #+END_SRC
 * Programming
   This section contains various packages and their settings related to programming.
 ** Ruby Group

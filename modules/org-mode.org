@@ -1,33 +1,6 @@
 #+TITLE: Emacs' Preamble's Org Mode Configuration
 
-* Packages
-  I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
-  want to capture links from my Mac applications and add them to =org-mode=, as well as with
-  =iCal=. Moreover, I often require to put a file-system subtree inside my =org-mode=
-  documents. Therefore, I have defined the following additional packages for =org-mode=:
-
-  #+BEGIN_SRC emacs-lisp
-    (preamble/require-package 'org-fstree)
-    (when *is-mac*
-      (preamble/require-packages '(org-mac-link org-mac-iCal)))
-  #+END_SRC
-
-* Functions
-  #+BEGIN_SRC emacs-lisp
-    ;; show the clocked-in task - if any - in the header line
-    (defun preamble/show-org-clock-in-header-line ()
-      (setq-default header-line-format '((" " org-mode-line-string " "))))
-    (defun preamble/hide-org-clock-from-header-line ()
-      (setq-default header-line-format nil))
-  #+END_SRC
-
-* Hooks
-  #+BEGIN_SRC emacs-lisp
-    (add-hook 'org-clock-in-hook 'preamble/show-org-clock-in-header-line)
-    (add-hook 'org-clock-out-hook 'preamble/hide-org-clock-from-header-line)
-    (add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
-  #+END_SRC
-* Configuration
+* General
   I will, then, define some configuration for =org-mode= to behave nicely with me.
   #+BEGIN_SRC emacs-lisp
     (setq org-log-done t                       ; information to record when task moves to DONE state
@@ -75,13 +48,37 @@
     ;; removes clocked tasks with 0:00 duration
     (setq org-clock-out-remove-zero-time-clocks t)
   #+END_SRC
+
+* Packages
+  I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
+  want to capture links from my Mac applications and add them to =org-mode=, as well as with
+  =iCal=. Moreover, I often require to put a file-system subtree inside my =org-mode=
+  documents. Therefore, I have defined the following additional packages for =org-mode=:
+
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'org-fstree)
+    (when *is-mac*
+      (preamble/require-packages '(org-mac-link org-mac-iCal)))
+  #+END_SRC
+
+* Functions
+  #+BEGIN_SRC emacs-lisp
+    ;; show the clocked-in task - if any - in the header line
+    (defun preamble/show-org-clock-in-header-line ()
+      (setq-default header-line-format '((" " org-mode-line-string " "))))
+    (defun preamble/hide-org-clock-from-header-line ()
+      (setq-default header-line-format nil))
+  #+END_SRC
+
+* Hooks
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'org-clock-in-hook 'preamble/show-org-clock-in-header-line)
+    (add-hook 'org-clock-out-hook 'preamble/hide-org-clock-from-header-line)
+    (add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
+  #+END_SRC
 * Mode Level Key Bindings
   #+BEGIN_SRC emacs-lisp
     (after 'org-clock
       (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
       (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
-  #+END_SRC
-* Epilogue
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "configured =org-mode= to behave nicely with us")
   #+END_SRC

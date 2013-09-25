@@ -1,0 +1,27 @@
+#+TITLE: Emacs' Preamble's Package Configuration
+
+* On Demand Installation
+   I have added some convenient functions to install a package, only when it is explicitely told to
+   do so, which means that instead of writing a list of our packages (that need to be installed and
+   checked on every run of Emacs) in this section, we are now able to =install= them right along
+   with the rest of their configuration. This is called *On Demand Installation* of the packages.
+
+   #+BEGIN_SRC emacs-lisp
+     ;; on-demand installation of a package
+     (defun preamble/require-package (package &optional min-version no-refresh)
+       "Install given PACKAGE, optionally requiring MIN-VERSION.
+       If NO-REFRESH is non-nil, the available package lists will not be
+       re-downloaded in order to locate PACKAGE."
+       (if (package-installed-p package min-version)
+           t
+         (if (or (assoc package package-archive-contents) no-refresh)
+             (package-install package)
+           (progn
+             (package-refresh-contents)
+             (preamble/require-package package min-version t)))))
+
+     ;; on-demand installation of multiple packages
+     (defun preamble/require-packages(packages-list)
+       "Install packages from a given PACKAGES-LIST, using `preamble-require-package' function."
+       (mapc #'preamble/require-package packages-list))
+   #+END_SRC

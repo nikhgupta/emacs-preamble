@@ -1,0 +1,54 @@
+#+TITLE: Emacs' Preamble's Theme Configuration
+
+* Installed Themes
+  I, only, prefer a handful collection of themes, carefully, selected by myself. Themes, in my
+  opinion, are an important aspect of my workflow, since I am unable to work on anything that looks
+  rusty or dull.
+
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-packages '( zenburn-theme
+                                  noctilux-theme
+                                  sublime-themes
+                                  color-theme-sanityinc-tomorrow
+                                  color-theme-sanityinc-solarized))
+  #+END_SRC
+
+* Quick Access
+  For some themes, notably, =solarized-light=, =solarized-dark= and =tomorrow-night-eighties=, I
+  would setup some quick =interactive= commands (that can be run with =M-x=), so that I can,
+  quickly, switch between them. However, this does not always work in a =dwim= (do what i mean)
+  style, since I, also, need to change my =iTerm2= colors along with the theme.
+
+  #+BEGIN_SRC emacs-lisp
+     ;; quick access for some themes, I use often.
+    (defun light() "Activate a light color theme."
+      (interactive) (color-theme-sanityinc-solarized-light))
+    (defun dark() "Activate a dark color theme."
+      (interactive) (color-theme-sanityinc-solarized-dark))
+    (defun eighties() "Activate an 80's theme."
+      (interactive) (color-theme-sanityinc-tomorrow-eighties))
+  #+END_SRC
+
+* Functions
+  I have defined a function to re-apply my theme, when all the initialization has taken place, so as
+  to avoid any glitches/color-mismatches that have occurred due to the same. Moreover, this
+  function, also, ensures that the theme will be applied even if it has not been customized.
+  #+BEGIN_SRC emacs-lisp
+    (defun preamble/reapply-themes ()
+      "Forcibly load the themes listed in `custom-enabled-themes'."
+      (dolist (theme custom-enabled-themes)
+        (unless (custom-theme-p theme) (load-theme theme)))
+      (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+
+    ;; lets run the above function after Emacs has loaded this configuration.
+    (add-hook 'after-init-hook 'preamble/reapply-themes)
+  #+END_SRC
+
+  I have, also, defined a function to adjust the opacity of the current frame in Emacs.
+  #+BEGIN_SRC emacs-lisp
+    (defun preamble/adjust-opacity (frame incr)
+      (let* ((oldalpha (or (frame-parameter frame 'alpha) 100))
+             (newalpha (+ incr oldalpha)))
+        (when (and (<= frame-alpha-lower-limit newalpha) (>= 100 newalpha))
+          (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
+  #+END_SRC
