@@ -1,0 +1,28 @@
+#+TITLE: Emacs' Preamble's Dired Mode Configuration
+
+* Dired Plus
+
+  #+BEGIN_QUOTE
+    [[http://www.emacswiki.org/emacs/DiredPlus][Dired+]] is /awesome/, well.. it does take some getting used to.
+  #+END_QUOTE
+
+  [[http://www.emacswiki.org/emacs/DiredPlus][Dired+]] extends functionalities provided by standard GNU Emacs libraries
+  =dired.el=, =dired-aux.el=, and =dired-x.el=. The standard functions are all
+  available, plus many more.
+
+  *Dired+* enhances our file-exploring experience.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'dired+)
+
+    (setq diredp-hide-details-initially-flag nil)
+    (setq global-dired-hide-details-mode -1)
+
+    (after 'dired
+      (require 'dired+)
+      (setq dired-recursive-deletes 'top))
+  #+END_SRC
+
+* Key Bindings
+  #+BEGIN_SRC emacs-lisp
+    (define-key dired-mode-map [mouse-2] 'dired-find-file)
+  #+END_SRC

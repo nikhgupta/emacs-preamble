@@ -72,6 +72,6 @@ Quickly load Emacs' Preamble's configuration file named FILENAME."
 (preamble/org-babel-load-file "preamble")
 
 ;; greet user and display load time of Emacs' Preamble
-(preamble/eval-after-init (run-at-time 2 nil 'preamble/greet-user))
+(preamble/eval-after-init (run-at-time 2 nil 'preamble/greet-user-with-load-time))
 
 ;;; init.el ends here

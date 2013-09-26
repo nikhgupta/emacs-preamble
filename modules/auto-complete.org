@@ -1,0 +1,81 @@
+#+TITLE: Emacs' Preamble's AutoComplete Configuration
+
+[[http://www.emacswiki.org/emacs/AutoComplete][AutoComplete]] is an excellent auto-completion feature with popup menu for quick selection. It can
+complete words at the point from a number of different sources, and includes fuzzy-matching,
+in-built.
+
+* Activation
+  I have, first, setup *AutoComplete* as the default completion function, by hooking it inside
+  =auto-complete-mode=.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'auto-complete)
+    (require 'auto-complete-config)
+
+    (defun preamble/auto-complete-at-point ()
+      "Use AutoComplete to provide completion at the current point."
+      (when (and (not (minibufferp))
+                 (fboundp 'auto-complete-mode)
+                 auto-complete-mode)
+        (auto-complete)))
+
+    ;; hook AC into completion-at-point
+    (defun preamble/set-auto-complete-as-completion-at-point-function ()
+      "Set AutoComplete as Completion-At-Point function."
+      (add-to-list 'completion-at-point-functions 'preamble/auto-complete-at-point))
+
+    (add-hook 'auto-complete-mode-hook
+      'preamble/set-auto-complete-as-completion-at-point-function)
+
+    ;; use Emacs' built-in TAB completion hooks to trigger AC (Emacs >= 23.2)
+    (setq tab-always-indent 'complete)  ;; use 't when auto-complete is disabled
+  #+END_SRC
+
+* Behaviour Configuration
+  Next, I want to customize the behavior of *AutoComplete* to match my workflow, and have setup
+  =TAB= key to trigger completions.
+  #+BEGIN_SRC emacs-lisp
+    (after 'auto-complete
+      (global-auto-complete-mode t)       ; enable auto-complete mode globally
+      (setq ac-expand-on-auto-complete t) ; auto-complete whole match on TAB
+      (setq ac-auto-start 3)              ; enable auto-complete after 3 chars
+      (setq ac-dwim nil)                  ; to get pop-ups with docs even if a
+                                          ; word is uniquely completed
+
+      (add-to-list 'completion-styles 'initials t))
+  #+END_SRC
+
+* Exceptions
+  I, in my sane status of mind, prefer my editor to be really responsive. AutoComplete can make it
+  really slow, when very large buffers are open, as it tries to use all words in the large buffer
+  for its completion list. Therefore, I have excluded very large buffers from interfering with
+  AutoComplete.
+  #+BEGIN_SRC emacs-lisp
+    (defun preamble/dabbrev-friend-buffer (other-buffer)
+      "Set OTHER-BUFFER as known to `dabbrev' only if its smaller than a given size."
+      (< (buffer-size other-buffer) (* 1 1024 1024)))
+
+    (after 'auto-complete
+      (setq dabbrev-friend-buffer-function 'preamble/dabbrev-friend-buffer))
+  #+END_SRC
+
+* Completion Sources
+  Finally, define some sources for AutoComplete, and setup some modes to use AutoComplete, by
+  default.
+  #+BEGIN_SRC emacs-lisp
+    (after 'auto-complete
+      ;; define sources for auto-completion
+      (set-default 'ac-sources '( ac-source-imenu ac-source-dictionary
+                                  ac-source-words-in-buffer
+                                  ac-source-words-in-same-mode-buffers
+                                  ac-source-words-in-all-buffer))
+
+      ;; add various modes to auto-complete
+      (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode
+                      text-mode haml-mode ruby-mode sass-mode yaml-mode
+                      csv-mode espresso-mode haskell-mode html-mode
+                      nxml-mode sh-mode smarty-mode clojure-mode
+                      lisp-mode textile-mode markdown-mode tuareg-mode
+                      js3-mode css-mode less-css-mode sql-mode
+                      ielm-mode))
+        (add-to-list 'ac-modes mode)))
+  #+END_SRC

@@ -1,0 +1,68 @@
+#+TITLE: Emacs' Preamble's iBuffer Configuration
+
+* Buffer Groups
+  =ibuffer= displays buffers in a flat list, and somehow, that looks really ugly
+  to me. I would prefer my buffers to be grouped according to my projects, so
+  that I can quickly see all the buffers belonging to the current project, I am
+  working on.
+
+  [[https://github.com/purcell/ibuffer-vc][ibuffer-vc]] adds functionality to Emacs' =ibuffer-mode= for grouping buffers by
+  their parent VC (version-control) root directory, and for displaying and/or
+  sorting by the VC status of listed files. Therefore, I can use it to group my
+  buffers according to the path of their git repository. /Neat & clean/!
+
+  When =ibuffer-vc= can not find an appropriate git repository, I have told it
+  to group those buffers according to the filename or process owning that
+  buffer. Therefore, all Emacs fundamental buffers, etc. will be grouped
+  together, as well.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'ibuffer-vc)
+    (after 'ibuffer (require 'ibuffer-vc))
+
+    ;; define sorting methods to opt for.
+    (defun preamble/ibuffer-set-up-preferred-filters ()
+      "Sort ibuffers according to Version Control or Filename or Process."
+      (ibuffer-vc-set-filter-groups-by-vc-root)
+      (unless (eq ibuffer-sorting-mode 'filename/process)
+        (ibuffer-do-sort-by-filename/process)))
+
+    ;; hook the above function into appropriate place
+    (add-hook 'ibuffer-hook 'preamble/ibuffer-set-up-preferred-filters)
+  #+END_SRC
+
+* Customization
+  The default column layout of =ibuffer= command (with =ibuffer-vc= enabled) is
+  a bit non-resonating with what my eyes want to see, and therefore, lets change
+  the configuration of =ibuffer= to suit my pair of eyes.
+
+  I want to see human-readable size of my files, instead of the default
+  numerical size in bytes.
+  #+BEGIN_SRC emacs-lisp
+    (after 'ibuffer
+      ;; use human readable size column instead
+      (define-ibuffer-column size-h
+        (:name "Size" :inline t)
+        (cond
+         ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+         ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+         (t (format "%8d" (buffer-size))))))
+  #+END_SRC
+
+  Moreover, I would change the column layout structure to show repository status
+  of the given buffer.
+  #+BEGIN_SRC emacs-lisp
+    ;; modify the default ibuffer-formats
+    (after 'ibuffer
+      (setq ibuffer-filter-group-name-face 'font-lock-doc-face)
+      (setq ibuffer-formats
+            '((mark modified read-only vc-status-mini " "
+                    (name 18 18 :left :elide)
+                    " "
+                    (size-h 9 -1 :right)
+                    " "
+                    (mode 16 16 :left :elide)
+                    " "
+                    (vc-status 16 16 :left)
+                    " "
+                    filename-and-process))))
+    #+END_SRC

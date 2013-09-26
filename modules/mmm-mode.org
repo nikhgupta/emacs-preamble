@@ -1,0 +1,55 @@
+#+TITLE: Emacs' Preamble's Multiple Major Modes Configuration
+
+[[https://github.com/purcell/mmm-mode][Multiple Major Modes]] is a minor mode for Emacs that allows multiple major modes
+to coexist in one buffer. It is well-suited to editing:
+  - Preprocessed code, e.g. server-side Ruby, Perl or PHP embedded in HTML
+  - Code generating code, such as HTML output by CGI scripts
+  - Embedded code, such as Javascript in HTML
+  - Literate programming: code interspersed with documentation, e.g. Noweb
+
+* Activation
+  I only want to enable =mmm-mode=, when it encounters a particular file-class
+  that has been defined to use the =mmm-mode= explicitely. Therefore, we set the
+  value of =mmm-global-mode= to be something else than =true= or =nil=.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'mmm-mode)
+    (require 'mmm-auto)
+    (setq mmm-global-mode 'buffers-with-submode-classes)
+    (setq mmm-submode-decoration-level 2)
+    (preamble/checkpoint "activated =multiple-major-modes= module..")
+  #+END_SRC
+
+* CSS embedded in HTML
+  I can use the =mmm-mode= to highlight =CSS= inside =HTML= documents, which is
+  the sheer beauty of this package.
+  #+BEGIN_SRC emacs-lisp
+    (after 'mmm-vars
+      (mmm-add-group
+       'html-css
+       '((css-cdata
+          :submode css-mode
+          :face mmm-code-submode-face
+          :front "<style[^>]*>[ \t\n]*\\(//\\)?<!\\[CDATA\\[[ \t]*\n?"
+          :back "[ \t]*\\(//\\)?]]>[ \t\n]*</style>"
+          :insert ((?j js-tag nil @ "<style type=\"text/css\">"
+                       @ "\n" _ "\n" @ "</script>" @)))
+         (css
+          :submode css-mode
+          :face mmm-code-submode-face
+          :front "<style[^>]*>[ \t]*\n?"
+          :back "[ \t]*</style>"
+          :insert ((?j js-tag nil @ "<style type=\"text/css\">"
+                       @ "\n" _ "\n" @ "</style>" @)))
+         (css-inline
+          :submode css-mode
+          :face mmm-code-submode-face
+          :front "style=\""
+          :back "\""))))
+  #+END_SRC
+
+* XML embedded in HTML
+  #+BEGIN_SRC emacs-lisp
+    (after 'mmm-vars
+      (dolist (mode (list 'html-mode 'nxml-mode))
+        (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
+    #+END_SRC

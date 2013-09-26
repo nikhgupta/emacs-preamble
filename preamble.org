@@ -13,106 +13,118 @@
 #+HTML_HEAD: <script type="text/javascript" src="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/highlight.pack.js"></script>
 
 * Motivation
-  I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of the awesome [[http://orgmode.org][org-mode]]
-  functionality, it provides. Definitely, I have been impressed. People were right /for once/! I
-  have, only, been using Emacs for a couple of weeks, and I'm already in love with it, primarily,
-  because:
+  I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of the
+  awesome [[http://orgmode.org][org-mode]] functionality, it provides. Definitely, I have been
+  impressed. People were right /for once/! I have, only, been using Emacs for a
+  couple of weeks, and I'm already in love with it, primarily, because:
   - it has the neatest organizer in this world: the =org-mode=.
   - it uses =elisp= to programmatically change itself.
 
-  So, soon I was dwelling inside the dark world of getting my new editor resonate with myself. I
-  tried several starter packages, /viz./:
+  So, soon I was dwelling inside the dark world of getting my new editor
+  resonate with myself. I tried several starter packages, /viz./:
   - [[http://github.com/overtone/emacs-live][Emacs Live]]
   - [[http://github.com/bbatsov/prelude][Emacs Prelude]]
   - [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
   - [[http://github.com/purcell/emacs.d][@purcell's emacs configuration]]
 
-  And, I really enjoyed my couple of days of flirting with these chicks, and they were really nice
-  to me, but somehow, they were not my type. I would, definitely, enjoying dating someone else'
-  girl, but the joy, the excitement, and the wilderness someone made for you, from head to toe, is
-  an entirely different matter altogether. You would kill for such beauty.
+  And, I really enjoyed my couple of days of flirting with these chicks, and
+  they were really nice to me, but somehow, they were not my type. I would,
+  definitely, enjoying dating someone else' girl, but the joy, the excitement,
+  and the wilderness someone made for you, from head to toe, is an entirely
+  different matter altogether. You would kill for such beauty.
 
   #+BEGIN_QUOTE
-  My editor felt like someone else' baby in my hands - it was adorable, and cute and what not, but
-  it wasn't bringing out the wickedness that resides in me. :)
+  My editor felt like someone else' baby in my hands - it was adorable, and cute
+  and what not, but it wasn't bringing out the wickedness that resides in me. :)
   #+END_QUOTE
 
-  So, I started working on my own take at Emacs' configuration, finally, and proudly called it
-  [[http://github.com/nikhgupta/preamble][Emacs' Preamble]] - made it, remade it, and remade it again and again and each time, I switched the
-  way it represented itself. I, initially, started working on it along the lines of =Prelude=, and
-  then, along the lines of =@purcell's emacs.d=, but I have always like well documnted code. And,
-  since, I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], I wanted my own configuration to be
-  based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
+  So, I started working on my own take at Emacs' configuration, finally, and
+  proudly called it [[http://github.com/nikhgupta/preamble][Emacs' Preamble]] - made it, remade it, and remade it again
+  and again and each time, I switched the way it represented itself. I,
+  initially, started working on it along the lines of =Prelude=, and then, along
+  the lines of =@purcell's emacs.d=, but I have always like well documnted
+  code. And, since, I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], I
+  wanted my own configuration to be based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
 
 * Requirements
-  I am really unsure about the requirements, but I'm using this configuration on my *MacBook Pro
-  '13* running on *Mac OSX 10.8.2 (Mountain Lion)*, *GNU Emacs 24.1.1*, and *org-mode v8.2*.
-  (last updated on [2013-10-21 Mon])
+  I am really unsure about the requirements, but I'm using this configuration on
+  my *MacBook Pro '13* running on *Mac OSX 10.8.2 (Mountain Lion)*, *GNU Emacs
+  24.1.1*, and *org-mode v8.2*.  (last updated on [2013-10-21 Mon])
 
   #+BEGIN_QUOTE
-  If you intend to use this configuration for yourself, then /hopefully/, the same should work
-  without giving you any headaches, if you are on a *Mac OSX*. Otherwise, feel free to pull your
-  hair, but don't even dare come and blame me for your /hair losses/, later!
+  If you intend to use this configuration for yourself, then /hopefully/, the
+  same should work without giving you any headaches, if you are on a *Mac
+  OSX*. Otherwise, feel free to pull your hair, but don't even dare come and
+  blame me for your /hair losses/, later!
 
   *If I were you, I would experiment a lot, until I find my kinda' girl!*
   #+END_QUOTE
 
 * Philosophy
-  =org-babel= is /awesome/. It empowers Org-mode to execute source code within Org-mode
-  documents. It is built upon the principles of [[http://en.wikipedia.org/wiki/Literate_programming][Literate Programming]], and can embed multiple
-  languages within a single document.
+  =org-babel= is /awesome/. It empowers Org-mode to execute source code within
+  Org-mode documents. It is built upon the principles of [[http://en.wikipedia.org/wiki/Literate_programming][Literate Programming]],
+  and can embed multiple languages within a single document.
 
-  Extending upon the same, the current Org-mode file documents my configuration for Emacs, sanely
-  named as *Emacs' Preamble*. The source code inside =elisp= source blocks is /tangled/ by Babel,
-  and is then loaded as configuration via =org-babel-load-file= function.
+  Extending upon the same, the current Org-mode file documents my configuration
+  for Emacs, sanely named as *Emacs' Preamble*. The source code inside =elisp=
+  source blocks is /tangled/ by Babel, and is then loaded as configuration via
+  =org-babel-load-file= function.
 
-  Sometimes, you will find references to =preamble/org-babel-load-file= function within source
-  blocks in this file, which (among other things) tells =org-babel= to include/load another
-  file. The rationality behind this being that this configuration in its entirety reached 2000+
-  lines (o'course attributable to my frequent explanations on why I did a particular thing that
-  way), and therefore, I decided to divide up *Emacs' Preamble* into smaller chunks.
+  Sometimes, you will find references to =preamble/org-babel-load-file= function
+  within source blocks in this file, which (among other things) tells
+  =org-babel= to include/load another file. The rationality behind this being
+  that this configuration in its entirety reached 2000+ lines (o'course
+  attributable to my frequent explanations on why I did a particular thing that
+  way), and therefore, I decided to divide up *Emacs' Preamble* into smaller
+  chunks.
 
-  This configuration for Emacs, i.e. Emacs' Preamble is heavily inspired form (in order):
+  This configuration for Emacs, i.e. Emacs' Preamble is heavily inspired form
+  (in order):
   - [[https://github.com/purcell/emacs.d][@purcell's emacs.d]]
 
 * Initialization
   [[file:init.el][It all started with a big-bang!]]
   (oh, yes! I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].)
 
-  Emacs loads up =init.el= (linked above) to read the configuration, which acts as an entry point to
-  this =org-mode= file. Apart from this, =init.el= checks to see whether the Org-mode version is
-  above =8.0=. If not, it upgrades Org-mode by installing it via Emacs' Package Manager, and then
-  tangles and loads =elisp= source codes inside the current file by using a smart variation of
-  =org-babel-load-file= function, namely =preamble/org-babel-load-file=.
+  Emacs loads up =init.el= (linked above) to read the configuration, which acts
+  as an entry point to this =org-mode= file. Apart from this, =init.el= checks
+  to see whether the Org-mode version is above =8.0=. If not, it upgrades
+  Org-mode by installing it via Emacs' Package Manager, and then tangles and
+  loads =elisp= source codes inside the current file by using a smart variation
+  of =org-babel-load-file= function, namely =preamble/org-babel-load-file=.
 
-  =preamble/org-babel-load-file= function makes sure that the file loading is fast, by only tangling
-  the =.org= files when the configuration has changed from last known state. It does so by
-  maintaining MD5 hash of the various =.org= files.
+  =preamble/org-babel-load-file= function makes sure that the file loading is
+  fast, by only tangling the =.org= files when the configuration has changed
+  from last known state. It does so by maintaining MD5 hash of the various
+  =.org= files.
 
-  At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs Server]] running on my machine, when it boots up (I, later, plan to
-  run it on my VPS, and connect remotely), and use the =emacsclient= commands to connect to it. This
-  way, this configuration is loaded/tangled only once, providing super-fast experience for my
-  /use-cases/.
+  At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs Server]] running on my machine, when it boots
+  up (I, later, plan to run it on my VPS, and connect remotely), and use the
+  =emacsclient= commands to connect to it. This way, this configuration is
+  loaded/tangled only once, providing super-fast experience for my /use-cases/.
 
 ** TODO tangling should happen only when configuration changes
-   I'm planning to add this feature to =init.el=, so as to increase load times even when starting
-   the server. A suitable working for this can be to keep MD5 checksums for all =*.org= file in this
-   directory and match them up when starting the server. If the checksums differ, we use the
-   =org-babel-load-file= function to load the =.org= file, otherwise, we simply load the
-   (un)compiled =.el= or =.elc= file. This function, named =preamble/org-babel-load-file= will need
-   to be defined in =init.el=, and in a manner, would overload the =org-babel-load-file= function.
+   I'm planning to add this feature to =init.el=, so as to increase load times
+   even when starting the server. A suitable working for this can be to keep MD5
+   checksums for all =*.org= file in this directory and match them up when
+   starting the server. If the checksums differ, we use the
+   =org-babel-load-file= function to load the =.org= file, otherwise, we simply
+   load the (un)compiled =.el= or =.elc= file. This function, named
+   =preamble/org-babel-load-file= will need to be defined in =init.el=, and in a
+   manner, would overload the =org-babel-load-file= function.
 
 ** TODO remove the following settings, when configuration is complete.
    #+BEGIN_SRC emacs-lisp
-     (auto-fill-mode 't)
+     (auto-fill-mode)
      (global-linum-mode 1)
      (xterm-mouse-mode 1)
-     (setq-default fill-column 100)
+     (setq-default fill-column 80)
    #+END_SRC
 ** Compatibility
-   Since, this configuration uses features new to =Emacs v24=, and since I don't have time enough to
-   work out a /compatible/ configuration for older version of Emacs (and not even steal them),
-   display a friendly warning, if the Emacs version is below =v24=.
+   Since, this configuration uses features new to =Emacs v24=, and since I don't
+   have time enough to work out a /compatible/ configuration for older version
+   of Emacs (and not even steal them), display a friendly warning, if the Emacs
+   version is below =v24=.
    #+BEGIN_SRC emacs-lisp
      ;; display an error if emacs-version is less than 24.
      (when (version< emacs-version "24")
@@ -120,9 +132,10 @@
    #+END_SRC
 
 ** Avoid Screen Flickers
-   Now that, I have =Emacs v24= with me, I would like to first disable some of the GUI features
-   early in the startup. These GUI features can cause screen to flicker otherwise, as they are
-   loaded and then unloaded, making them appear for a tiny fraction of time.
+   Now that, I have =Emacs v24= with me, I would like to first disable some of
+   the GUI features early in the startup. These GUI features can cause screen to
+   flicker otherwise, as they are loaded and then unloaded, making them appear
+   for a tiny fraction of time.
    #+BEGIN_SRC emacs-lisp
      (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))     ; disable menu-bar
      (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))     ; disable tool-bar
@@ -131,19 +144,20 @@
    #+END_SRC
 
 ** Debugging
-   When working with such a configuration as this one, I often tend to pull my hair out.. This
-   section helps me track down possible causes of such erratic behaviour of mine and be more
-   insane, instead. Also, I hate those pesky plugins which make my Emacs' Preamble far too
-   slow. This section, further, helps me benchmark my configuration for the exact same purpose.
+   When working with such a configuration as this one, I often tend to pull my
+   hair out.. This section helps me track down possible causes of such erratic
+   behaviour of mine and be more insane, instead. Also, I hate those pesky
+   plugins which make my Emacs' Preamble far too slow. This section, further,
+   helps me benchmark my configuration for the exact same purpose.
    #+BEGIN_SRC emacs-lisp
      (setq debug-on-error 'nil)  ; set this to 'nil to disable this section
      (preamble/org-babel-load-file "core/debugger")
    #+END_SRC
 
 ** Core Functionality
-   This section, basically, requires another =org-babel= [[file:./preamble/preamble-core.org][file]], which in turn, contains code that
-   defines some variables, constants, macros, functions, etc. which are core to the functionality of
-   Emacs' Preamble.
+   This section, basically, requires another =org-babel= [[file:./preamble/preamble-core.org][file]], which in turn,
+   contains code that defines some variables, constants, macros, functions,
+   etc. which are core to the functionality of Emacs' Preamble.
    #+BEGIN_SRC emacs-lisp
      (preamble/org-babel-load-file "core/basics")
      (preamble/checkpoint "added core functionality to myself.")
@@ -152,10 +166,11 @@
    #+END_SRC
 
 ** Custom File
-   Emacs uses a /custom file/ to store changes done via [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Emacs' Easy Customization]] method. We are,
-   simply, setting it up below, so that all the custom configuration exists in a separate file,
-   which will not be under version control, and hence, customizable freely by anyone using Emacs'
-   Preamble.
+   Emacs uses a /custom file/ to store changes done via a really nice and
+   friendly [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Emacs' Easy Customization]] method. We are, simply, setting it up
+   below, so that all the custom configuration exists in a separate file, which
+   will not be under version control, and hence, customizable freely by anyone
+   using Emacs' Preamble.
    #+BEGIN_SRC emacs-lisp
      (setq custom-file (expand-file-name "custom.el" preamble-dir))
      (load custom-file)
@@ -163,14 +178,16 @@
    #+END_SRC
 
 * Packages
-  OK, so I am using the default [[http://www.emacswiki.org/emacs/ELPA][Package Manager]] that is shipped with Emacs 24 to load my packages
-  (anything else, does not make sense, anyways). However, I must, first, tell it to use more sources
-  to search for a required package (a.k.a. =yum=):
+  OK, so I am using the default [[http://www.emacswiki.org/emacs/ELPA][Package Manager]] that is shipped with Emacs 24 to
+  load my packages (anything else, does not make sense, anyways). However, I
+  must, first, tell it to use more sources to search for a required package
+  (a.k.a. =yum=):
 
    I am using [[http://www.emacswiki.org/emacs-en/Marmalade][Marmalade]], [[http://www.emacswiki.org/emacs-en/MELPA][MELPA]], & [[http://orgmode.org/elpa.html][Org ELPA]] repositories, for my purposes.
 
-   Moreover, [[file:./core/packages.org][./core/packages.org]] defines some functions that are really useful, esp. the
-   =preamble/require-package= function, which executes an =on-demand installation= of a package.
+   Moreover, [[file:./core/packages.org][./core/packages.org]] defines some functions that are really useful,
+   esp. the =preamble/require-package= function, which executes an =on-demand
+   installation= of a package.
    #+BEGIN_SRC emacs-lisp
      (require 'package)
      (preamble/org-babel-load-file "core/packages")
@@ -190,10 +207,10 @@
   --- [[http://github.com/nikhgupta][Nikhil Gupta]]
   #+END_QUOTE
 
-  This is true, since I work for almost 12-16 hours on my computer, with almost 70% time either in
-  my Shell or in my Editor. And, hence, these two things need to be so adorable, and so damn
-  impressive, that I would never want to leave them alone.
-
+  This is true, since I work for almost 12-16 hours on my computer, with almost
+  70% time either in my Shell or in my Editor. And, hence, these two things need
+  to be so adorable, and so damn impressive, that I would never want to leave
+  them alone.
   #+BEGIN_SRC emacs-lisp
     (preamble/org-babel-load-file "core/themes")
     (preamble/org-babel-load-file "core/appearance")
@@ -205,151 +222,82 @@
 
 * Modules
 
-  Modules are, basically, inventions of my own - o'course, nothin' can be really original these
-  days - and, define small pieces of related code on a special behaviour, mode or feature of
-  Emacs. Some of the *modules* may require a package, other ones may require more than one packages
-  that group together to provide a unique combination of functionality, while others may just
-  enhance configuration for some built-in Emacs' features.
+  Modules are, basically, inventions of my own - o'course, nothin' can be really
+  original these days - and, define small pieces of related code on a special
+  behaviour, mode or feature of Emacs. Some of the *modules* may require a
+  package, other ones may require more than one packages that group together to
+  provide a unique combination of functionality, while others may just enhance
+  configuration for some built-in Emacs' features.
 
   #+BEGIN_QUOTE
-  Moreover, modules are also divided according to their parent feature set, i.e. to say whether they
-  are used for =programming= or for =editing= purposes, etc. Such modules can be found in the
-  respective sections under the heading: *Related Modules*.
+  Moreover, modules are also divided according to their parent feature set,
+  i.e. to say whether they are used for =programming= or for =editing= purposes,
+  etc. Such modules can be found in the respective sections under the heading:
+  *Related Modules*.
   #+END_QUOTE
 
-** New Features                                                                            :package:
-   The following modules add some new feature to Emacs' Preamble, which are non-existent in the
-   default GNU Emacs.
+** Org Mode
+  Org Mode configuration is loaded from another =org-mode= [[file:./modules/org-mode.org][file]], which basically sets up required
+  packages, functions, hooks, configuration, etc. for =org-mode=. This way, I am able to keep
+  configuration of =org-mode= into a separate city of its own.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/org-babel-load-file "modules/org-mode")
+    (preamble/checkpoint "configured =org-mode= to behave nicely with us")
+  #+END_SRC
+** Version Management
+  Version management is the heart of my projects, in particular, [[http://git-scm.com/][git]]. This section defines various
+  settings so as to allow me to version control my projects from within Emacs' Preamble.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/org-babel-load-file "modules/git")
+    (preamble/checkpoint "added git for version management")
+  #+END_SRC
+** Completion
+   This section (i.e. =modules-group=) any feature that completes words or
+   abbrev in a buffer, including but not limited to text-completion,
+   code-completion, command completion, file-name completion, [[http://www.emacswiki.org/emacs/InteractivelyDoThings][ido-mode]], and
+   snippets. I'm using the really good [[http://www.emacswiki.org/emacs/AutoComplete][AutoComplete]] package, along with the
+   famous [[http://capitaomorte.github.io/yasnippet/][YASnippet]] package for this purpose.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/require-package 'smex)
+     (preamble/org-babel-load-file "modules/ido-mode")
+     (preamble/checkpoint "configured =ido-mode= for our usage")
+     (preamble/org-babel-load-file "modules/auto-complete")
+     (preamble/checkpoint "configured =auto-complete= module..")
+     (preamble/org-babel-load-file "modules/yasnippet")
+   #+END_SRC
+*** TODO configure and activate =yasnippet=** File Exploration
+** File Exploration
+   I was, really, in love with VIm's NerdTree plugin. It would allow me to
+   explore the file-system around the current file very easily. Nearly, the same
+   experience is provided by Emacs' [[http://www.emacswiki.org/emacs/Dired][Dired]] mode. So, this section deals with the
+   configuration of =dired-mode= alongwith similar packages that help me in easy
+   file exploring around the current file.
 
+   #+BEGIN_SRC emacs-lisp
+     (preamble/org-babel-load-file "modules/dired")
+     (preamble/checkpoint "configured Dired and DiredPlus..")
+   #+END_SRC
+
+** Project Handlers
+   This =modules-group= deals with features that enable me to better manage or
+   handle my projects. Example of such modules include [[https://github.com/purcell/ibuffer-vc][ibuffer-vc]] (which allows
+   me to group my buffers according to which git repo they belong to),
+   =projectile= which allows me to perform various functions on defined
+   projects, and so on.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/org-babel-load-file "modules/ibuffer")
+     (preamble/checkpoint "configured ibuffer as per your taste")
+   #+END_SRC
+
+** Programming
 *** [[http://github.com/flycheck/flycheck][FlyCheck]]
-    Flycheck is a modern on-the-fly syntax-checker for GNU Emacs, which selects syntax-checkers
-    based on the major mode of the current buffer.
+    Flycheck is a modern on-the-fly syntax-checker for GNU Emacs, which selects
+    syntax-checkers based on the major mode of the current buffer.
 
     #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `flycheck' package..")
       (preamble/require-package 'flycheck)
       (add-hook 'after-init-hook 'global-flycheck-mode)
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/AutoComplete][AutoComplete]]
-    AutoComplete is an excellent auto-completion feature with popup menu for quick selection. It can
-    complete words at the point from a number of different sources, and includes fuzzy-matching,
-    in-built.
-
-    I have, first, setup *AutoComplete* as the default completion function, by hooking it inside
-    =auto-complete-mode=.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `auto-complete' package..")
-      (preamble/require-package 'auto-complete)
-      (require 'auto-complete-config)
-
-      (defun preamble/auto-complete-at-point ()
-        "Use AutoComplete to provide completion at the current point."
-        (when (and (not (minibufferp))
-                   (fboundp 'auto-complete-mode)
-                   auto-complete-mode)
-          (auto-complete)))
-
-      ;; hook AC into completion-at-point
-      (defun preamble/set-auto-complete-as-completion-at-point-function ()
-        "Set AutoComplete as Completion-At-Point function."
-        (add-to-list 'completion-at-point-functions 'preamble/auto-complete-at-point))
-
-      (add-hook 'auto-complete-mode-hook
-        'preamble/set-auto-complete-as-completion-at-point-function)
-    #+END_SRC
-
-    Next, I want to customize the behavior of *AutoComplete* to match my workflow, and have setup
-    =TAB= key to trigger completions.
-
-    #+BEGIN_SRC emacs-lisp
-      (after 'auto-complete
-        (global-auto-complete-mode t)       ; enable auto-complete mode globally
-        (setq ac-expand-on-auto-complete t) ; auto-complete whole match on TAB
-        (setq ac-auto-start 3)              ; enable auto-complete after 3 chars
-        (setq ac-dwim nil)                  ; to get pop-ups with docs even if a
-                                            ; word is uniquely completed
-
-        ;; use Emacs' built-in TAB completion hooks to trigger AC (Emacs >= 23.2)
-        (setq tab-always-indent 'complete)  ;; use 't when auto-complete is disabled
-        (add-to-list 'completion-styles 'initials t))
-    #+END_SRC
-
-    Also, exclude very large buffers to interfere with AutoComplete, as this can slow down
-    AutoComplete significantly.
-
-    #+BEGIN_SRC emacs-lisp
-      (defun preamble/dabbrev-friend-buffer (other-buffer)
-        "Set OTHER-BUFFER as known to `dabbrev' only if its smaller than a given size."
-        (< (buffer-size other-buffer) (* 1 1024 1024)))
-
-      (after 'auto-complete
-        (setq dabbrev-friend-buffer-function 'preamble/dabbrev-friend-buffer))
-    #+END_SRC
-
-    Finally, define some sources for AutoComplete, and setup some modes to use AutoComplete, by
-    default.
-
-    #+BEGIN_SRC emacs-lisp
-      (after 'auto-complete
-        ;; define sources for auto-completion
-        (set-default 'ac-sources '( ac-source-imenu ac-source-dictionary
-                                    ac-source-words-in-buffer
-                                    ac-source-words-in-same-mode-buffers
-                                    ac-source-words-in-all-buffer))
-
-        ;; add various modes to auto-complete
-        (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode
-                        text-mode haml-mode ruby-mode sass-mode yaml-mode
-                        csv-mode espresso-mode haskell-mode html-mode
-                        nxml-mode sh-mode smarty-mode clojure-mode
-                        lisp-mode textile-mode markdown-mode tuareg-mode
-                        js3-mode css-mode less-css-mode sql-mode
-                        ielm-mode))
-          (add-to-list 'ac-modes mode)))
-    #+END_SRC
-
-*** [[https://github.com/purcell/mmm-mode][Multiple Major Modes]] (mmm-mode)
-    MMM Mode is a minor mode for Emacs that allows Multiple Major Modes to coexist in one buffer. It
-    is well-suited to editing:
-    - Preprocessed code, e.g. server-side Ruby, Perl or PHP embedded in HTML
-    - Code generating code, such as HTML output by CGI scripts
-    - Embedded code, such as Javascript in HTML
-    - Literate programming: code interspersed with documentation, e.g. Noweb
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `mmm-mode' package..")
-      (preamble/require-package 'mmm-mode)
-      (require 'mmm-auto)
-      (setq mmm-global-mode 't) ;'buffers-with-submode-classes)
-      (setq mmm-submode-decoration-level 2)
-
-      ;; css embedding in html
-      (after 'mmm-vars
-            (mmm-add-group
-             'html-css
-             '((css-cdata
-                :submode css-mode
-                :face mmm-code-submode-face
-                :front "<style[^>]*>[ \t\n]*\\(//\\)?<!\\[CDATA\\[[ \t]*\n?"
-                :back "[ \t]*\\(//\\)?]]>[ \t\n]*</style>"
-                :insert ((?j js-tag nil @ "<style type=\"text/css\">"
-                             @ "\n" _ "\n" @ "</script>" @)))
-               (css
-                :submode css-mode
-                :face mmm-code-submode-face
-                :front "<style[^>]*>[ \t]*\n?"
-                :back "[ \t]*</style>"
-                :insert ((?j js-tag nil @ "<style type=\"text/css\">"
-                             @ "\n" _ "\n" @ "</style>" @)))
-               (css-inline
-                :submode css-mode
-                :face mmm-code-submode-face
-                :front "style=\""
-                :back "\"")))
-            (dolist (mode (list 'html-mode 'nxml-mode))
-              (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
+      (preamble/checkpoint "configured `flycheck' package..")
     #+END_SRC
 
 *** TODO activating =mmm-mode= gives error
@@ -425,124 +373,8 @@
     #+END_SRC
 
 ** Feature Enhancements                                    :enhanced:package:
-    The following modules, simply, improve upon a given feature in GNU Emacs, in order to, provide a
-    more awesome experience inside Emacs' Preamble.
-*** [[http://www.emacswiki.org/emacs/Dired][Dired Mode]]
-
-    #+BEGIN_QUOTE
-      [[http://www.emacswiki.org/emacs/DiredPlus][Dired+]] is /awesome/, well.. not, initially.
-    #+END_QUOTE
-
-    [[http://www.emacswiki.org/emacs/DiredPlus][Dired+]] extends functionalities provided by standard GNU Emacs libraries =dired.el=,
-    =dired-aux.el=, and =dired-x.el=. The standard functions are all available, plus many more.
-
-    *Dired+* enhances our file-exploring experience.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured Dired and DiredPlus..")
-      (preamble/require-package 'dired+)
-
-      (setq diredp-hide-details-initially-flag nil)
-      (setq global-dired-hide-details-mode -1)
-
-      (after 'dired
-        (require 'dired+)
-        (setq dired-recursive-deletes 'top)
-        (define-key dired-mode-map [mouse-2] 'dired-find-file))
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/IbufferMode][iBuffer Mode]]
-
-    [[https://github.com/purcell/ibuffer-vc][ibuffer-vc]] adds functionality to Emacs' =ibuffer-mode= for grouping buffers by their parent VC
-    (version-control) root directory, and for displaying and/or sorting by the VC status of listed
-    files.
-
-    This is to say that, my =iBuffer= will, now, show me different groups of buffers based on the
-    =git= repository status. /Pretty Awesome!/
-
-    First, lets make sure that the buffers are grouped according to version control system, they are
-    in, then by filename or process name.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `ibuffer' with `ibuffer-vc' package...")
-      (preamble/require-package 'ibuffer-vc)
-      (after 'ibuffer (require 'ibuffer-vc))
-
-      (defun preamble/ibuffer-set-up-preferred-filters ()
-        "Sort ibuffers according to Version Control or Filename or Process."
-        (ibuffer-vc-set-filter-groups-by-vc-root)
-        (unless (eq ibuffer-sorting-mode 'filename/process)
-          (ibuffer-do-sort-by-filename/process)))
-
-      (add-hook 'ibuffer-hook 'preamble/ibuffer-set-up-preferred-filters)
-    #+END_SRC
-
-    Now, the default display of =dired= command is a bit non-resonating with what my eyes want to
-    see, and therefore, lets change the configuration of =ibuffer= to suit my pair of eyes.
-
-    #+BEGIN_SRC emacs-lisp
-      (after 'ibuffer
-        ;; use human readable size column instead of original one
-        (define-ibuffer-column size-h
-          (:name "Size" :inline t)
-          (cond
-           ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-           ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-           (t (format "%8d" (buffer-size))))))
-
-      ;; modify the default ibuffer-formats
-      (setq ibuffer-formats
-            '((mark modified read-only vc-status-mini " "
-                    (name 18 18 :left :elide)
-                    " "
-                    (size-h 9 -1 :right)
-                    " "
-                    (mode 16 16 :left :elide)
-                    " "
-                    (vc-status 16 16 :left)
-                    " "
-                    filename-and-process)))
-
-      (setq ibuffer-filter-group-name-face 'font-lock-doc-face)
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/InteractivelyDoThings][IDO Mode]] and [[http://www.emacswiki.org/emacs/Smex][Smex]]
-
-    IDO mode is, simply, amazin'! It lets us do things interactively with buffers and files. When
-    combined with [[https://github.com/technomancy/ido-ubiquitous][IDO Ubiquitous]] and [[https://github.com/nonsequitur/smex][Smex]], it creates a powerful combination of fuzzy-file searching
-    and the same power is available for executings commands, as well as a heap of other places.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured IDO Mode along with Smex..")
-      (preamble/require-packages '( smex idomenu ido-ubiquitous))
-
-      ;; suppress warnings from ido-ubiquitous
-      (defvar predicate 'nil)
-      (defvar inherit-input-method 'nil)
-      (defvar ido-cur-item 'nil)
-      (defvar ido-default-item 'nil)
-      (defvar ido-cur-list 'nil)
-
-      (ido-mode 't)                            ;; enable ido mode
-      (ido-everywhere 't)                      ;; use ido-mode wherever possible
-      (ido-ubiquitous-mode 't)                 ;; enable ido-ubiquitous
-      (setq ido-enable-flex-matching 't)       ;; enable fuzzy search
-      (setq ido-use-filename-at-point 'nil)    ;; look for filename at point
-      (setq ido-use-virtual-buffers 't)        ;; allow me to open closed buffers, even
-
-      ;; switch to merged work directories during file input when no match is found
-      (setq ido-auto-merge-work-directories-length 0)
-      ;; allow the same buffer to be open in different frames
-      (setq ido-default-buffer-method 'selected-window)
-
-      (defun preamble/ido-choose-from-recentf ()
-        "Use ido to select a recently opened file from the `recentf-list'."
-        (interactive)
-        (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
-          (ido-switch-buffer)
-          (find-file (ido-completing-read "Open file: " recentf-list nil t))))
-    #+END_SRC
-
+    The following modules, simply, improve upon a given feature in GNU Emacs, in
+    order to, provide a more awesome experience inside Emacs' Preamble.
 *** [[http://www.emacswiki.org/emacs/UndoTree][UndoTree]]
     UndoTree is amazin'. It visually describes your change history for the current buffer in a nice
     ascii-tree like structure. From there, it is trivially easy to view your changes, and easily
@@ -687,23 +519,9 @@
 ** Miscelleneous
    #+BEGIN_SRC emacs-lisp
      (preamble/require-packages '(regex-tool))
+     (preamble/org-babel-load-file "modules/mmm-mode")
    #+END_SRC
-** Version Management
-  Version management is the heart of my projects, in particular, [[http://git-scm.com/][git]]. This section defines various
-  settings so as to allow me to version control my projects from within Emacs' Preamble.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/org-babel-load-file "modules/git.org")
-    (preamble/checkpoint "added git for version management")
-  #+END_SRC
 
-** Org Mode
-  Org Mode configuration is loaded from another =org-mode= [[file:./modules/org-mode.org][file]], which basically sets up required
-  packages, functions, hooks, configuration, etc. for =org-mode=. This way, I am able to keep
-  configuration of =org-mode= into a separate city of its own.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/org-babel-load-file "modules/org-mode")
-    (preamble/checkpoint "configured =org-mode= to behave nicely with us")
-  #+END_SRC
 * Editing
 ** Related Modules
   Given below are some of the modules that are required for a better editing experience. Most of

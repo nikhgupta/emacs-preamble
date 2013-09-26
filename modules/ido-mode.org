@@ -1,0 +1,56 @@
+#+TITLE: Emacs' Preamble's IDO Mode Configuration
+
+IDO mode is, simply, amazin'! It lets us do things interactively with buffers
+and files. When combined with [[https://github.com/technomancy/ido-ubiquitous][IDO Ubiquitous]] and [[https://github.com/nonsequitur/smex][Smex]], it creates a powerful
+combination of fuzzy-file searching and the same power is available for
+executings commands, as well as a heap of other places.
+
+* Bug Fix
+  =ido-ubiquitous= has a simple cliche, where it will invariably warn about
+  undefined variables. And, since, I hate to see warnings/errors, I have fixed
+  that first. This code needs to run before activation is performed.
+  #+BEGIN_SRC emacs-lisp
+    (defvar predicate 'nil)
+    (defvar inherit-input-method 'nil)
+    (defvar ido-cur-item 'nil)
+    (defvar ido-default-item 'nil)
+    (defvar ido-cur-list 'nil)
+  #+END_SRC
+
+* General
+  Activating =ido-mode= and configuring it to be available whereever it can.
+  #+BEGIN_SRC emacs-lisp
+    (preamble/require-packages '( idomenu ido-ubiquitous))
+
+    (ido-mode 't)                            ;; enable ido mode
+    (ido-everywhere 't)                      ;; use ido-mode wherever possible
+    (ido-ubiquitous-mode 't)                 ;; enable ido-ubiquitous
+  #+END_SRC
+
+* Special
+  #+BEGIN_SRC emacs-lisp
+    (setq ido-enable-flex-matching 't)       ;; enable fuzzy search
+    (setq ido-use-filename-at-point 'nil)    ;; look for filename at point
+    (setq ido-use-virtual-buffers 't)        ;; allow me to open closed buffers, even
+
+    ;; switch to merged work directories during file input when no match is found
+    (setq ido-auto-merge-work-directories-length 0)
+    ;; allow the same buffer to be open in different frames
+    (setq ido-default-buffer-method 'selected-window)
+  #+END_SRC
+
+* Functions
+  I will, often, work on a single project for a couple of weeks. When such a
+  project contains only a handful of files, I prefer to open the emacs and see a
+  lit of my recent files and pick a file from there and work on it. The
+  following function helps me in doing exactly, so.
+  #+BEGIN_SRC emacs-lisp
+    (defun preamble/ido-choose-from-recentf ()
+      "Use ido to select a recently opened file from the `recentf-list'."
+      (interactive)
+      (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
+        (ido-switch-buffer)
+        (find-file (ido-completing-read "Open file: " recentf-list nil t))))
+  #+END_SRC
+
+* Key Bindings

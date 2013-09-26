@@ -1,0 +1,7 @@
+#+TITLE: Emacs' Preamble's YASnippet Configuration
+
+* Activation
+
+#+BEGIN_SRC emacs-lisp
+  ;; should implement somethin here..
+#+END_SRC
