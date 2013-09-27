@@ -150,7 +150,7 @@
    plugins which make my Emacs' Preamble far too slow. This section, further,
    helps me benchmark my configuration for the exact same purpose.
    #+BEGIN_SRC emacs-lisp
-     (setq debug-on-error 'nil)  ; set this to 'nil to disable this section
+     (setq debug-on-error 't)  ; set this to 'nil to disable this section
      (preamble/org-babel-load-file "core/debugger")
    #+END_SRC
 
@@ -289,6 +289,15 @@
      (preamble/checkpoint "configured ibuffer as per your taste")
    #+END_SRC
 
+*** [[https://github.com/Wilfred/ag.el][The Silver Searcher]]
+    [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (=ag=) is an awesome utility, somewhat like =ack=, but faster. This module
+    allows me to use the power of =ag= inside Emacs' Preamble.
+    #+BEGIN_SRC emacs-lisp
+      (when (executable-find "ag")
+        (preamble/require-packages '(ag wgrep-ag))
+        (setq-default ag-highlight-search t))
+    #+END_SRC
+
 ** Programming
 *** [[http://github.com/flycheck/flycheck][FlyCheck]]
     Flycheck is a modern on-the-fly syntax-checker for GNU Emacs, which selects
@@ -300,93 +309,329 @@
       (preamble/checkpoint "configured `flycheck' package..")
     #+END_SRC
 
-*** TODO activating =mmm-mode= gives error
-    Error occurred is: =Can't preview LaTex fragment in a non-file buffer=
-*** TODO Implement some =mmm= modes by taking help from [[https://github.com/purcell/mmm-mode/blob/master/mmm-sample.el][samples]].
-*** [[http://www.emacswiki.org/emacs/DiminishedModes][Diminished Modes]]
-    Diminished modes is an internal feature, which lets us fight mode-line clutter by diminishing
-    (removing or abbreviating) minor mode indicators in there.
+*** Ruby Group
+   The languages/modes in this section include =ruby-mode=, =rails=, =yaml=, =erb=, etc.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "enabled support for =ruby-group=")
+     (preamble/require-packages '(ruby-mode ruby-hash-syntax inf-ruby
+                                            robe ruby-compilation yari yaml-mode
+                                            tagedit rinari))
 
+     (add-to-list 'auto-mode-alist '("Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
+                                     "\\.rjs\\'" ".irbrc\\'" "\\.builder\\'" "\\.ru\\'"
+                                     "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'" . 'ruby-mode))
+
+     (setq ruby-use-encoding-map nil)
+
+     (after 'ruby-mode
+       (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+       (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command)
+
+       ;; stupidly the non-bundled ruby-mode isn't a derived mode of
+       ;; prog-mode: we run the latter's hooks anyway in that case.
+       (add-hook 'ruby-mode-hook
+                 (lambda () (unless (derived-mode-p 'prog-mode) (run-hooks 'prog-mode-hook)))))
+
+     ;; ruby compilation
+     (let ((m ruby-mode-map))
+       (define-key m [S-f7] 'ruby-compilation-this-buffer)
+       (define-key m [f7] 'ruby-compilation-this-test)
+       (define-key m [f6] 'recompile))
+
+     ;;; robe: Code navigation, documentation and completion for Ruby
+     (after 'ruby-mode (add-hook 'ruby-mode-hook 'robe-mode))
+     (after 'robe (add-hook 'robe-mode-hook
+       (lambda ()
+         (add-to-list 'ac-sources 'ac-source-robe)
+         (set-auto-complete-as-completion-at-point-function))))
+
+     ;;; ri support
+     (defalias 'ri 'yari)
+
+     ;;; ERB
+     (defun preamble/ensure-mmm-erb-loaded () (require 'mmm-erb))
+     (require 'derived)
+
+     (defun preamble/set-up-mode-for-erb (mode)
+       (add-hook (derived-mode-hook-name mode) 'preamble/ensure-mmm-erb-loaded)
+       (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb))
+
+     (let ((html-erb-modes '(html-mode html-erb-mode nxml-mode)))
+       (dolist (mode html-erb-modes)
+         (preamble/set-up-mode-for-erb mode)
+         (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-js)
+         (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
+
+     (mapc 'preamble/set-up-mode-for-erb
+           '(coffee-mode js-mode js2-mode js3-mode markdown-mode textile-mode))
+
+     (after 'sgml-mode (tagedit-add-paredit-like-keybindings)) ;; tagedit
+     (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
+
+     (add-to-list 'auto-mode-alist '("\\.rhtml\\'" "\\.html\\.erb\\'" . 'html-erb-mode))
+     (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
+     (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\'" 'erb)
+
+     (dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
+       (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
+
+     ;; rails
+     (after 'rinari (diminish 'rinari-minor-mode "Rin"))
+     (global-rinari-mode)
+
+     (defun update-rails-ctags ()
+       (interactive)
+       (let ((default-directory (or (rinari-root) default-directory)))
+         (shell-command (concat "ctags -a -e -f " rinari-tags-file-name " --tag-relative -R app lib vendor test"))))
+
+   #+END_SRC
+*** PHP Group
+   The languages/modes that belong to this group include =php=, =smarty=, etc.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "enabled support for =php-group=")
+     (preamble/require-packages '(php-mode smarty-mode))
+   #+END_SRC
+*** Javascript Group
+   The languages/modes that belong to thid group include =json=, =javascript=, =coffee=, etc.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "enabled support for =javascript-group=")
+     (preamble/require-packages '( json js2-mode ac-js2 rainbow-delimiters coffee-mode))
+
+     (defvar preferred-javascript-indent-level 2)
+     (defcustom preferred-javascript-mode
+       (first (remove-if-not #'fboundp '(js2-mode js-mode)))
+       "Javascript mode to use for .js files."
+       :type 'symbol
+       :group 'programming
+       :options '(js2-mode js-mode))
+
+     ;; json
+     (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+
+     ;; javascript (even inside erb)
+     (setq auto-mode-alist (cons `("\\.js\\(\\.erb\\)?\\'" . ,preferred-javascript-mode)
+                                 (loop for entry in auto-mode-alist
+                                       unless (eq preferred-javascript-mode (cdr entry))
+                                       collect entry)))
+
+     ;; js2-mode
+     (setq js2-use-font-lock-faces t
+           js2-mode-must-byte-compile nil
+           js2-basic-offset preferred-javascript-indent-level
+           js2-indent-on-enter-key t
+           js2-auto-indent-p t
+           js2-bounce-indent-p nil)
+     (after 'js2-mode
+       (add-hook 'js2-mode-hook '(lambda() (setq mode-name "JS2")))
+       (js2-imenu-extras-setup))
+
+     ;; js-mode
+     (setq js-indent-level preferred-javascript-indent-level)
+     (setq javascript-indent-level preferred-javascript-indent-level)
+
+     ;; node interpreter
+     (add-to-list 'interpreter-mode-alist (cons "node" preferred-javascript-mode))
+
+     ;; coffeescript
+     (after 'coffee-mode
+       (setq coffee-js-mode preferred-javascript-mode
+             coffee-tab-width preferred-javascript-indent-level))
+
+     (add-to-list 'auto-mode-alist '("\\.coffee\\.erb\\'" . coffee-mode))
+   #+END_SRC
+*** Text Group
+   The languages/modes that belong to this group include =textile=, =markdown=, etc.
     #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured Diminished Modes..")
-      (preamble/require-package 'diminish)
+      (preamble/checkpoint "enabled support for =text-group=")
+      (preamble/require-packages '(textile-mode markdown-mode))
+
+      ;; textile
+      (autoload 'textile-mode "textile-mode" "Mode for editing Textile documents" t)
+      (setq auto-mode-alist
+            (cons '("\\.textile\\'" . textile-mode) auto-mode-alist))
+
+      ;; markdown
+      (setq auto-mode-alist
+            (cons '("\\.\\(md\\|markdown\\)\\'" . markdown-mode) auto-mode-alist))
     #+END_SRC
+*** XML Group
+   This languages/modes that belong to this group include =xml=, =rss=, =xslt=, etc.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "enabled support for =xml-group")
+     (add-to-list 'auto-mode-alist
+       (concat "\\." (regexp-opt
+         '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss" "gpx" "tcx")) "\\'") 'nxml-mode)
 
-*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill Column Indicator]]
-    #+BEGIN_QUOTE
-      Many modern editors and IDEs can graphically indicate the location of the fill column by
-      drawing a thin line (in design parlance, a "rule") down the length of the editing
-      window. Fill-column-indicator implements this facility in Emacs.
-    #+END_QUOTE
+     ;; generic xml mode
+     (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
+     (fset 'xml-mode 'nxml-mode)
+     (add-hook 'nxml-mode-hook (lambda ()
+       (set (make-local-variable 'ido-use-filename-at-point) nil)))
+     (setq nxml-slash-auto-complete-flag t)
 
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured Fill Column Indicator..")
-      (preamble/require-package 'fill-column-indicator)
-      (after 'fill-column-indicator
-        (setq fci-rule-width 10)
-        (setq fci-rule-character ?❚)
-      ; (setq fci-rule-character-color "#999999")
-        (setq fci-dash-pattern 1.00))
+     ;; see: http://sinewalker.wordpress.com/2008/06/26/pretty-printing-xml-with-emacs-nxml-mode/
+     (defun pp-xml-region (begin end)
+       "Pretty format XML markup in region. The function inserts
+     linebreaks to separate tags that have nothing but whitespace
+     between them.  It then indents the markup by using nxml's
+     indentation rules."
+       (interactive "r")
+       (save-excursion
+         (nxml-mode)
+         (goto-char begin)
+         (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+           (backward-char) (insert "\n"))
+         (indent-region begin end)))
 
-      (defun preamble/fci-mode-settings()
-        (turn-on-fci-mode)
-        (when show-trailing-whitespace
-          (set (make-local-variable 'whitespace-style) '(face trailing))
-          (whitespace-mode 1)))
+     ;; integration with tidy for html + xml
+     (preamble/require-package 'tidy)
+     (add-hook 'nxml-mode-hook (lambda () (tidy-build-menu nxml-mode-map)))
+     (add-hook 'html-mode-hook (lambda () (tidy-build-menu html-mode-map)))
 
-      (add-hook 'prog-mode-hook 'preamble/fci-mode-settings)
-      (add-hook 'org-mode-hook  'preamble/fci-mode-settings)
 
-      (defun preamble/fci-enabled-p ()
-        (and (boundp 'fci-mode) fci-mode))
+     (add-to-list 'auto-mode-alist '("\\.(jsp|tmpl)\\'" . 'html-mode))
 
-      (defvar preamble/fci-mode-suppressed nil)
-      (defadvice popup-create (before suppress-fci-mode activate)
-        "Suspend fci-mode while popups are visible"
-        (let ((fci-enabled (preamble/fci-enabled-p)))
-          (when fci-enabled
-            (set (make-local-variable 'preamble/fci-mode-suppressed) fci-enabled)
-            (turn-off-fci-mode))))
-      (defadvice popup-delete (after restore-fci-mode activate)
-        "Restore fci-mode when all popups have closed"
-        (when (and preamble/fci-mode-suppressed
-                   (null popup-instances))
-          (setq preamble/fci-mode-suppressed nil)
-          (turn-on-fci-mode)))
+   #+END_SRC
+*** Design Group
+   The languages/modes in this section include =css=, =haml=, etc.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "enabled support for =design-group=")
+     (preamble/require-packages '(css-eldoc haml-mode htmlize))
 
-      ;; Regenerate fci-mode line images after switching themes
-      (defadvice enable-theme (after recompute-fci-face activate)
-        (dolist (buffer (buffer-list))
-          (with-current-buffer buffer
-            (when (preamble/fci-enabled-p)
-              (turn-on-fci-mode)))))
+     ;;; colourise hex colors
+     (dolist (hook '(css-mode-hook html-mode-hook sass-mode-hook))
+       (add-hook hook 'rainbow-mode))
+     ;; use eldoc for syntax hints
+     (autoload 'turn-on-css-eldoc "css-eldoc")
+     (add-hook 'css-mode-hook 'turn-on-css-eldoc)
 
-    #+END_SRC
+     ;; to enable Skewer mode, check:
+     ;; https://github.com/purcell/emacs.d/blob/master/init-css.el
 
-*** [[https://github.com/Wilfred/ag.el][The Silver Searcher]]
-    [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (=ag=) is an awesome utility, somewhat like =ack=, but faster. This module
-    allows me to use the power of =ag= inside Emacs' Preamble.
-    #+BEGIN_SRC emacs-lisp
-      (when (executable-find "ag")
-        (preamble/require-packages '(ag wgrep-ag))
-        (setq-default ag-highlight-search t))
-    #+END_SRC
+     ;; SASS, SCSS, and Less
+     (preamble/require-packages '(sass-mode scss-mode less-css-mode))
+     (setq-default scss-compile-at-save nil)
 
-** Feature Enhancements                                    :enhanced:package:
+     ;;; auto-complete CSS keywords
+     (after 'auto-complete
+       (dolist (hook '(css-mode-hook sass-mode-hook scss-mode-hook))
+         (add-hook hook 'ac-css-mode-setup)))
+   #+END_SRC
+*** Lisp Group
+   The languages/modes in this section include =lisp= and =elisp=.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "enabled support for =lisp-group=")
+     (preamble/require-packages '(elisp-slime-nav lively pretty-mode
+                                                  auto-compile hl-sexp
+                                                  rainbow-delimiters redshank
+                                                  macrostep))
+
+     (autoload 'turn-on-pretty-mode "pretty-mode")
+     (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+       (add-hook hook 'elisp-slime-nav-mode))
+
+     ;; `hippie-expand' feature
+     (defun set-up-hippie-expand-for-elisp ()
+       "Locally set `hippie-expand' completion functions for use with Emacs Lisp."
+       (make-local-variable 'hippie-expand-try-functions-list)
+       (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol t)
+       (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially t))
+
+     ;; automatic byte compilation
+     (auto-compile-on-save-mode 1)
+     (auto-compile-on-load-mode 1)
+
+     ;; highlight current sexp
+     ;; prevent flickery behaviour due to `hl-sexp-mode' unhighlighting before each command
+     (after 'hl-sexp
+       (defadvice hl-sexp-mode (after unflicker (&optional turn-on) activate)
+         (when turn-on
+           (remove-hook 'pre-command-hook #'hl-sexp-unhighlight))))
+
+     ;; enable desired features for all lisp modes
+     (after 'redshank (diminish 'redshank-mode))
+
+     (defun preamble/lisp-setup ()
+       "Enable features useful in any Lisp mode."
+       (rainbow-delimiters-mode t)
+       (enable-paredit-mode)
+       (turn-on-eldoc-mode)
+       (redshank-mode))
+
+     (defun preamble/emacs-lisp-setup ()
+       "Enable features useful when working with elisp."
+       (elisp-slime-nav-mode t)
+       (set-up-hippie-expand-for-elisp)
+       (ac-emacs-lisp-mode-setup))
+
+     (defconst preamble/elispy-modes
+       '(emacs-lisp-mode ielm-mode)
+       "Major modes relating to elisp.")
+
+     (defconst preamble/lispy-modes
+       (append preamble/elispy-modes
+               '(lisp-mode inferior-lisp-mode lisp-interaction-mode))
+       "All lispy major modes.")
+
+     (require 'derived)
+
+     (dolist (hook (mapcar #'derived-mode-hook-name preamble/lispy-modes))
+       (add-hook hook 'preamble/lisp-setup))
+
+     (dolist (hook (mapcar #'derived-mode-hook-name preamble/elispy-modes))
+       (add-hook hook 'preamble/emacs-lisp-setup))
+
+     (defun preamble/maybe-check-parens ()
+       "Run `check-parens' if this is a lispy mode."
+       (when (memq major-mode preamble/lispy-modes)
+         (check-parens)))
+
+     (add-hook 'after-save-hook #'preamble/maybe-check-parens)
+
+     (add-to-list 'auto-mode-alist '("\\.emacs-project\\'" . emacs-lisp-mode))
+     (add-to-list 'auto-mode-alist '("archive-contents\\'" . emacs-lisp-mode))
+
+     (define-key emacs-lisp-mode-map (kbd "C-x C-a") 'pp-macroexpand-last-sexp)
+     (define-key emacs-lisp-mode-map (kbd "C-x C-e") 'pp-eval-last-sexp)
+
+     (after 'lisp-mode
+       (define-key emacs-lisp-mode-map (kbd "C-c e") 'macrostep-expand))
+   #+END_SRC
+*** Miscelleneous
+   The languages/modes that belong to this group include =crontab=, =sql=, etc.
+   #+BEGIN_SRC emacs-lisp
+     (preamble/checkpoint "enabled support for =miscelleneous-group=")
+     (preamble/require-packages '( crontab-mode
+                                   csv-mode csv-nav
+                                   sql-indent ))
+
+     ;; crontab
+     (add-to-list 'auto-mode-alist '("\\.?cron\\(tab\\)?\\'" . 'crontab-mode))
+
+     ;; csv
+     (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . 'csv_mode))
+     (setq csv-separators '("," ";" "|" " "))
+
+     ;; sql
+     (after 'sql
+       (require 'sql-indent)
+       (when (package-installed-p 'dash-at-point)
+         (defun preamble/maybe-set-dash-db-docset ()
+           (when (eq sql-product 'postgres)
+             (setq dash-at-point-docset "psql")))
+
+         (add-hook 'sql-mode-hook 'preamble/maybe-set-dash-db-docset)
+         (add-hook 'sql-interactive-mode-hook 'preamble/maybe-set-dash-db-docset)
+         (defadvice sql-set-product (after set-dash-docset activate)
+           (preamble/maybe-set-dash-db-docset))))
+
+     (setq-default sql-input-ring-file-name
+        (expand-file-name ".sqli_history" preamble-dir))
+
+   #+END_SRC** Feature Enhancements
     The following modules, simply, improve upon a given feature in GNU Emacs, in
     order to, provide a more awesome experience inside Emacs' Preamble.
-*** [[http://www.emacswiki.org/emacs/UndoTree][UndoTree]]
-    UndoTree is amazin'. It visually describes your change history for the current buffer in a nice
-    ascii-tree like structure. From there, it is trivially easy to view your changes, and easily
-    undo/redo according to Emacs' undo structure.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `undo-tree' package..")
-      (preamble/require-package 'undo-tree)
-      (global-undo-tree-mode 1)
-      (diminish 'undo-tree-mode)
-    #+END_SRC
-** In-built Features                                                :ehanced:
+** In-built Features
    The following modules configure a built-in feature, so as to suite to my personal taste.
 *** [[http://www.emacswiki.org/emacs/IncrementalSearch][Incremental Search]]
     =isearch= is the Incremental Search feature of Emacs, and while it is really nice on its own, it
@@ -521,7 +766,80 @@
      (preamble/require-packages '(regex-tool))
      (preamble/org-babel-load-file "modules/mmm-mode")
    #+END_SRC
+*** [[http://www.emacswiki.org/emacs/DiminishedModes][Diminished Modes]]
+    Diminished modes is an internal feature, which lets us fight mode-line clutter by diminishing
+    (removing or abbreviating) minor mode indicators in there.
 
+    #+BEGIN_SRC emacs-lisp
+      (preamble/checkpoint "configured Diminished Modes..")
+      (preamble/require-package 'diminish)
+    #+END_SRC
+
+*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill Column Indicator]]
+    #+BEGIN_QUOTE
+      Many modern editors and IDEs can graphically indicate the location of the fill column by
+      drawing a thin line (in design parlance, a "rule") down the length of the editing
+      window. Fill-column-indicator implements this facility in Emacs.
+    #+END_QUOTE
+
+    #+BEGIN_SRC emacs-lisp
+      (preamble/checkpoint "configured Fill Column Indicator..")
+      (preamble/require-package 'fill-column-indicator)
+      (after 'fill-column-indicator
+        (setq fci-rule-width 10)
+        (setq fci-rule-character ?❚)
+      ; (setq fci-rule-character-color "#999999")
+        (setq fci-dash-pattern 1.00))
+
+      (defun preamble/fci-mode-settings()
+        (turn-on-fci-mode)
+        (when show-trailing-whitespace
+          (set (make-local-variable 'whitespace-style) '(face trailing))
+          (whitespace-mode 1)))
+
+      (add-hook 'prog-mode-hook 'preamble/fci-mode-settings)
+      (add-hook 'org-mode-hook  'preamble/fci-mode-settings)
+
+      (defun preamble/fci-enabled-p ()
+        (and (boundp 'fci-mode) fci-mode))
+
+      (defvar preamble/fci-mode-suppressed nil)
+      (defadvice popup-create (before suppress-fci-mode activate)
+        "Suspend fci-mode while popups are visible"
+        (let ((fci-enabled (preamble/fci-enabled-p)))
+          (when fci-enabled
+            (set (make-local-variable 'preamble/fci-mode-suppressed) fci-enabled)
+            (turn-off-fci-mode))))
+      (defadvice popup-delete (after restore-fci-mode activate)
+        "Restore fci-mode when all popups have closed"
+        (when (and preamble/fci-mode-suppressed
+                   (null popup-instances))
+          (setq preamble/fci-mode-suppressed nil)
+          (turn-on-fci-mode)))
+
+      ;; Regenerate fci-mode line images after switching themes
+      (defadvice enable-theme (after recompute-fci-face activate)
+        (dolist (buffer (buffer-list))
+          (with-current-buffer buffer
+            (when (preamble/fci-enabled-p)
+              (turn-on-fci-mode)))))
+
+    #+END_SRC
+
+*** [[http://www.emacswiki.org/emacs/UndoTree][UndoTree]]
+    UndoTree is amazin'. It visually describes your change history for the current buffer in a nice
+    ascii-tree like structure. From there, it is trivially easy to view your changes, and easily
+    undo/redo according to Emacs' undo structure.
+
+    #+BEGIN_SRC emacs-lisp
+      (preamble/checkpoint "configured `undo-tree' package..")
+      (preamble/require-package 'undo-tree)
+      (global-undo-tree-mode 1)
+      (diminish 'undo-tree-mode)
+    #+END_SRC
+*** TODO activating =mmm-mode= gives error
+    Error occurred is: =Can't preview LaTex fragment in a non-file buffer=
+*** TODO Implement some =mmm= modes by taking help from [[https://github.com/purcell/mmm-mode/blob/master/mmm-sample.el][samples]].
 * Editing
 ** Related Modules
   Given below are some of the modules that are required for a better editing experience. Most of
@@ -707,328 +1025,6 @@
          (indent-according-to-mode)))
     #+END_SRC
 
-* Programming
-  This section contains various packages and their settings related to programming.
-** Ruby Group
-   The languages/modes in this section include =ruby-mode=, =rails=, =yaml=, =erb=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =ruby-group=")
-     (preamble/require-packages '(ruby-mode ruby-hash-syntax inf-ruby
-                                            robe ruby-compilation yari yaml-mode
-                                            tagedit rinari))
-
-     (add-to-list 'auto-mode-alist '("Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
-                                     "\\.rjs\\'" ".irbrc\\'" "\\.builder\\'" "\\.ru\\'"
-                                     "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'" . 'ruby-mode))
-
-     (setq ruby-use-encoding-map nil)
-
-     (after 'ruby-mode
-       (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
-       (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command)
-
-       ;; stupidly the non-bundled ruby-mode isn't a derived mode of
-       ;; prog-mode: we run the latter's hooks anyway in that case.
-       (add-hook 'ruby-mode-hook
-                 (lambda () (unless (derived-mode-p 'prog-mode) (run-hooks 'prog-mode-hook)))))
-
-     ;; ruby compilation
-     (let ((m ruby-mode-map))
-       (define-key m [S-f7] 'ruby-compilation-this-buffer)
-       (define-key m [f7] 'ruby-compilation-this-test)
-       (define-key m [f6] 'recompile))
-
-     ;;; robe: Code navigation, documentation and completion for Ruby
-     (after 'ruby-mode (add-hook 'ruby-mode-hook 'robe-mode))
-     (after 'robe (add-hook 'robe-mode-hook
-       (lambda ()
-         (add-to-list 'ac-sources 'ac-source-robe)
-         (set-auto-complete-as-completion-at-point-function))))
-
-     ;;; ri support
-     (defalias 'ri 'yari)
-
-     ;;; ERB
-     (defun preamble/ensure-mmm-erb-loaded () (require 'mmm-erb))
-     (require 'derived)
-
-     (defun preamble/set-up-mode-for-erb (mode)
-       (add-hook (derived-mode-hook-name mode) 'preamble/ensure-mmm-erb-loaded)
-       (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb))
-
-     (let ((html-erb-modes '(html-mode html-erb-mode nxml-mode)))
-       (dolist (mode html-erb-modes)
-         (preamble/set-up-mode-for-erb mode)
-         (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-js)
-         (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
-
-     (mapc 'preamble/set-up-mode-for-erb
-           '(coffee-mode js-mode js2-mode js3-mode markdown-mode textile-mode))
-
-     (after 'sgml-mode (tagedit-add-paredit-like-keybindings)) ;; tagedit
-     (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
-
-     (add-to-list 'auto-mode-alist '("\\.rhtml\\'" "\\.html\\.erb\\'" . 'html-erb-mode))
-     (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
-     (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\'" 'erb)
-
-     (dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
-       (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
-
-     ;; rails
-     (after 'rinari (diminish 'rinari-minor-mode "Rin"))
-     (global-rinari-mode)
-
-     (defun update-rails-ctags ()
-       (interactive)
-       (let ((default-directory (or (rinari-root) default-directory)))
-         (shell-command (concat "ctags -a -e -f " rinari-tags-file-name " --tag-relative -R app lib vendor test"))))
-
-   #+END_SRC
-** PHP Group
-   The languages/modes that belong to this group include =php=, =smarty=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =php-group=")
-     (preamble/require-packages '(php-mode smarty-mode))
-   #+END_SRC
-** Javascript Group
-   The languages/modes that belong to thid group include =json=, =javascript=, =coffee=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =javascript-group=")
-     (preamble/require-packages '( json js2-mode ac-js2 rainbow-delimiters coffee-mode))
-
-     (defvar preferred-javascript-indent-level 2)
-     (defcustom preferred-javascript-mode
-       (first (remove-if-not #'fboundp '(js2-mode js-mode)))
-       "Javascript mode to use for .js files."
-       :type 'symbol
-       :group 'programming
-       :options '(js2-mode js-mode))
-
-     ;; json
-     (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
-
-     ;; javascript (even inside erb)
-     (setq auto-mode-alist (cons `("\\.js\\(\\.erb\\)?\\'" . ,preferred-javascript-mode)
-                                 (loop for entry in auto-mode-alist
-                                       unless (eq preferred-javascript-mode (cdr entry))
-                                       collect entry)))
-
-     ;; js2-mode
-     (setq js2-use-font-lock-faces t
-           js2-mode-must-byte-compile nil
-           js2-basic-offset preferred-javascript-indent-level
-           js2-indent-on-enter-key t
-           js2-auto-indent-p t
-           js2-bounce-indent-p nil)
-     (after 'js2-mode
-       (add-hook 'js2-mode-hook '(lambda() (setq mode-name "JS2")))
-       (js2-imenu-extras-setup))
-
-     ;; js-mode
-     (setq js-indent-level preferred-javascript-indent-level)
-     (setq javascript-indent-level preferred-javascript-indent-level)
-
-     ;; node interpreter
-     (add-to-list 'interpreter-mode-alist (cons "node" preferred-javascript-mode))
-
-     ;; coffeescript
-     (after 'coffee-mode
-       (setq coffee-js-mode preferred-javascript-mode
-             coffee-tab-width preferred-javascript-indent-level))
-
-     (add-to-list 'auto-mode-alist '("\\.coffee\\.erb\\'" . coffee-mode))
-   #+END_SRC
-** Text Group
-   The languages/modes that belong to this group include =textile=, =markdown=, etc.
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "enabled support for =text-group=")
-      (preamble/require-packages '(textile-mode markdown-mode))
-
-      ;; textile
-      (autoload 'textile-mode "textile-mode" "Mode for editing Textile documents" t)
-      (setq auto-mode-alist
-            (cons '("\\.textile\\'" . textile-mode) auto-mode-alist))
-
-      ;; markdown
-      (setq auto-mode-alist
-            (cons '("\\.\\(md\\|markdown\\)\\'" . markdown-mode) auto-mode-alist))
-    #+END_SRC
-** XML Group
-   This languages/modes that belong to this group include =xml=, =rss=, =xslt=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =xml-group")
-     (add-to-list 'auto-mode-alist
-       (concat "\\." (regexp-opt
-         '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss" "gpx" "tcx")) "\\'") 'nxml-mode)
-
-     ;; generic xml mode
-     (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
-     (fset 'xml-mode 'nxml-mode)
-     (add-hook 'nxml-mode-hook (lambda ()
-       (set (make-local-variable 'ido-use-filename-at-point) nil)))
-     (setq nxml-slash-auto-complete-flag t)
-
-     ;; see: http://sinewalker.wordpress.com/2008/06/26/pretty-printing-xml-with-emacs-nxml-mode/
-     (defun pp-xml-region (begin end)
-       "Pretty format XML markup in region. The function inserts
-     linebreaks to separate tags that have nothing but whitespace
-     between them.  It then indents the markup by using nxml's
-     indentation rules."
-       (interactive "r")
-       (save-excursion
-         (nxml-mode)
-         (goto-char begin)
-         (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-           (backward-char) (insert "\n"))
-         (indent-region begin end)))
-
-     ;; integration with tidy for html + xml
-     (preamble/require-package 'tidy)
-     (add-hook 'nxml-mode-hook (lambda () (tidy-build-menu nxml-mode-map)))
-     (add-hook 'html-mode-hook (lambda () (tidy-build-menu html-mode-map)))
-
-
-     (add-to-list 'auto-mode-alist '("\\.(jsp|tmpl)\\'" . 'html-mode))
-
-   #+END_SRC
-** Design Group
-   The languages/modes in this section include =css=, =haml=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =design-group=")
-     (preamble/require-packages '(css-eldoc haml-mode htmlize))
-
-     ;;; colourise hex colors
-     (dolist (hook '(css-mode-hook html-mode-hook sass-mode-hook))
-       (add-hook hook 'rainbow-mode))
-     ;; use eldoc for syntax hints
-     (autoload 'turn-on-css-eldoc "css-eldoc")
-     (add-hook 'css-mode-hook 'turn-on-css-eldoc)
-
-     ;; to enable Skewer mode, check:
-     ;; https://github.com/purcell/emacs.d/blob/master/init-css.el
-
-     ;; SASS, SCSS, and Less
-     (preamble/require-packages '(sass-mode scss-mode less-css-mode))
-     (setq-default scss-compile-at-save nil)
-
-     ;;; auto-complete CSS keywords
-     (after 'auto-complete
-       (dolist (hook '(css-mode-hook sass-mode-hook scss-mode-hook))
-         (add-hook hook 'ac-css-mode-setup)))
-   #+END_SRC
-** Lisp Group
-   The languages/modes in this section include =lisp= and =elisp=.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =lisp-group=")
-     (preamble/require-packages '(elisp-slime-nav lively pretty-mode
-                                                  auto-compile hl-sexp
-                                                  rainbow-delimiters redshank
-                                                  macrostep))
-
-     (autoload 'turn-on-pretty-mode "pretty-mode")
-     (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-       (add-hook hook 'elisp-slime-nav-mode))
-
-     ;; `hippie-expand' feature
-     (defun set-up-hippie-expand-for-elisp ()
-       "Locally set `hippie-expand' completion functions for use with Emacs Lisp."
-       (make-local-variable 'hippie-expand-try-functions-list)
-       (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol t)
-       (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially t))
-
-     ;; automatic byte compilation
-     (auto-compile-on-save-mode 1)
-     (auto-compile-on-load-mode 1)
-
-     ;; highlight current sexp
-     ;; prevent flickery behaviour due to `hl-sexp-mode' unhighlighting before each command
-     (after 'hl-sexp
-       (defadvice hl-sexp-mode (after unflicker (&optional turn-on) activate)
-         (when turn-on
-           (remove-hook 'pre-command-hook #'hl-sexp-unhighlight))))
-
-     ;; enable desired features for all lisp modes
-     (after 'redshank (diminish 'redshank-mode))
-
-     (defun preamble/lisp-setup ()
-       "Enable features useful in any Lisp mode."
-       (rainbow-delimiters-mode t)
-       (enable-paredit-mode)
-       (turn-on-eldoc-mode)
-       (redshank-mode))
-
-     (defun preamble/emacs-lisp-setup ()
-       "Enable features useful when working with elisp."
-       (elisp-slime-nav-mode t)
-       (set-up-hippie-expand-for-elisp)
-       (ac-emacs-lisp-mode-setup))
-
-     (defconst preamble/elispy-modes
-       '(emacs-lisp-mode ielm-mode)
-       "Major modes relating to elisp.")
-
-     (defconst preamble/lispy-modes
-       (append preamble/elispy-modes
-               '(lisp-mode inferior-lisp-mode lisp-interaction-mode))
-       "All lispy major modes.")
-
-     (require 'derived)
-
-     (dolist (hook (mapcar #'derived-mode-hook-name preamble/lispy-modes))
-       (add-hook hook 'preamble/lisp-setup))
-
-     (dolist (hook (mapcar #'derived-mode-hook-name preamble/elispy-modes))
-       (add-hook hook 'preamble/emacs-lisp-setup))
-
-     (defun preamble/maybe-check-parens ()
-       "Run `check-parens' if this is a lispy mode."
-       (when (memq major-mode preamble/lispy-modes)
-         (check-parens)))
-
-     (add-hook 'after-save-hook #'preamble/maybe-check-parens)
-
-     (add-to-list 'auto-mode-alist '("\\.emacs-project\\'" . emacs-lisp-mode))
-     (add-to-list 'auto-mode-alist '("archive-contents\\'" . emacs-lisp-mode))
-
-     (define-key emacs-lisp-mode-map (kbd "C-x C-a") 'pp-macroexpand-last-sexp)
-     (define-key emacs-lisp-mode-map (kbd "C-x C-e") 'pp-eval-last-sexp)
-
-     (after 'lisp-mode
-       (define-key emacs-lisp-mode-map (kbd "C-c e") 'macrostep-expand))
-   #+END_SRC
-** Miscelleneous
-   The languages/modes that belong to this group include =crontab=, =sql=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =miscelleneous-group=")
-     (preamble/require-packages '( crontab-mode
-                                   csv-mode csv-nav
-                                   sql-indent ))
-
-     ;; crontab
-     (add-to-list 'auto-mode-alist '("\\.?cron\\(tab\\)?\\'" . 'crontab-mode))
-
-     ;; csv
-     (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . 'csv_mode))
-     (setq csv-separators '("," ";" "|" " "))
-
-     ;; sql
-     (after 'sql
-       (require 'sql-indent)
-       (when (package-installed-p 'dash-at-point)
-         (defun preamble/maybe-set-dash-db-docset ()
-           (when (eq sql-product 'postgres)
-             (setq dash-at-point-docset "psql")))
-
-         (add-hook 'sql-mode-hook 'preamble/maybe-set-dash-db-docset)
-         (add-hook 'sql-interactive-mode-hook 'preamble/maybe-set-dash-db-docset)
-         (defadvice sql-set-product (after set-dash-docset activate)
-           (preamble/maybe-set-dash-db-docset))))
-
-     (setq-default sql-input-ring-file-name
-        (expand-file-name ".sqli_history" preamble-dir))
-
-   #+END_SRC
 * Session Management
   #+BEGIN_SRC emacs-lisp
     ;; save a list of open files in ~/.emacs.d/.emacs.desktop
@@ -1187,3 +1183,4 @@
 ** TODO jump to the location of last edit
 ** TODO org-mode export as html should syntax-highlight the code natively
 ** TODO ensure that emacs is started maximized
+** TODO Dired should show size in human readable format

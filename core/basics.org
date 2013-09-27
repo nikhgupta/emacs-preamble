@@ -60,8 +60,6 @@
                        "*Welcome to Emacs' Preamble.*\n"
                        "Emacs' Preamble was loaded in =%.2fms=.\n"
                        hr-rule ) (preamble/load-time)))
-
-
   #+END_SRC
 
   The following function evaluates a =lambda= or =function= after Emacs' initialization has
