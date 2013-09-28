@@ -1,0 +1,3 @@
+[submodule "vendors/rainbow-mode"]
+	path = vendors/rainbow-mode
+	url = https://github.com/emacsmirror/rainbow-mode

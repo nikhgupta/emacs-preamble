@@ -62,13 +62,6 @@
 ;; load our configuration file
 (org-babel-load-file (expand-file-name "preamble.org" preamble-dir))
 
-;; greet and display load time to the user
-(defun preamble/greet-user()
-  "Greet and display load time to the user."
-  (message (concat "--------------------------------------------------------------------\n"
-                   "*Welcome to Emacs' Preamble.*\n"
-                   "Emacs' Preamble was loaded in =%.2fms=.") (preamble/load-time)))
-
 (preamble/eval-after-init
- (run-at-time 2 nil 'preamble/greet-user))
+ (run-at-time 2 nil 'preamble/greet-user-with-load-time))
 ;;; init.el ends here

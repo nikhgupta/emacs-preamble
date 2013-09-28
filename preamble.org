@@ -1,1928 +1,1881 @@
-#+TITLE: Emacs' Preamble
 #+AUTHOR: Nikhil Gupta
-#+EMAIL: me@nikhgupta.com
-#+DATE: 2013-09-21 Sun
-#+DESCRIPTION: Emacs' Preamble: Configuration for Emacs in a literal-programming (self-documenting) style.
-#+KEYWORDS:    org babel emacs configuration
-#+OPTIONS:     toc:3 todo:t html-style:nil
-#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
-#+EXPORT_SELECT_TAGS: export
-#+EXPORT_EXCLUDE_TAGS: noexport notangle
-#+LINK_UP:
-#+Link_HOME:
-#+HTML_HEAD: <link rel="stylesheet" href="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/styles/dark.css" />
-#+HTML_HEAD: <script type="text/javascript" src="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/highlight.pack.js"></script>
-#+STARTUP: hideblocks
+#+EMAIL:  me@nikhgupta.com
+#+DATE:   2013-09-21 Sun
 
-* Motivation
-  I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of the awesome [[http://orgmode.org][org-mode]]
-  functionality, it provides. Definitely, I have been impressed. People were right /for once/! I
-  have, only, been using Emacs for a couple of weeks, and I'm already in love with it, primarily,
-  because:
-  - it has the neatest organizer in this world: the =org-mode=.
-  - it uses =elisp= to programmatically change itself.
+* Emacs' Preamble
+** Motivation
+I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of the awesome [[http://orgmode.org][org-mode]] feature,
+it provides. Definitely, I have been impressed. People were right /for once/! I have, only, been
+using Emacs for a couple of weeks, and I'm already in love with it, primarily, because:
+- it has the neatest organizer in this world: the =org-mode=.
+- it uses =elisp= to programmatically change itself.
 
-  So, soon I was dwelling inside the dark world of getting my new editor resonate with myself. I
-  tried several starter packages, /viz./:
-  - [[http://github.com/overtone/emacs-live][Emacs Live]]
-  - [[http://github.com/bbatsov/prelude][Emacs Prelude]]
-  - [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
-  - [[http://github.com/purcell/emacs.d][@purcell's emacs configuration]]
+So, soon I was dwelling inside the dark world of getting my new editor resonate with myself. I tried
+several starter packages, /viz./:
+- [[http://github.com/overtone/emacs-live][Emacs Live]]
+- [[http://github.com/bbatsov/prelude][Emacs Prelude]]
+- [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
+- [[http://github.com/purcell/emacs.d][@purcell's emacs configuration]]
 
-  And, I really enjoyed my couple of days of flirting with these kits, and they were really nice,
-  but somehow, they did not represent me.
+And, I really enjoyed my couple of days of flirting with these kits, and they were really nice, but
+somehow, they did not represent me.
 
-  #+BEGIN_QUOTE
-  My editor felt like someone else' baby in my hands - it was adorable, and cute and what not, but
-  it wasn't mine. :)
-  #+END_QUOTE
+#+BEGIN_QUOTE
+My editor felt like someone else' baby in my hands - it was adorable, and cute and what not, but it
+wasn't mine. :)
+#+END_QUOTE
 
-  So, I started working on my own take at Emacs' configuration, finally, and proudly called it
-  [[http://github.com/nikhgupta/preamble][Emacs' Preamble]] - made it, remade it, and remade it again and again and each time, I switched the
-  way it represented itself. I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], and wanted my own
-  to be based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
+So, I started working on my own take at Emacs' configuration, finally, and proudly, called it:
+[[http://github.com/nikhgupta/preamble][Emacs' Preamble]] - made it, remade it, and remade it again and again and each time, I switched the
+way it represented itself. I had already seen [[http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html][Sacha Chua's Emacs Configuration]], and wanted my own to
+be based upon [[http://orgmode.org/worg/org-contrib/babel/][org-babel]], as well.
 
-* Requirements
-  I am really unsure about the requirements, but I'm using this configuration in *Mac OSX 10.8.2
-  (Mountain Lion)*, *GNU Emacs 24.1.1*, and *org-mode v8.2*.
+** Philosophy
+=org-babel= is /awesome/. It empowers Org-mode to execute source code within Org-mode documents. It
+is built upon the principles of [[http://en.wikipedia.org/wiki/Literate_programming][Literate Programming]], and can embed multiple languages within a
+single document.
 
-  #+BEGIN_QUOTE
-  If you intend to use this configuration for yourself, then /hopefully/, the same should work
-  without giving you any headaches, if you are on a *Mac OSX*. Otherwise, feel free to pull your
-  hair, but don't even dare come and blame me for your /hair losses/, later!
+Extending upon the same, the current Org-mode file documents my configuration for Emacs, sanely
+named as *Emacs' Preamble*. The source code inside =elisp= source blocks is /tangled/ by Babel, and
+is then loaded as configuration via =org-babel-load-file= function. We make sure that only
+=emacs-lisp= based code is tangled by =org-mode=, as follows:
+#+BEGIN_SRC emacs-lisp
+  (org-babel-tangle-file "preamble.org" "preamble.el" "emacs-lisp")
+#+END_SRC
 
-  *If I were you, I would create my own baby!*
-  #+END_QUOTE
+** Website
+*Emacs' Preamble* exists in a [[http://github.com/nikhgupta/preamble][repository]] on [[http://github.com][Github]], and can be read there, as Github easily converts
+=org-mode= documents in a readable format. However, I have created a [[http://nikhgupta.com/preamble][dedicated section]] on my
+website, where the documentation (i.e. this file, itself) can be read in a much prettier format.
 
-* Philosophy
-  =org-babel= is /awesome/. It empowers Org-mode to execute source code within Org-mode
-  documents. It is built upon the principles of [[http://en.wikipedia.org/wiki/Literate_programming][Literate Programming]], and can embed multiple
-  languages within a single document.
+** Credits
+This configuration for Emacs, i.e. Emacs' Preamble is heavily inspired form (in order):
+- [[https://github.com/purcell/emacs.d][@purcell's emacs.d]]
+- [[https://github.com/steckerhalter/steckemacs][steckemacs]]
 
-  Extending upon the same, the current Org-mode file documents my configuration for Emacs, sanely
-  named as *Emacs' Preamble*. The source code inside =elisp= source blocks is /tangled/ by Babel,
-  and is then loaded as configuration via =org-babel-load-file= function.
+** Requirements
+I am really unsure about the requirements, but I'm using this configuration in *Mac OSX 10.8.2
+(Mountain Lion)*, *GNU Emacs 24.1.1*, and *org-mode v8.2*.
 
-  This configuration for Emacs, i.e. Emacs' Preamble is heavily inspired form (in order):
-  - [[https://github.com/purcell/emacs.d][@purcell's emacs.d]]
+#+BEGIN_QUOTE
+*Emacs' Preamble* was designed on =Emacs v24.1.1=, and therefore, I am sure that it will perform, as
+intended, on *Emacs v24+*. Older versions of Emacs might not work properly.
+#+END_QUOTE
 
-* Initialization
-  [[file:init.el][It all started with a big-bang!]]
-  (oh, yes! I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].)
+** Installation
+I tried to make sure that *Emacs' Preamble* can be installed in as minimum steps, as possible. At
+the moment, you can simply clone the github repository on your computer and link =~/.emacs.d= to
+that directory, e.g.:
+#+BEGIN_SRC bash
+  git clone http://github.com/nikhgupta/preamble ~/Code/github/emacs-preamble
+  ln -nfs ~/Code/github/emacs-preamble ~/.emacs.d
+#+END_SRC
 
-  The above file, basically, checks to see whether the Org-mode version is above =8.0=. If not, it
-  upgrades Org-mode by installing it via Emacs' Package Manager, and then tangles and loads =elisp=
-  source codes inside the current file by using =org-babel-load-file= function.
+That's it. Now, I'll fire my =emacs= to install the dependencies and packages. I'll sit back for a
+while, and maybe, a coffee will do me just good, at the moment.
 
-  At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs Server]] running on my machine, when it boots up (I, later, plan to
-  run it on my VPS, and connect remotely), and use the =emacsclient= commands to connect to it. This
-  way, this configuration is loaded/tangled only once, providing super-fast experience for my
-  /use-cases/.
+* Basic Configuration
+** Initialization
+[[file:init.el][It all started with a big-bang!]] (in this case, a meagre =init.el= file)
 
-** Tangled?
-   O'course, =org-mode= loves to tangle things, but it might get tangled itself in tangling the
-   things, I have tangled here for tangling. Therefore, we specify what we want it to tangle:
-   #+BEGIN_SRC emacs-lisp
-     (org-babel-tangle-file "readme.org" "readme.el" "emacs-lisp")
-   #+END_SRC
-** Compatibility                                              :compatibility:
-   Since, this configuration uses features new to =Emacs v24=, and since I don't have time enough to
-   work out a /compatible/ configuration for older version of Emacs, display a friendly warning, if
-   the Emacs version is below =v24=.
+#+BEGIN_QUOTE
+Oh, yes! Did I mention? I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].)
+#+END_QUOTE
 
-   #+BEGIN_SRC emacs-lisp
-     ;; display an error if emacs-version is less than 24.
-     (when (version< emacs-version "24")
-       (error "Only Emacs version 24 and up are supported."))
-   #+END_SRC
+The above file, basically, checks to see whether the Org-mode version is above =8.0=. If not, it
+upgrades Org-mode by installing it via Emacs' Package Manager, and then tangles and loads =elisp=
+source codes inside the current file by using =org-babel-load-file= function.
 
-** Debugging                                  :quantified:benchmark:debugger:
-   When working with such a configuration as this one, I often tend to pull my hair out.. This
-   section helps me track down possible causes of such erratic behaviour of mine and be more
-   insane, instead. Also, I hate those pesky plugins which make my Emacs' Preamble far too
-   slow. This section, further, helps me benchmark my configuration for the exact same purpose.
+At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs Server]] running on my machine, when it boots up (I, later, plan to
+run it on my VPS, and connect remotely), and use the =emacsclient= commands to connect to it. This
+way, this configuration is loaded/tangled only once, providing super-fast experience for my
+/use-cases/.
 
-   The settings of this section are turned on or off via the following variable:
+** Compatibility
+Since, this configuration uses features that are new to =Emacs v24=, and since I don't have time
+enough to work out a /compatible/ configuration for older version of Emacs, display a friendly
+warning, if the Emacs version is below =v24=.
 
-   #+BEGIN_SRC emacs-lisp
-     (setq debug-on-error 'nil)  ; set this to 'nil to disable this section
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (when (version< emacs-version "24")
+    (warn "Only Emacs version 24 and up are supported."))
+#+END_SRC
+
+** Debugging
+*** Why?
+When working with such a configuration as this one, I often tend to pull my hair out.. This section
+helps me track down possible causes of such erratic behaviour of mine and be more insane,
+instead. Also, I hate those pesky plugins which make my *Emacs' Preamble* configuration far too
+slow. This section, further, helps me benchmark my configuration for the exact same purpose.
+
+*** Toggling Debugger
+The settings of this section are turned on or off via the following variable:
+#+BEGIN_SRC emacs-lisp
+  (setq debug-on-error 'nil)  ; set to 't to enable debugging messages
+#+END_SRC
 
 *** Checkpoints
-    Since, this is one huge file, it is often hard to debug where a particular error has occurred,
-    and therefore, I need some visual clue of some type, a.k.a. =checkpoints=. The following
-    functions, together, help me with that. I can, simply, make a call to the =preamble/checkpoint=
-    function, in order to echo something inside my =*Messages*= buffer, and immediately, know nearby
-    location of where Emacs has stopped loading this configuration. Not to mention, these
-    checkpoints, further, help me by acting as indirect comments.
+Since, this is one huge file, it is often hard to debug where a particular error has occurred, and
+therefore, I need some visual clue of some type, a.k.a. =checkpoints=. The following functions,
+together, help me with that. I can, simply, make a call to the =preamble/checkpoint= function, in
+order to echo something inside my =*Messages*= buffer, and immediately, know nearby location of
+where Emacs has stopped loading this configuration. Not to mention, these checkpoints, further, help
+me by acting as indirect comments.
 
-    #+BEGIN_SRC emacs-lisp
-      ;; subtract two time entities
-      (defun preamble/time-subtract-millis (b a)
-        "Function that can subtract time string A from time string B."
-        (* 1000.0 (float-time (time-subtract b a))))
+#+BEGIN_SRC emacs-lisp
+  ;; subtract two time entities
+  (defun preamble/time-subtract-millis (b a)
+  "Function that can subtract time string A from time string B."
+  (* 1000.0 (float-time (time-subtract b a))))
 
-      ;; convenient function to measure load-time since initialization
-      (defun preamble/load-time()
-        "Return total load-time from the initialization."
-        (preamble/time-subtract-millis (current-time) before-init-time))
+  ;; convenient function to measure load-time since initialization
+  (defun preamble/load-time()
+  "Return total load-time from the initialization."
+  (preamble/time-subtract-millis (current-time) before-init-time))
 
-      ;; function to display which section is being loaded..
-      (defun preamble/checkpoint (msg)
-        "Echo MSG to *Messages*, thereby, making it act as a checkpoint."
-        (if debug-on-error (message "- At =%.2fms=, I %s.." (preamble/load-time) msg)))
+  ;; function to display which section is being loaded..
+  (defun preamble/checkpoint (msg)
+  "Echo MSG to *Messages*, thereby, making it act as a checkpoint."
+  (if debug-on-error (message "- At =%.2fms=, I %s.." (preamble/load-time) msg)))
 
-      ;; an example of above
-      (preamble/checkpoint "initialized benchmarking")
-    #+END_SRC
+  ;; an example of above
+  (preamble/checkpoint "initialized benchmarking")
+#+END_SRC
 
 *** Benchmarking
-    Moreover, since, I am a quantified-geek, I love to measure various things. Why not measure time
-    taken by our Emacs configuration, as well?
+Moreover, since, I am a quantified-geek, I love to measure various things. Why not measure time
+taken by our Emacs configuration, as well?
 
-    This section, also, enables me to measure the time taken by various features in require'ing
-    them, as well as total time taken by the Emacs to load this configuration. When Emacs load this
-    configuration, it displays which features were =require='d, and how much time that took. This
-    is, especially, useful for debugging which module is making our Emacs startup, so slow.
+This section, also, enables me to measure the time taken by various features in require'ing them, as
+well as total time taken by the Emacs to load this configuration. When Emacs load this
+configuration, it displays which features were =require='d, and how much time that took. This is,
+especially, useful for debugging which module is making our Emacs startup, so slow.
 
-    #+BEGIN_SRC emacs-lisp
-      ;; function to display how much time a particular feature took to require..
-      (defun preamble/require-time-message(package time)
-        (if debug-on-error ( message
-                             "- At =%.2fms=, I required a feature: =%s=, which took me =%0.2fms=."
-                             (preamble/load-time) package time)))
+#+BEGIN_SRC emacs-lisp
+  ;; function to display how much time a particular feature took to require..
+  (defun preamble/require-time-message(package time)
+    (if debug-on-error ( message
+                         "- At =%.2fms=, I required a feature: =%s=, which took me =%0.2fms=."
+                         (preamble/load-time) package time)))
 
-      (defvar preamble/require-times nil
-        "A list of (FEATURE . LOAD-DURATION).
-        LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
+  (defvar preamble/require-times nil
+    "A list of (FEATURE . LOAD-DURATION).
+  LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
 
-      (defadvice require
-        (around build-require-times (feature &optional filename noerror) activate)
-        "Note in `preamble/require-times' the time taken to require each feature."
-        (let* ((already-loaded (memq feature features))
-               (require-start-time (and (not already-loaded) (current-time))))
-          (prog1
-              ad-do-it
-            (when (and (not already-loaded) (memq feature features) debug-on-error)
-                (setq feature-required-time
-                      (preamble/time-subtract-millis (current-time) require-start-time))
-                (preamble/require-time-message feature feature-required-time)
-                (add-to-list 'preamble/require-times
-                           (cons feature
-                                 (preamble/time-subtract-millis (current-time)
-                                                                require-start-time))
-                           t)))))
-    #+END_SRC
+  (defadvice require
+    (around build-require-times (feature &optional filename noerror) activate)
+    "Note in `preamble/require-times' the time taken to require each feature."
+    (let* ((already-loaded (memq feature features))
+           (require-start-time (and (not already-loaded) (current-time))))
+      (prog1
+          ad-do-it
+        (when (and (not already-loaded) (memq feature features) debug-on-error)
+          (setq feature-required-time
+                (preamble/time-subtract-millis (current-time) require-start-time))
+          (preamble/require-time-message feature feature-required-time)
+          (add-to-list 'preamble/require-times
+                       (cons feature
+                             (preamble/time-subtract-millis (current-time)
+                                                            require-start-time))
+                       t)))))
+#+END_SRC
 
-** Avoid Screen Flickers                               :gui:perfection:modes:
-   Now that, I have =Emacs v24= with me, I would first disable some of the GUI features early in
-   the startup so as to ensure that the screen does not flicker when turning them off, otherwise.
+** Avoid Screen-flickering
+Now that, I have =Emacs v24= with me, I would first disable some of the GUI features early in the
+startup so as to ensure that the screen does not flicker when turning them off, otherwise.
+#+BEGIN_SRC emacs-lisp
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (setq inhibit-startup-message 't) ; disable ugly start screen
+#+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "disabled some GUI features, so as to avoid screen-flickering")
-     (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-     (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-     (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-   #+END_SRC
+** Custom Routines
+*** Variables
+#+BEGIN_SRC emacs-lisp
+  (defvar preamble-dir
+  (file-name-directory (file-truename load-file-name))
+  "The root directory for Emacs' Preamble configuration.")
 
-   Also, do not display the ugly splash screen.
+  (defvar preamble-vendor-dir (concat preamble-dir "/vendors")
+  "The directory which contains files from our vendors.")
 
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "disabled the ugly splash screen")
-     (setq inhibit-startup-message 't)
-   #+END_SRC
+  (defvar preamble/bookmark-file (expand-file-name ".bookmarks.el" preamble-dir)
+  "The file where all the bookmarks will be saved.")
+#+END_SRC
 
-** TODO remove the following settings, when configuration is complete. :fixup:
+*** Constants
+#+BEGIN_SRC emacs-lisp
+    (defconst *is-mac* (eq system-type 'darwin))
+    (defconst *is-linux* (eq system-type 'gnu/linux))
+    (defconst *is-windows* (eq system-type 'windows-nt))
+    (defconst *is-cygwin* (eq system-type 'cygwin))
+    (defconst *is-mac-gui* (and *is-mac* window-system))
+    (defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+    (defconst *spell-check-support-enabled* nil)
+#+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (auto-fill-mode 't)
-     (global-linum-mode 1)
-     (xterm-mouse-mode 1)
-     (setq-default fill-column 100)
-   #+END_SRC
+*** Macros
+- Evaluate some =elisp= code, after a feature has been loaded.
+  #+BEGIN_SRC emacs-lisp
+    (defmacro after (feature &rest body)
+        "After FEATURE is loaded, evaluate BODY."
+        (declare (indent defun))
+        `(eval-after-load ,feature
+        '(progn ,@body)))
+  #+END_SRC
+*** Functions
+**** Evaluate =elisp= code after initialization
+#+BEGIN_SRC emacs-lisp
+  (defun preamble/eval-after-init (form)
+      "Add `(lambda () FORM)' to `after-init-hook'.
+      If Emacs has already finished initialization, also eval FORM immediately."
+      (let ((func (list 'lambda nil form)))
+      (add-hook 'after-init-hook func)
+      (when after-init-time
+          (eval form))))
+#+END_SRC
 
-** Constants/Variables Used
-   Lets, define some very basic variables for important directories.
+**** Greet the user and display load time
+#+BEGIN_SRC emacs-lisp
+  (defun preamble/greet-user-with-load-time()
+      "Greet and display load time to the user."
+      (message (concat "--------------------------------------------------------------------\n"
+                      "*Welcome to Emacs' Preamble.*\n"
+                      "Emacs' Preamble was loaded in =%.2fms=.") (preamble/load-time)))
+#+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (defvar preamble-dir
-       (file-name-directory (file-truename load-file-name))
-       "The root directory for Emacs' Preamble configuration.")
+**** Add subfolders of a directory to load path
+I have added the following function to add all subdirectories inside a given directory to the
+=load-path=.
+#+BEGIN_SRC emacs-lisp
+  (defun preamble/add-subfolders-to-load-path (parent-dir)
+    "Add all level PARENT-DIR subdirs to the `load-path'."
+    (dolist (f (directory-files parent-dir))
+      (let ((name (expand-file-name f parent-dir)))
+        (when (and (file-directory-p name)
+                   (not (equal f ".."))
+                   (not (equal f ".")))
+          (add-to-list 'load-path name)
+          (preamble/add-subfolders-to-load-path name)))))
+#+END_SRC
 
-     (defvar preamble-vendor-dir (concat preamble-dir "/vendors")
-       "The directory which contains files from our vendors.")
-   #+END_SRC
+**** Open the most recent buffer, quickly.
+Define a really handy function to quickly split the current window to open the most recent buffer.
+#+BEGIN_SRC emacs-lisp
+    ;; Borrowed from http://postmomentum.ch/blog/201304/blog-on-emacs
+    (defun preamble/split-window()
+    "Split the window to see the most recent buffer in the other window.
+    Call a second time to restore the original window configuration."
+    (interactive)
+    (if (eq last-command 'preamble/split-window)
+        (progn
+            (jump-to-register :preamble/split-window)
+            (setq this-command 'preamble/unsplit-window))
+        (window-configuration-to-register :preamble/split-window)
+        (switch-to-buffer-other-window nil)))
+#+END_SRC
 
-   Also, I would define some constants based on the kind of operating system, application, and
-   features, I may use.
-
-   #+BEGIN_SRC emacs-lisp
-     (defconst *is-mac* (eq system-type 'darwin))
-     (defconst *is-linux* (eq system-type 'gnu/linux))
-     (defconst *is-windows* (eq system-type 'windows-nt))
-     (defconst *is-cygwin* (eq system-type 'cygwin))
-     (defconst *is-mac-gui* (and *is-mac* window-system))
-     (defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
-     (defconst *spell-check-support-enabled* nil)
-   #+END_SRC
-
-** =eval-after-load= easily                                          :tricks:
-   We define a macro named =after=, which evaluates the given =elisp= statements, after a
-   particular Emacs' =feature= has been loaded.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "overloaded =eval-after-load= function")
-     (defmacro after (feature &rest body)
-       "After FEATURE is loaded, evaluate BODY."
-       (declare (indent defun))
-       `(eval-after-load ,feature
-         '(progn ,@body)))
-   #+END_SRC
-
-** Load Path                                               :functions:tricks:
-   Next, we add some functions which load =*.el= files and subdirectories inside a given directory
-   to the =load-path=. We use these functions to add some files/dirs to the =load-path=, as
-   required.
-
-   #+BEGIN_SRC emacs-lisp
-     (defun preamble/load-all-elisp-files (dir)
-       "Load all Elisp files inside DIR."
-       (mapc 'load (directory-files dir 't "^[^#].*el$")))
-
-     (defun preamble/add-subfolders-to-load-path (parent-dir)
-      "Add all level PARENT-DIR subdirs to the `load-path'."
-      (dolist (f (directory-files parent-dir))
-        (let ((name (expand-file-name f parent-dir)))
-          (when (and (file-directory-p name)
-                     (not (equal f ".."))
-                     (not (equal f ".")))
-            (add-to-list 'load-path name)
-            (preamble/add-subfolders-to-load-path name)))))
-
-     (preamble/checkpoint "added subdirectories of =./vendors= to =load-path=")
-     (preamble/add-subfolders-to-load-path preamble-vendor-dir)
-   #+END_SRC
-
-** Custom File
-   Emacs uses a /custom file/ to store changes done via [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Emacs' Easy Customization]] method. We are,
-   simply, setting it up below, so that all the custom configuration exists in a separate file.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "set up location for custom file")
-     (setq custom-file (expand-file-name "custom.el" preamble-dir))
-     (load custom-file)
-   #+END_SRC
-
-** Custom Functions
-   #+BEGIN_SRC emacs-lisp
-     (defun preamble/eval-after-init (form)
-       "Add `(lambda () FORM)' to `after-init-hook'.
-       If Emacs has already finished initialization, also eval FORM immediately."
-       (let ((func (list 'lambda nil form)))
-         (add-hook 'after-init-hook func)
-         (when after-init-time
-           (eval form))))
-   #+END_SRC
+*** Settings
+Emacs uses a /custom file/ to store changes done via [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Emacs' Easy Customization]] method. I'm, simply,
+setting it up below, so that all the custom configuration exists in a separate file.
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file (expand-file-name "custom.el" preamble-dir))
+  (load custom-file)
+#+END_SRC
+*** Vendors
+=vendors= directory was created for the purpose of putting up /un-published/ packages inside it, via
+git repository cloning. I'm just adding all of its subdirectories to the load path.
+#+BEGIN_SRC emacs-lisp
+  (preamble/add-subfolders-to-load-path preamble-vendor-dir)
+#+END_SRC
 ** General Behaviour
-   This section sets up generic behaviour for Emacs' Preamble.
+*** Encoding Support
+Setup encoding used by the Emacs to =utf-8=, thereby, easing out my life.
+#+BEGIN_SRC emacs-lisp
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+#+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "gave directions to require [[http://common-lisp.net][Common Lisp]]")
-     (eval-when-compile (require 'cl))
+*** Auto-reload file changed externally
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode)
+  (setq global-auto-revert-non-file-buffers t
+        auto-revert-verbose nil)
+#+END_SRC
+*** Miscelleneous
+#+BEGIN_SRC emacs-lisp
+  (eval-when-compile (require 'cl))         ; load common lisp
+  (fset 'yes-or-no-p 'y-or-n-p)             ; shut up, and be concise
 
-     (preamble/checkpoint "set support for UTF8 encoding")
-     (setq locale-coding-system 'utf-8)
-     (set-terminal-coding-system 'utf-8)
-     (set-keyboard-coding-system 'utf-8)
-     (set-selection-coding-system 'utf-8)
-     (prefer-coding-system 'utf-8)
+  (setq-default gc-cons-threshold 50000000  ; perform garbage collection at 50MB (instead of 0.76MB)
+                buffers-menu-max-size 30    ; max num of entries in Buffers menu
+                compilation-scroll-output t ; scroll down to show last line in compilation mode
+                make-backup-files nil       ; do not make backups for files
+                mouse-yank-at-point t       ; mouse yank at point instead of at click
+                save-interprogram-paste-before-kill t ; save clipboard into kill ring b4 replacing it
+                scroll-preserve-screen-position 'always ; point keeps its position when scrolling
+                set-mark-command-repeat-pop t ; repeating C-SPC after popping mark pops it again
+                grep-scroll-output t
+                grep-highlight-matches t
+                bookmark-default-file preamble/bookmark-file ; default bookmark file
+                ediff-split-window-function 'split-window-horizontally
+                ediff-window-setup-function 'ediff-setup-windows-plain)
+#+END_SRC
 
-     (preamble/checkpoint "reduced the frequency of garbage collection")
-     ; new: 50MB, default: 0.76MB
-     (setq gc-cons-threshold 50000000)
+** General Appearance
+*** Editor
+#+BEGIN_SRC emacs-lisp
+  (global-linum-mode)           ; display line numbers
 
-     (setq preamble/bookmark-file
-       (expand-file-name ".bookmarks.el" user-emacs-directory))
+  (setq-default blink-cursor-delay 0        ; seconds after which cursor starts to blink
+                blink-cursor-interval 0.4   ; length of cursor blink interval
+                line-spacing 0.2            ; space to put between lines
+                truncate-lines nil          ; display continuation lines
+                truncate-partial-width-windows nil)
+#+END_SRC
 
-     (preamble/checkpoint "ensured that file changes from disk are auto-restored")
-     (global-auto-revert-mode 1)   ; restore changes from disk in buffer
-     (setq global-auto-revert-non-file-buffers t
-           auto-revert-verbose nil)
-
-     (preamble/checkpoint "configured general behaviour of Emacs' Preamble")
-     (setq-default
-       buffers-menu-max-size 30    ; max num of entries in Buffers menu
-       compilation-scroll-output t ; scroll down to always show last line of output
-       make-backup-files nil       ; do not make backups for files
-       mouse-yank-at-point t       ; mouse yank at point instead of at click
-       save-interprogram-paste-before-kill t   ; save clipboard strings into kill ring before replacing them
-       scroll-preserve-screen-position 'always ; point always keeps its position when scrolling
-       set-mark-command-repeat-pop t           ; repeating C-SPC after popping mark pops it again
-       grep-scroll-output t
-       grep-highlight-matches t
-       bookmark-default-file preamble/bookmark-file ; default bookmark file
-       ediff-split-window-function 'split-window-horizontally
-       ediff-window-setup-function 'ediff-setup-windows-plain)
-
-     (fset 'yes-or-no-p 'y-or-n-p)
-   #+END_SRC
-
-* Packages
-  OK, so I am using the default [[http://www.emacswiki.org/emacs/ELPA][Package Manager]] that is shipped with Emacs 24 to load my packages
-  (anything else, does not make sense, anyways). However, I must, first, tell it to use more sources
-  to search for a required package (a.k.a. =yum=):
-
-** Repositories
-   I am using [[http://www.emacswiki.org/emacs-en/Marmalade][Marmalade]], [[http://www.emacswiki.org/emacs-en/MELPA][MELPA]], & [[http://orgmode.org/elpa.html][Org ELPA]] repositories, for my purposes.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "added more repositories to Emacs' Package Manager")
-
-     (require 'package)
-     (setq package-archives
-       '(("marmalade" . "http://marmalade-repo.org/packages/")
-         ("org"       . "http://orgmode.org/elpa/")
-         ("melpa"     . "http://melpa.milkbox.net/packages/")))
-
-     (package-initialize)
-   #+END_SRC
-
-** On Demand Installation                                  :functions:tricks:
-   I have added some convenient functions to install a package, only when it is explicitely told to
-   do so, which means that instead of writing a list of our packages (that need to be installed and
-   checked on every run of Emacs) in this section, we are now able to =install= them right along
-   with the rest of their configuration. This is called *On Demand Installation* of the packages.
-
-   #+BEGIN_SRC emacs-lisp
-     ;; on-demand installation of a package
-     (defun preamble/require-package (package &optional min-version no-refresh)
-       "Install given PACKAGE, optionally requiring MIN-VERSION.
-       If NO-REFRESH is non-nil, the available package lists will not be
-       re-downloaded in order to locate PACKAGE."
-       (if (package-installed-p package min-version)
-           t
-         (if (or (assoc package package-archive-contents) no-refresh)
-             (package-install package)
-           (progn
-             (package-refresh-contents)
-             (preamble/require-package package min-version t)))))
-
-     ;; on-demand installation of multiple packages
-     (defun preamble/require-packages(packages-list)
-       "Install packages from a given PACKAGES-LIST, using `preamble-require-package' function."
-       (mapc #'preamble/require-package packages-list))
-   #+END_SRC
-
-* User Interface
-
-  #+BEGIN_QUOTE
-  An editor can only improve my efficiency, if it pleases my eyes.
-  --- [[http://github.com/nikhgupta][Nikhil Gupta]]
-  #+END_QUOTE
-
-  This is true, since I work for almost 12-16 hours on my computer, with almost 70% time either in
-  my Shell or in my Editor, and hence, these two things need to be so adorable, and so damn
-  impressive, that I would never want to leave them alone.
-
-** Themes                                          :themes:functions:package:
-   Firstly, lets add some themes to Emacs' Preamble - that way, things should get a major overhaul
-   and already, help us through half the work of making it look pretty.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "installed some themes /(duh! dunno, was that even required?)/")
-     (preamble/require-packages '( zenburn-theme noctilux-theme sublime-themes
-                                   color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow ))
-
-     ;; quick access for some themes, I use often.
-     (defun light() "Activate a light color theme."
-       (interactive) (color-theme-sanityinc-solarized-light))
-     (defun dark() "Activate a dark color theme."
-       (interactive) (color-theme-sanityinc-solarized-dark))
-     (defun eighties() "Activate an 80's theme."
-       (interactive) (color-theme-sanityinc-tomorrow-eighties))
-
-     ;; ensures that themes will be applied even if they have not been customized
-     (defun preamble/reapply-themes ()
-       "Forcibly load the themes listed in `custom-enabled-themes'."
-       (dolist (theme custom-enabled-themes)
-         (unless (custom-theme-p theme) (load-theme theme)))
-       (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
-
-     ;; lets run the above function after Emacs has loaded this configuration.
-     (add-hook 'after-init-hook 'preamble/reapply-themes)
-
-     (preamble/checkpoint "set up a default theme")
-     (setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
-   #+END_SRC
-
-** Appearance                                               :modes:functions:
-   I have defined some modes and settings below, that directly have an effect on the appearance of
-   Emacs' Preamble. O'course, this is as per my taste, and bound to change like seasons on this
-   earth.
-
-   At the moment, =line numbers= and =column numbers= are displayed, as I really find them very
-   useful. Moreover, =trailing-whitespace= is highlighted, =cursor= blinks, =continuation lines=
-   are displayed, and so on..
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "configured Emacs' Preamble for better appearance")
-     (global-linum-mode 1)           ; display line numbers
-     (column-number-mode 1)          ; display column number in mode line
-
-     ;; other configuration
-     (setq-default
-      blink-cursor-delay 0        ; seconds after which cursor starts to blink
-      blink-cursor-interval 0.4   ; length of cursor blink interval
-      line-spacing 0.2            ; space to put between lines
-      tooltip-delay 1.5           ; seconds to wait before displaying tooltip
-      visible-bell t              ; try to flash the frame to represent bell
-      truncate-lines nil          ; display continuation lines
-      truncate-partial-width-windows nil)
-
-     ;; function to adjust opacity of the current frame by some value
-     (defun preamble/adjust-opacity (frame incr)
-       (let* ((oldalpha (or (frame-parameter frame 'alpha) 100))
-              (newalpha (+ incr oldalpha)))
-         (when (and (<= frame-alpha-lower-limit newalpha) (>= 100 newalpha))
-           (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
-   #+END_SRC
+*** Modeline
+#+BEGIN_SRC emacs-lisp
+  (column-number-mode)                    ; display column number in mode line
+#+END_SRC
 
 *** WhiteSpace
-    I despise =whitespace=, esp. the freaky trailing ones. So, I explicitely set them to be visible,
-    and automatically remove them when buffer is saved. However, I would not like to see =trailing
-    whitespace= in SQLi, inf-ruby, etc.
+I despise =whitespace=, esp. the freaky trailing ones. So, I explicitely set them to be visible,
+and automatically remove them when buffer is saved.
+#+BEGIN_SRC emacs-lisp
+  (setq show-trailing-whitespace 't)        ; show trailing whitespace in editor
+  (add-hook 'before-save-hook 'delete-trailing-whitespace) ; delete them when buffer is saved
 
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured whitespace related settings")
-      (setq show-trailing-whitespace 't)
+  ;; do not show trailing whitespace in some modes
+  (dolist (hook '(term-mode-hook comint-mode-hook compilation-mode-hook))
+  (add-hook hook (lambda () (setq show-trailing-whitespace nil))))
+#+END_SRC
 
-      ;; delete trailing whitespace when buffer is saved
-      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+*** Disable GUI dialog boxes
+#+BEGIN_SRC emacs-lisp
+    (setq use-file-dialog 'nil) ; use mini-buffer for file dialogs
+    (setq use-dialog-box  'nil) ; use mini-buffer for everythin' else..
+    (eval '(setq inhibit-startup-echo-area-message "nikhgupta"))
+#+END_SRC
 
-      ;; do not show trailing whitespace in some modes
-      (dolist (hook '(term-mode-hook comint-mode-hook compilation-mode-hook))
-        (add-hook hook (lambda () (setq show-trailing-whitespace nil))))
-    #+END_SRC
+*** Miscelleneous
+#+BEGIN_SRC emacs-lisp
+  (setq-default tooltip-delay 1.5         ; seconds to wait before displaying tooltip
+                visible-bell t            ; try to flash the frame to represent bell
+                indicate-empty-lines t    ; show an indicator in left fringe for lines not in buffer
+                )
+#+END_SRC
+** Editor Behaviour
+*** Modes
+#+BEGIN_SRC emacs-lisp
+  (electric-pair-mode)               ; automatically insert delimiter pairs
+  (delete-selection-mode)            ; typed text replaces the active selection
+  (transient-mark-mode)              ; highlight the region when mark is active
+  (cua-selection-mode 't)            ; for rectangular selections, CUA is nice
+  (show-paren-mode)                  ; show matching parenthesis
+  (auto-fill-mode)                   ; automatically wrap lines when longer than `fill-column'
 
-*** Fonts
-    I am, often, working on multiple monitors, and need to increase/reduce size of my fonts. For
-    that particular purpose, I have defined the following functions to increase/reduce the font
-    sizes, as per my needs.
+  (setq-default case-fold-search t   ; searches and matches should ignore case
+                indent-tabs-mode nil ; indentation can not insert tabs
+                fill-column 100)
+#+END_SRC
+*** Enable some disabled commands
+We do not want to disable narrowing commands, or case-change functions.
+#+BEGIN_SRC emacs-lisp
+    (put 'narrow-to-region 'disabled nil)
+    (put 'narrow-to-page 'disabled nil)
+    (put 'narrow-to-defun 'disabled nil)
+    (put 'upcase-region 'disabled nil)
+    (put 'downcase-region 'disabled nil)
+#+END_SRC
+*** Functions
+#+BEGIN_SRC emacs-lisp
+    (autoload 'zap-up-to-char "misc" "Kill up to, but not including
+    ARGth occurrence of CHAR.")
 
-    #+BEGIN_SRC emacs-lisp
-      (defun preamble/font-name-replace-size (font-name new-size)
-        (let ((parts (split-string font-name "-")))
-          (setcar (nthcdr 7 parts) (format "%d" new-size))
-          (mapconcat 'identity parts "-")))
+    (defun duplicate-region (beg end)
+    "Insert a copy of the current region after the region."
+    (interactive "r")
+    (save-excursion
+        (goto-char end)
+        (insert (buffer-substring beg end))))
 
-      (defun preamble/increment-default-font-height (delta)
-        "Adjust the default font height by DELTA on every frame.
-      Emacs will keep the pixel size of the frame approximately the
-      same.  DELTA should be a multiple of 10, to match the units used
-      by the :height face attribute."
-        (let* ((new-height (+ (face-attribute 'default :height) delta))
-               (new-point-height (/ new-height 10)))
-          (dolist (f (frame-list))
-            (with-selected-frame f
-              ;; Latest 'set-frame-font supports a "frames" arg, but
-              ;; we cater to Emacs 23 by looping instead.
-              (set-frame-font (preamble/font-name-replace-size
-                               (face-font 'default)
-                               new-point-height)
-                              t)))
-          (set-face-attribute 'default nil :height new-height)
-          (message "default font size is now %d" new-point-height)))
+    (defun duplicate-line-or-region (prefix)
+    "Duplicate either the current line or any current region."
+    (interactive "*p")
+    (whole-line-or-region-call-with-region 'duplicate-region prefix t))
 
-      (defun preamble/increase-default-font-height ()
-        (interactive)
-        (preamble/increment-default-font-height 10))
+    (defun kill-back-to-indentation ()
+    "Kill from point back to the first non-whitespace character on the line."
+    (interactive)
+    (let ((prev-pos (point)))
+        (back-to-indentation)
+        (kill-region (point) prev-pos)))
 
-      (defun preamble/decrease-default-font-height ()
-        (interactive)
-        (preamble/increment-default-font-height -10))
-    #+END_SRC
+    (defun sort-lines-random (beg end)
+    "Sort lines in region randomly."
+    (interactive "r")
+    (save-excursion
+        (save-restriction
+        (narrow-to-region beg end)
+        (goto-char (point-min))
+        (let ;; To make `end-of-line' and etc. to ignore fields.
+            ((inhibit-field-text-motion t))
+            (sort-subr nil 'forward-line 'end-of-line nil nil
+                    (lambda (s1 s2) (eq (random 2) 0)))))))
+
+    (defun preamble/open-line-with-reindent (n)
+    "A version of `open-line' which reindents the start and end positions.
+    If there is a fill prefix and/or a `left-margin', insert them
+    on the new line if the line would have been blank.
+    With arg N, insert N newlines."
+    (interactive "*p")
+    (let* ((do-fill-prefix (and fill-prefix (bolp)))
+            (do-left-margin (and (bolp) (> (current-left-margin) 0)))
+            (loc (point-marker))
+            ;; Don't expand an abbrev before point.
+            (abbrev-mode nil))
+        (delete-horizontal-space t)
+        (newline n)
+        (indent-according-to-mode)
+        (when (eolp)
+        (delete-horizontal-space t))
+        (goto-char loc)
+        (while (> n 0)
+        (cond ((bolp)
+                (if do-left-margin (indent-to (current-left-margin)))
+                (if do-fill-prefix (insert-and-inherit fill-prefix))))
+        (forward-line 1)
+        (setq n (1- n)))
+        (goto-char loc)
+        (end-of-line)
+        (indent-according-to-mode)))
+#+END_SRC
+
+** Always Run Server
+#+BEGIN_SRC emacs-lisp
+(require 'server)
+(unless (server-running-p)
+    (server-start))
+#+END_SRC
+
+* Packages
+** Repositories
+OK, so I am using the default [[http://www.emacswiki.org/emacs/ELPA][Package Manager]] that is shipped with Emacs 24 to load my packages
+(anything else, does not make sense, anyways). However, I must, first, tell it to use more sources
+to search for a given package (a.k.a. =yum=). I am using [[http://www.emacswiki.org/emacs-en/Marmalade][Marmalade]], [[http://www.emacswiki.org/emacs-en/MELPA][MELPA]], & [[http://orgmode.org/elpa.html][Org ELPA]] repositories,
+for this purpose.
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (setq package-archives
+        '(("marmalade" . "http://marmalade-repo.org/packages/")
+          ("org"       . "http://orgmode.org/elpa/")
+          ("melpa"     . "http://melpa.milkbox.net/packages/")))
+  (package-initialize)
+#+END_SRC
+** On Demand Installation
+I have added some convenient functions to install a package, only when it is explicitely told to do
+so, which means that instead of adding these packages to the list of our packages (that need to be
+installed and checked on every run of Emacs) in the next section, we are now able to =install= them
+right along with the rest of their configuration. This is called *On Demand Installation* of the
+packages.
+#+BEGIN_SRC emacs-lisp
+  ;; on-demand installation of a package
+  (defun preamble/require-package (package &optional min-version no-refresh)
+    "Install given PACKAGE, optionally requiring MIN-VERSION.
+  If NO-REFRESH is non-nil, the available package lists will not be
+  re-downloaded in order to locate PACKAGE."
+    (if (package-installed-p package min-version)
+        t
+      (if (or (assoc package package-archive-contents) no-refresh)
+          (package-install package)
+        (progn
+          (package-refresh-contents)
+          (preamble/require-package package min-version t)))))
+
+  ;; on-demand installation of multiple packages
+  (defun preamble/require-packages(packages-list)
+    "Install packages from a given PACKAGES-LIST, using `preamble-require-package' function."
+    (mapc #'preamble/require-package packages-list))
+#+END_SRC
+
+** Trivial Packages
+Some packages are really trivial in nature, and nearly, need no configuration, at all. I have marked
+such packages to be installed, in this section. That way, I won't have to clobber up the
+configuration with different headings, and the likes.
+*** Related Functions
+#+BEGIN_SRC emacs-lisp
+  ; define trivial packages
+  (defun preamble/packages-installed-p ()
+    "Check if all packages in `preamble-trivial-packages' are installed."
+    (every #'package-installed-p preamble-trivial-packages))
+
+  (defun preamble/require-package (package)
+    "Install PACKAGE unless already installed."
+    (unless (package-installed-p package)
+      (package-install package)))
+
+  (defun preamble/require-packages (packages)
+    "Ensure PACKAGES are installed.
+    Missing packages are installed automatically."
+    (mapc #'preamble/require-package packages))
+
+  (defun preamble/install-packages ()
+    "Install all packages listed in `preamble-trivial-packages'."
+    (unless (preamble/packages-installed-p)
+      ;; check for new packages (package versions)
+      (message "%s" "Emacs' Preamble is now refreshing its package database...")
+      (package-refresh-contents)
+      (message "%s" " done.")
+      ;; install the missing packages
+      (preamble/require-packages preamble-trivial-packages)))
+#+END_SRC
+
+*** Installed Packages
+#+BEGIN_SRC emacs-lisp
+  (defvar preamble-trivial-packages '( dash
+                                       diminish
+                                       expand-region
+                                       flycheck
+                                       regex-tool
+                                       smex)
+    "A list of trivial packages that are installed on startup.")
+
+  (preamble/install-packages)
+#+END_SRC
+** File-type Specific Packages
+I have added a macro =preamble/auto-install= to automatically install the appropriate mode for a
+file with given extension, when it is opened. Furthermore, the macro ensures that the file is, then,
+opened in that mode. This can be used to automatically install the required packages for a specific
+filetype.
+*** Map exntensions to modes
+#+BEGIN_SRC emacs-lisp
+  (defvar preamble/auto-install-alist
+    '(("\\.clj\\'" clojure-mode clojure-mode)
+      ("\\.coffee\\'" coffee-mode coffee-mode)
+      ("\\.css\\'" css-mode css-mode)
+      ("\\.csv\\'" csv-mode csv-mode)
+      ("\\.d\\'" d-mode d-mode)
+      ("\\.dart\\'" dart-mode dart-mode)
+      ("\\.erl\\'" erlang erlang-mode)
+      ("\\.feature\\'" feature-mode feature-mode)
+      ("\\.go\\'" go-mode go-mode)
+      ("\\.groovy\\'" groovy-mode groovy-mode)
+      ("\\.haml\\'" haml-mode haml-mode)
+      ("\\.hs\\'" haskell-mode haskell-mode)
+      ("\\.latex\\'" auctex LaTeX-mode)
+      ("\\.less\\'" less-css-mode less-css-mode)
+      ("\\.lua\\'" lua-mode lua-mode)
+      ("\\.markdown\\'" markdown-mode markdown-mode)
+      ("\\.md\\'" markdown-mode markdown-mode)
+      ("\\.ml\\'" tuareg tuareg-mode)
+      ("\\.pp\\'" puppet-mode puppet-mode)
+      ("\\.php\\'" php-mode php-mode)
+      ("PKGBUILD\\'" pkgbuild-mode pkgbuild-mode)
+      ("\\.sass\\'" sass-mode sass-mode)
+      ("\\.scala\\'" scala-mode2 scala-mode)
+      ("\\.scss\\'" scss-mode scss-mode)
+      ("\\.slim\\'" slim-mode slim-mode)
+      ("\\.textile\\'" textile-mode textile-mode)
+      ("\\.yml\\'" yaml-mode yaml-mode))
+    "A list of filetype vs mode mappings.")
+#+END_SRC
+
+*** Add filetype mapping to =auto-mode-alist=
+#+BEGIN_SRC emacs-lisp
+  (defmacro preamble/auto-install (extension package mode)
+    "When file with EXTENSION is opened triggers auto-install of PACKAGE.
+  PACKAGE is installed only if not already present.  The file is opened in MODE."
+    `(add-to-list 'auto-mode-alist
+                  `(,extension . (lambda ()
+                                   (unless (package-installed-p ',package)
+                                     (package-install ',package))
+                                   (,mode)))))
+
+  (mapc (lambda (entry)
+          (let ((extension (car entry))
+                (package (cadr entry))
+                (mode (cadr (cdr entry))))
+            (unless (package-installed-p package)
+              (preamble/auto-install extension package mode))))
+        preamble/auto-install-alist)
+
+  ;; some modes don't have autoloads for the auto-mode-alist
+  ;; so we add them manually if package is already installed
+  (when (package-installed-p 'markdown-mode)
+    (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+  (when (package-installed-p 'pkgbuild-mode)
+    (add-to-list 'auto-mode-alist '("PKGBUILD\\'" . pkgbuild-mode)))
+#+END_SRC
+* User Interface
+#+BEGIN_QUOTE
+An editor can only improve my efficiency, if it pleases my eyes.
+--- [[http://github.com/nikhgupta][Nikhil Gupta]]
+#+END_QUOTE
+
+This is true, since I work for almost 12-16 hours on my computer, with almost 70% time either in
+my Shell or in my Editor, and hence, these two things need to be so adorable, and so damn
+impressive, that I would never want to leave them alone.
+
+** Themes
+*** Related Functions
+#+BEGIN_SRC emacs-lisp
+  ;; ensures that themes will be applied even if they have not been customized
+  (defun preamble/reapply-themes ()
+    "Forcibly load the themes listed in `custom-enabled-themes'."
+    (dolist (theme custom-enabled-themes)
+      (unless (custom-theme-p theme) (load-theme theme)))
+    (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+
+  ;; lets run the above function after Emacs has loaded this configuration.
+  (add-hook 'after-init-hook 'preamble/reapply-themes)
+#+END_SRC
+
+*** Installed Themes
+I am in love with elegance, and only prefer the themes which show such elegance. Emacs' Preamble
+uses a very specific set of 5 themes (or theme groups) at any time, since as per me, I would never
+need more than that, even if I am bored.
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '( noctilux-theme zenburn-theme sublime-themes
+                                               color-theme-sanityinc-solarized
+                                               color-theme-sanityinc-tomorrow ))
+#+END_SRC
+
+*** Current Theme
+#+BEGIN_SRC emacs-lisp
+  (setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
+#+END_SRC
+*** Quick Access to Themes
+#+BEGIN_SRC emacs-lisp
+  ;; quick access for some themes, I use often.
+  (defun light() "Activate a light color theme."
+    (interactive) (color-theme-sanityinc-solarized-light))
+  (defun dark() "Activate a dark color theme."
+    (interactive) (color-theme-sanityinc-solarized-dark))
+  (defun eighties() "Activate an 80's theme."
+    (interactive) (color-theme-sanityinc-tomorrow-eighties))
+#+END_SRC
 
 ** Frame and Windows
-   Frames in Emacs are, basically, today's world concept of *Windows*, i.e. an Emacs' frame is in
-   naive terms the application window for Emacs. It can either be created inside Terminal by calling
-   =emacsclient -t=, or as a GUI application by calling =emacsclient -c=. The code given below
-   defines general settings for such a frame:
+*** Fullscreen Support
+Simple fullscreen support for Emacs. Note that, Emacs in OSX already has a fullscreen support, and a
+similar support is built-in inside Emacs v24.4+.
+#+BEGIN_SRC emacs-lisp
+  (defun preamble/fullscreen ()
+    "Make Emacs window fullscreen.
+    This follows freedesktop standards, should work in X servers."
+    (interactive)
+    (if (eq window-system 'x)
+        (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+                               '(2 "_NET_WM_STATE_FULLSCREEN" 0))
+      (error "Only X server is supported")))
+#+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "ensured that condensed file name is shown as frame's title..")
-     (setq frame-title-format
-       '((:eval (if (buffer-file-name)
-         (abbreviate-file-name (buffer-file-name)) "%b"))))
+*** Better Frame Title
+#+BEGIN_SRC emacs-lisp
+    (setq frame-title-format
+    '((:eval (if (buffer-file-name)
+        (abbreviate-file-name (buffer-file-name)) "%b"))))
+#+END_SRC
 
-     (preamble/checkpoint "ensured that Emacs' Preamble is started maximized..")
-     (custom-set-variables '(initial-frame-alist
-       (quote ((fullscreen . maximized)))))
-   #+END_SRC
+*** Adjust Frame's Opacity
+#+BEGIN_SRC emacs-lisp
+  (defun preamble/adjust-opacity (frame incr)
+    (let* ((oldalpha (or (frame-parameter frame 'alpha) 100))
+           (newalpha (+ incr oldalpha)))
+      (when (and (<= frame-alpha-lower-limit newalpha) (>= 100 newalpha))
+        (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
 
-*** Hooks                                                             :hooks:
-    Since, I use both the GUI as well as the Terminal version of Emacs, depending upon the task at
-    hand, I have set up two different hooks that are binded to the =after-make-frame-functions=
-    hook. Furthermore, one of these hooks pertains to the GUI version, while the other one pertains
-    to the Terminal version of Emacs. These hooks are run when a new frame is created by Emacs.
+#+END_SRC
+*** Hook on: after frame is made
+Since, I use both the GUI as well as the Terminal version of Emacs, depending upon the task at hand,
+I have added 2 different hooks that are binded to =after-make-frame-functions= hook. Furthermore,
+one of these hooks pertains to the GUI version, while the other one pertains to the Terminal version
+of Emacs. These hooks are run when a new frame is created by Emacs.
+#+BEGIN_SRC emacs-lisp
+    (defvar preamble/after-make-console-frame-hooks '()
+    "Hooks to run after creating a new TTY frame")
+    (defvar preamble/after-make-window-system-frame-hooks '()
+    "Hooks to run after creating a new window-system frame")
 
-    #+BEGIN_SRC emacs-lisp
-      (defvar preamble/after-make-console-frame-hooks '()
-        "Hooks to run after creating a new TTY frame")
-      (defvar preamble/after-make-window-system-frame-hooks '()
-        "Hooks to run after creating a new window-system frame")
+    (defun preamble/run-after-make-frame-hooks (frame)
+    "Run configured hooks in response to the newly-created FRAME.
+    Selectively runs either `preamble/after-make-console-frame-hooks' or
+    `preamble/after-make-window-system-frame-hooks'"
+    (with-selected-frame frame
+        (run-hooks (if window-system
+                        'preamble/after-make-window-system-frame-hooks
+                    'preamble/after-make-console-frame-hooks))))
 
-      (defun preamble/run-after-make-frame-hooks (frame)
-        "Run configured hooks in response to the newly-created FRAME.
-      Selectively runs either `preamble/after-make-console-frame-hooks' or
-      `preamble/after-make-window-system-frame-hooks'"
-        (with-selected-frame frame
-          (run-hooks (if window-system
-                         'preamble/after-make-window-system-frame-hooks
-                       'preamble/after-make-console-frame-hooks))))
+    (add-hook 'after-make-frame-functions 'preamble/run-after-make-frame-hooks)
+#+END_SRC
 
-      (add-hook 'after-make-frame-functions 'preamble/run-after-make-frame-hooks)
-    #+END_SRC
+*** Mouse Support in Terminal
+When making new Terminal, i.e. =tty= frames in Emacs, I want to ensure that I am able to use mouse
+there, as well as paste by clicking mouse middle button.
+#+BEGIN_SRC emacs-lisp
+    (add-hook 'preamble/after-make-console-frame-hooks
+    (lambda ()
+        (xterm-mouse-mode)
+        (when (fboundp 'mwheel-install) (mwheel-install))))
+#+END_SRC
 
-*** Terminal Frames                                               :tty:hooks:
-    When making new Terminal, i.e. =tty= frames in Emacs, I want to ensure that I am able to use
-    mouse there, as well as paste by clicking mouse middle button.
+*** Switching between Windows
+Switching windows, when more than 2 of them are open, with =C-x o= is a real pain in the fingers
+and eyes, therefore, I make use of the really nice [[http://github.com/dimitri/switch-window][switch-window]] package, as well as the
+=winner-mode= built-in Emacs. Winner Mode allows us to /undo/ (and /redo/) changes in the window
+configuration with the key commands =C-c left=, and =C-c right= (which, is pretty neat!)
+#+BEGIN_SRC emacs-lisp
+    (when (fboundp 'winner-mode) (winner-mode))
 
-    #+BEGIN_SRC emacs-lisp
-      (add-hook 'preamble/after-make-console-frame-hooks
-        (lambda ()
-          (preamble/checkpoint "enabled mouse support in terminal session..")
-          (xterm-mouse-mode 1)
-          (when (fboundp 'mwheel-install) (mwheel-install))))
-    #+END_SRC
+    (preamble/require-package 'switch-window)
+    (require 'switch-window)
+    ;; we must bind the "C-x o" key appropriately, now.
+    (setq switch-window-shortcut-style 'quail)
+#+END_SRC
 
-*** GUI Frames                                                          :gui:
-    When making new GUI frames in Emacs, I want to disable certain GUI features, as well as add some
-    customizations pertaining to the Emacs GUI.
+* Basic Modules
+Modules defines either a package or a mode or both, and this section defines various modules along
+with the relevant configuration required by them. Each module is tagged with appropriate tags to
+refer to the kind of feature, it provides, e.g. a module can be tagged as =editor=, which means that
+the module provides a feature related to the editing inside Emacs.
+** auto-complete
+[[http://www.emacswiki.org/emacs/AutoComplete][AutoComplete]] is an excellent auto-completion feature with popup menu for quick selection. It can
+complete words at the point from a number of different sources, and includes fuzzy-matching,
+in-built.
 
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "suppressed some GUI features, I really hated..")
-      (setq use-file-dialog 'nil) ; use mini-buffer for file dialogs
-      (setq use-dialog-box  'nil) ; use mini-buffer for everythin' else..
-      (eval '(setq inhibit-startup-echo-area-message "nikhgupta"))
+I have, first, setup *AutoComplete* as the default completion function, by hooking it inside
+=auto-complete-mode=.
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-package 'auto-complete)
+  (require 'auto-complete-config)
 
-      ;; show an indicator in left fringe for lines not in buffer
-      (setq indicate-empty-lines t)
-    #+END_SRC
+  (defun preamble/auto-complete-at-point ()
+  "Use AutoComplete to provide completion at the current point."
+  (when (and (not (minibufferp))
+              (fboundp 'auto-complete-mode)
+              auto-complete-mode)
+      (auto-complete)))
 
-*** Windows                                                   :modes:package:
-    Switching windows, when more than 2 of them are open, with =C-x o= is a real pain in the fingers
-    and eyes, therefore, I make use of the really nice [[http://github.com/dimitri/switch-window][switch-window]] package, as well as the
-    =winner-mode= built-in Emacs. Winner Mode allows us to /undo/ (and /redo/) changes in the window
-    configuration with the key commands =C-c left=, and =C-c right= (which, is pretty neat!)
+  ;; hook AC into completion-at-point
+  (defun preamble/set-auto-complete-as-completion-at-point-function ()
+  "Set AutoComplete as Completion-At-Point function."
+  (add-to-list 'completion-at-point-functions 'preamble/auto-complete-at-point))
 
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "activated Winner Mode..")
-      (when (fboundp 'winner-mode) (winner-mode 1))
+  (add-hook 'auto-complete-mode-hook 'preamble/set-auto-complete-as-completion-at-point-function)
+#+END_SRC
 
-      (preamble/checkpoint "configured `switch-window' package..")
-      (preamble/require-package 'switch-window)
-      (require 'switch-window)
+I want to customize behavior of AC to match my workflow, and have setup =TAB= key to trigger
+completions. Further, I want to exclude very large buffer from interfering with AC.
+#+BEGIN_SRC emacs-lisp
+  (global-auto-complete-mode)          ; enable auto-complete mode globally
 
-      ;; we must bind the "C-x o" key appropriately, now.
-      (setq switch-window-shortcut-style 'quail)
-    #+END_SRC
+  (after 'auto-complete
+    (setq ac-expand-on-auto-complete t ; auto-complete whole match on TAB
+          ac-auto-start 3              ; enable auto-complete after 3 chars
+          ac-dwim nil                  ; get pop-ups with docs even if word is uniquely completed
+          tab-always-indent 'complete  ; use TAB to trigger auto-complete
+          dabbrev-friend-buffer-function
+            '(lambda() (< (buffer-size other-buffer (1024 1024))))) ; exclude large buffers
+    (add-to-list 'completion-styles 'initials t))
+#+END_SRC
 
-    Define a really handy function to quickly split the current window to open the most recent
-    buffer.
-    #+BEGIN_SRC emacs-lisp
-      ;; Borrowed from http://postmomentum.ch/blog/201304/blog-on-emacs
-      (defun preamble/split-window()
-        "Split the window to see the most recent buffer in the other window.
-      Call a second time to restore the original window configuration."
-        (interactive)
-        (if (eq last-command 'preamble/split-window)
+Finally, define some sources for AC, and setup some modes to use AC, by default.
+#+BEGIN_SRC emacs-lisp
+  (after 'auto-complete
+    ;; define sources for auto-completion
+    (set-default 'ac-sources '( ac-source-imenu ac-source-dictionary
+                                                ac-source-words-in-buffer
+                                                ac-source-words-in-same-mode-buffers
+                                                ac-source-words-in-all-buffer))
+
+    ;; add various modes to auto-complete
+    (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode
+                                        text-mode haml-mode ruby-mode sass-mode yaml-mode
+                                        csv-mode espresso-mode haskell-mode html-mode
+                                        nxml-mode sh-mode smarty-mode clojure-mode
+                                        lisp-mode textile-mode markdown-mode tuareg-mode
+                                        js3-mode css-mode less-css-mode sql-mode
+                                        ielm-mode))
+      (add-to-list 'ac-modes mode)))
+#+END_SRC
+
+** diminish
+[[http://www.emacswiki.org/emacs/DiminishedModes][Diminished modes]] is an internal feature, which lets us fight mode-line clutter by diminishing
+(removing or abbreviating) minor mode indicators in the modeline.
+#+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'diminish)
+#+END_SRC
+*** Diminish Major Modes
+#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook (lambda() (setq mode-name "eL"))) ; emacs lisp
+#+END_SRC
+** dired
+[[http://www.emacswiki.org/emacs/DiredPlus][Dired+]] enhances our file-exploring experience, and provides additional features to [[http://www.emacswiki.org/emacs/Dired][Dired Mode]].
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-package 'dired+)
+  (setq diredp-hide-details-initially-flag nil
+        global-dired-hide-details-mode -1)
+  (after 'dired
+    (require 'dired+)
+    (setq dired-recursive-deletes 'top))
+#+END_SRC
+*** Related Key Bindings
+#+BEGIN_SRC emacs-lisp
+  (after 'dired
+    (define-key dired-mode-map [mouse-2] 'dired-find-file))
+#+END_SRC
+
+** fci-mode
+Many modern editors and IDEs can graphically indicate the location of the fill column by drawing a
+thin line (in design parlance, a "rule") down the length of the editing window. =fci-mode=,
+i.e. [[https://github.com/alpaker/Fill-Column-Indicator][Fill Column Indicator]] implements this facility in Emacs.
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-package 'fill-column-indicator)
+  (after 'fill-column-indicator
+    (setq fci-rule-width 10)
+    (setq fci-rule-character ?❚)
+  ; (setq fci-rule-character-color "#999999")
+    (setq fci-dash-pattern 1.00))
+#+END_SRC
+
+However, I only want to see column indicator when one of the =org-mode=, =text-mode= or =prog-mode=
+is active. Moreover, whenever I switch themes, I would like to regenerate the indicator. Lastly,
+=fci-mode= is not compatible with =show-trailing-whitespace= property, and hence, I have added a
+function to properly activate =fci-mode= in this case.
+#+BEGIN_SRC emacs-lisp
+  (defun preamble/fci-mode-settings()
+    "Turn of `fci-mode' properly, when trailing whitespace is being shown."
+    (turn-on-fci-mode)
+    (when show-trailing-whitespace
+      (set (make-local-variable 'whitespace-style) '(face trailing))
+      (whitespace-mode)))
+
+  ;; enable `fci-mode' in `org-mode' and programming mode
+  (add-hook 'prog-mode-hook 'preamble/fci-mode-settings)
+  (add-hook 'org-mode-hook  'preamble/fci-mode-settings)
+
+  ;; regenerate fci-mode line images after switching themes
+  (defadvice enable-theme (after recompute-fci-face activate)
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (and (boundp 'fci-mode) fci-mode)
+          (turn-on-fci-mode)))))
+
+#+END_SRC
+
+** flycheck
+[[http://github.com/flycheck/flycheck][FlyCheck]] is a modern on-the-fly syntax-checker for GNU Emacs, which selects syntax-checkers based on
+the major mode of the current buffer.
+
+#+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'flycheck)
+    (add-hook 'after-init-hook 'global-flycheck-mode)
+#+END_SRC
+
+** hippie-expand
+#+BEGIN_QUOTE
+    [[http://www.emacswiki.org/emacs/HippieExpand][HippieExpand]] looks at the word before point and tries to expand it in various ways including
+    expanding from a fixed list (like =expand-abbrev=), expanding from matching text found in a
+    buffer (like =dabbrev-expand=) or expanding in ways defined by your own functions. Which of
+    these it tries and in what order is controlled by a configurable list of functions.
+#+END_QUOTE
+
+As stated above, =hippie-expand= uses a list of functions, which has been defined below in our case:
+#+BEGIN_SRC emacs-lisp
+  (after 'hippie-expand
+    (setq hippie-expand-try-functions-list
+            '(try-complete-file-name-partially
+            try-complete-file-name
+            try-expand-dabbrev
+            try-expand-dabbrev-all-buffers
+            try-expand-dabbrev-from-kill)))
+#+END_SRC
+** ibuffer
+[[https://github.com/purcell/ibuffer-vc][ibuffer-vc]] adds functionality to Emacs' [[http://www.emacswiki.org/emacs/IbufferMode][iBuffer Mode]] by grouping buffers according to their parent
+VC (version-control) root directory, and by displaying and/or sorting files by their VC status.
+Therefore, =ibuffer-mode= will, now, show different groups of buffers based on the =git= repository
+path. /Pretty Awesome!/
+
+First, lets make sure that the buffers are grouped according to version control system, they are
+in, then by filename or process name.
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-package 'ibuffer-vc)
+  (after 'ibuffer (require 'ibuffer-vc))
+
+  (defun preamble/ibuffer-set-up-preferred-filters ()
+    "Sort ibuffers according to Version Control or Filename or Process."
+    (ibuffer-vc-set-filter-groups-by-vc-root)
+    (unless (eq ibuffer-sorting-mode 'filename/process)
+      (ibuffer-do-sort-by-filename/process)))
+
+  (add-hook 'ibuffer-hook 'preamble/ibuffer-set-up-preferred-filters)
+#+END_SRC
+
+Now, the default display of =dired= command is a bit non-resonating with what my eyes want to see,
+and therefore, lets change the configuration of =ibuffer= to suit my pair of eyes.
+#+BEGIN_SRC emacs-lisp
+    (after 'ibuffer
+    ;; use human readable size column instead of original one
+    (define-ibuffer-column size-h
+        (:name "Size" :inline t)
+        (cond
+        ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+        ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+        (t (format "%8d" (buffer-size))))))
+
+    ;; modify the default ibuffer-formats
+    (setq ibuffer-formats
+        '((mark modified read-only vc-status-mini " "
+                (name 18 18 :left :elide)         " "
+                (size-h 9 -1 :right)              " "
+                (mode 16 16 :left :elide)         " "
+                (vc-status 16 16 :left)           " "
+                filename-and-process)))
+
+    (setq ibuffer-filter-group-name-face 'font-lock-doc-face)
+#+END_SRC
+
+** ido-mode
+[[http://www.emacswiki.org/emacs/InteractivelyDoThings][IDO Mode]] is, simply, amazin'! It lets us do things interactively with buffers and files. When
+combined with [[https://github.com/technomancy/ido-ubiquitous][IDO Ubiquitous]] and [[https://github.com/nonsequitur/smex][Smex]], it creates a powerful combination of fuzzy-file searching
+and the same power is available for executings commands, as well as a heap of other places.
+*** Bug-Fix
+#+BEGIN_SRC emacs-lisp
+  ;; suppress warnings from ido-ubiquitous
+  (defvar predicate 'nil)
+  (defvar inherit-input-method 'nil)
+  (defvar ido-cur-item 'nil)
+  (defvar ido-default-item 'nil)
+  (defvar ido-cur-list 'nil)
+#+END_SRC
+*** Configuration
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '( smex idomenu ido-ubiquitous))
+
+  (ido-mode)                              ; enable ido mode
+  (ido-everywhere)                        ; use ido-mode wherever possible
+  (ido-ubiquitous-mode)                   ; enable ido-ubiquitous
+  (setq ido-enable-flex-matching 't       ; enable fuzzy search
+        ido-use-filename-at-point 'nil    ; look for filename at point
+        ido-use-virtual-buffers 't        ; allow me to open closed buffers, even
+        ido-auto-merge-work-directories-length 0
+        ido-default-buffer-method 'selected-window) ; allow buffer to be open in different frames
+#+END_SRC
+
+*** Functions
+#+BEGIN_SRC emacs-lisp
+  (defun preamble/ido-choose-from-recentf ()
+    "Use ido to select a recently opened file from the `recentf-list'."
+    (interactive)
+    (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
+        (ido-switch-buffer)
+      (find-file (ido-completing-read "Open file: " recentf-list nil t))))
+#+END_SRC
+
+** isearch
+[[http://www.emacswiki.org/emacs/IncrementalSearch][Incremental Search]], i.e. Emacs' =isearch= is the Incremental Search feature of Emacs, and while it
+is really nice on its own, it may need some basic extensions and features related to it.
+
+*** Functions
+**** Search for Current Word
+#+BEGIN_SRC emacs-lisp
+    ;; Search back/forth for the symbol at point
+    ;; See http://www.emacswiki.org/emacs/SearchAtPoint
+    (defun preamble/isearch-yank-symbol ()
+    "*Put symbol at current point into search string."
+    (interactive)
+    (let ((sym (symbol-at-point)))
+        (if sym
             (progn
-              (jump-to-register :preamble/split-window)
-              (setq this-command 'preamble/unsplit-window))
-          (window-configuration-to-register :preamble/split-window)
-          (switch-to-buffer-other-window nil)))
-    #+END_SRC
-
-* Modules
-
-  Modules are, basically, inventions of my own - o'course, nothin' can be really original these
-  days - and, define small pieces of related code on a special behaviour, mode or feature of
-  Emacs. Some of the *modules* may require a package, other ones may require more than one packages
-  that group together to provide a unique combination of functionality, while others may just
-  enhance configuration for some built-in Emacs' features.
-
-  #+BEGIN_QUOTE
-  Moreover, modules are also divided according to their parent feature set, i.e. to say whether they
-  are used for =programming= or for =editing= purposes, etc. Such modules can be found in the
-  respective sections under the heading: *Related Modules*.
-  #+END_QUOTE
-
-** New Features                                                                            :package:
-   The following modules add some new feature to Emacs' Preamble, which are non-existent in the
-   default GNU Emacs.
-
-*** [[http://github.com/flycheck/flycheck][FlyCheck]]
-    Flycheck is a modern on-the-fly syntax-checker for GNU Emacs, which selects syntax-checkers
-    based on the major mode of the current buffer.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `flycheck' package..")
-      (preamble/require-package 'flycheck)
-      (add-hook 'after-init-hook 'global-flycheck-mode)
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/AutoComplete][AutoComplete]]
-    AutoComplete is an excellent auto-completion feature with popup menu for quick selection. It can
-    complete words at the point from a number of different sources, and includes fuzzy-matching,
-    in-built.
-
-    I have, first, setup *AutoComplete* as the default completion function, by hooking it inside
-    =auto-complete-mode=.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `auto-complete' package..")
-      (preamble/require-package 'auto-complete)
-      (require 'auto-complete-config)
-
-      (defun preamble/auto-complete-at-point ()
-        "Use AutoComplete to provide completion at the current point."
-        (when (and (not (minibufferp))
-                   (fboundp 'auto-complete-mode)
-                   auto-complete-mode)
-          (auto-complete)))
-
-      ;; hook AC into completion-at-point
-      (defun preamble/set-auto-complete-as-completion-at-point-function ()
-        "Set AutoComplete as Completion-At-Point function."
-        (add-to-list 'completion-at-point-functions 'preamble/auto-complete-at-point))
-
-      (add-hook 'auto-complete-mode-hook
-        'preamble/set-auto-complete-as-completion-at-point-function)
-    #+END_SRC
-
-    Next, I want to customize the behavior of *AutoComplete* to match my workflow, and have setup
-    =TAB= key to trigger completions.
-
-    #+BEGIN_SRC emacs-lisp
-      (after 'auto-complete
-        (global-auto-complete-mode t)       ; enable auto-complete mode globally
-        (setq ac-expand-on-auto-complete t) ; auto-complete whole match on TAB
-        (setq ac-auto-start 3)              ; enable auto-complete after 3 chars
-        (setq ac-dwim nil)                  ; to get pop-ups with docs even if a
-                                            ; word is uniquely completed
-
-        ;; use Emacs' built-in TAB completion hooks to trigger AC (Emacs >= 23.2)
-        (setq tab-always-indent 'complete)  ;; use 't when auto-complete is disabled
-        (add-to-list 'completion-styles 'initials t))
-    #+END_SRC
-
-    Also, exclude very large buffers to interfere with AutoComplete, as this can slow down
-    AutoComplete significantly.
-
-    #+BEGIN_SRC emacs-lisp
-      (defun preamble/dabbrev-friend-buffer (other-buffer)
-        "Set OTHER-BUFFER as known to `dabbrev' only if its smaller than a given size."
-        (< (buffer-size other-buffer) (* 1 1024 1024)))
-
-      (after 'auto-complete
-        (setq dabbrev-friend-buffer-function 'preamble/dabbrev-friend-buffer))
-    #+END_SRC
-
-    Finally, define some sources for AutoComplete, and setup some modes to use AutoComplete, by
-    default.
-
-    #+BEGIN_SRC emacs-lisp
-      (after 'auto-complete
-        ;; define sources for auto-completion
-        (set-default 'ac-sources '( ac-source-imenu ac-source-dictionary
-                                    ac-source-words-in-buffer
-                                    ac-source-words-in-same-mode-buffers
-                                    ac-source-words-in-all-buffer))
-
-        ;; add various modes to auto-complete
-        (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode
-                        text-mode haml-mode ruby-mode sass-mode yaml-mode
-                        csv-mode espresso-mode haskell-mode html-mode
-                        nxml-mode sh-mode smarty-mode clojure-mode
-                        lisp-mode textile-mode markdown-mode tuareg-mode
-                        js3-mode css-mode less-css-mode sql-mode
-                        ielm-mode))
-          (add-to-list 'ac-modes mode)))
-    #+END_SRC
-
-*** [[https://github.com/purcell/mmm-mode][Multiple Major Modes]] (mmm-mode)
-    MMM Mode is a minor mode for Emacs that allows Multiple Major Modes to coexist in one buffer. It
-    is well-suited to editing:
-    - Preprocessed code, e.g. server-side Ruby, Perl or PHP embedded in HTML
-    - Code generating code, such as HTML output by CGI scripts
-    - Embedded code, such as Javascript in HTML
-    - Literate programming: code interspersed with documentation, e.g. Noweb
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `mmm-mode' package..")
-      (preamble/require-package 'mmm-mode)
-      (require 'mmm-auto)
-      (setq mmm-global-mode 't) ;'buffers-with-submode-classes)
-      (setq mmm-submode-decoration-level 2)
-
-      ;; css embedding in html
-      (after 'mmm-vars
-            (mmm-add-group
-             'html-css
-             '((css-cdata
-                :submode css-mode
-                :face mmm-code-submode-face
-                :front "<style[^>]*>[ \t\n]*\\(//\\)?<!\\[CDATA\\[[ \t]*\n?"
-                :back "[ \t]*\\(//\\)?]]>[ \t\n]*</style>"
-                :insert ((?j js-tag nil @ "<style type=\"text/css\">"
-                             @ "\n" _ "\n" @ "</script>" @)))
-               (css
-                :submode css-mode
-                :face mmm-code-submode-face
-                :front "<style[^>]*>[ \t]*\n?"
-                :back "[ \t]*</style>"
-                :insert ((?j js-tag nil @ "<style type=\"text/css\">"
-                             @ "\n" _ "\n" @ "</style>" @)))
-               (css-inline
-                :submode css-mode
-                :face mmm-code-submode-face
-                :front "style=\""
-                :back "\"")))
-            (dolist (mode (list 'html-mode 'nxml-mode))
-              (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
-    #+END_SRC
-
-*** TODO activating =mmm-mode= gives error
-    Error occurred is: =Can't preview LaTex fragment in a non-file buffer=
-*** TODO Implement some =mmm= modes by taking help from [[https://github.com/purcell/mmm-mode/blob/master/mmm-sample.el][samples]].
-*** [[http://www.emacswiki.org/emacs/DiminishedModes][Diminished Modes]]
-    Diminished modes is an internal feature, which lets us fight mode-line clutter by diminishing
-    (removing or abbreviating) minor mode indicators in there.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured Diminished Modes..")
-      (preamble/require-package 'diminish)
-    #+END_SRC
-
-*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill Column Indicator]]
-    #+BEGIN_QUOTE
-      Many modern editors and IDEs can graphically indicate the location of the fill column by
-      drawing a thin line (in design parlance, a "rule") down the length of the editing
-      window. Fill-column-indicator implements this facility in Emacs.
-    #+END_QUOTE
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured Fill Column Indicator..")
-      (preamble/require-package 'fill-column-indicator)
-      (after 'fill-column-indicator
-        (setq fci-rule-width 10)
-        (setq fci-rule-character ?❚)
-      ; (setq fci-rule-character-color "#999999")
-        (setq fci-dash-pattern 1.00))
-
-      (defun preamble/fci-mode-settings()
-        (turn-on-fci-mode)
-        (when show-trailing-whitespace
-          (set (make-local-variable 'whitespace-style) '(face trailing))
-          (whitespace-mode 1)))
-
-      (add-hook 'prog-mode-hook 'preamble/fci-mode-settings)
-      (add-hook 'org-mode-hook  'preamble/fci-mode-settings)
-
-      (defun preamble/fci-enabled-p ()
-        (and (boundp 'fci-mode) fci-mode))
-
-      (defvar preamble/fci-mode-suppressed nil)
-      (defadvice popup-create (before suppress-fci-mode activate)
-        "Suspend fci-mode while popups are visible"
-        (let ((fci-enabled (preamble/fci-enabled-p)))
-          (when fci-enabled
-            (set (make-local-variable 'preamble/fci-mode-suppressed) fci-enabled)
-            (turn-off-fci-mode))))
-      (defadvice popup-delete (after restore-fci-mode activate)
-        "Restore fci-mode when all popups have closed"
-        (when (and preamble/fci-mode-suppressed
-                   (null popup-instances))
-          (setq preamble/fci-mode-suppressed nil)
-          (turn-on-fci-mode)))
-
-      ;; Regenerate fci-mode line images after switching themes
-      (defadvice enable-theme (after recompute-fci-face activate)
-        (dolist (buffer (buffer-list))
-          (with-current-buffer buffer
-            (when (preamble/fci-enabled-p)
-              (turn-on-fci-mode)))))
-
-    #+END_SRC
-
-*** [[https://github.com/Wilfred/ag.el][The Silver Searcher]]
-    [[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (=ag=) is an awesome utility, somewhat like =ack=, but faster. This module
-    allows me to use the power of =ag= inside Emacs' Preamble.
-    #+BEGIN_SRC emacs-lisp
-      (when (executable-find "ag")
-        (preamble/require-packages '(ag wgrep-ag))
-        (setq-default ag-highlight-search t))
-    #+END_SRC
-
-** Feature Enhancements                                    :enhanced:package:
-    The following modules, simply, improve upon a given feature in GNU Emacs, in order to, provide a
-    more awesome experience inside Emacs' Preamble.
-*** [[http://www.emacswiki.org/emacs/Dired][Dired Mode]]
-
-    #+BEGIN_QUOTE
-      [[http://www.emacswiki.org/emacs/DiredPlus][Dired+]] is /awesome/, well.. not, initially.
-    #+END_QUOTE
-
-    [[http://www.emacswiki.org/emacs/DiredPlus][Dired+]] extends functionalities provided by standard GNU Emacs libraries =dired.el=,
-    =dired-aux.el=, and =dired-x.el=. The standard functions are all available, plus many more.
-
-    *Dired+* enhances our file-exploring experience.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured Dired and DiredPlus..")
-      (preamble/require-package 'dired+)
-
-      (setq diredp-hide-details-initially-flag nil)
-      (setq global-dired-hide-details-mode -1)
-
-      (after 'dired
-        (require 'dired+)
-        (setq dired-recursive-deletes 'top)
-        (define-key dired-mode-map [mouse-2] 'dired-find-file))
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/IbufferMode][iBuffer Mode]]
-
-    [[https://github.com/purcell/ibuffer-vc][ibuffer-vc]] adds functionality to Emacs' =ibuffer-mode= for grouping buffers by their parent VC
-    (version-control) root directory, and for displaying and/or sorting by the VC status of listed
-    files.
-
-    This is to say that, my =iBuffer= will, now, show me different groups of buffers based on the
-    =git= repository status. /Pretty Awesome!/
-
-    First, lets make sure that the buffers are grouped according to version control system, they are
-    in, then by filename or process name.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `ibuffer' with `ibuffer-vc' package...")
-      (preamble/require-package 'ibuffer-vc)
-      (after 'ibuffer (require 'ibuffer-vc))
-
-      (defun preamble/ibuffer-set-up-preferred-filters ()
-        "Sort ibuffers according to Version Control or Filename or Process."
-        (ibuffer-vc-set-filter-groups-by-vc-root)
-        (unless (eq ibuffer-sorting-mode 'filename/process)
-          (ibuffer-do-sort-by-filename/process)))
-
-      (add-hook 'ibuffer-hook 'preamble/ibuffer-set-up-preferred-filters)
-    #+END_SRC
-
-    Now, the default display of =dired= command is a bit non-resonating with what my eyes want to
-    see, and therefore, lets change the configuration of =ibuffer= to suit my pair of eyes.
-
-    #+BEGIN_SRC emacs-lisp
-      (after 'ibuffer
-        ;; use human readable size column instead of original one
-        (define-ibuffer-column size-h
-          (:name "Size" :inline t)
-          (cond
-           ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-           ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-           (t (format "%8d" (buffer-size))))))
-
-      ;; modify the default ibuffer-formats
-      (setq ibuffer-formats
-            '((mark modified read-only vc-status-mini " "
-                    (name 18 18 :left :elide)
-                    " "
-                    (size-h 9 -1 :right)
-                    " "
-                    (mode 16 16 :left :elide)
-                    " "
-                    (vc-status 16 16 :left)
-                    " "
-                    filename-and-process)))
-
-      (setq ibuffer-filter-group-name-face 'font-lock-doc-face)
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/InteractivelyDoThings][IDO Mode]] and [[http://www.emacswiki.org/emacs/Smex][Smex]]
-
-    IDO mode is, simply, amazin'! It lets us do things interactively with buffers and files. When
-    combined with [[https://github.com/technomancy/ido-ubiquitous][IDO Ubiquitous]] and [[https://github.com/nonsequitur/smex][Smex]], it creates a powerful combination of fuzzy-file searching
-    and the same power is available for executings commands, as well as a heap of other places.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured IDO Mode along with Smex..")
-      (preamble/require-packages '( smex idomenu ido-ubiquitous))
-
-      ;; suppress warnings from ido-ubiquitous
-      (defvar predicate 'nil)
-      (defvar inherit-input-method 'nil)
-      (defvar ido-cur-item 'nil)
-      (defvar ido-default-item 'nil)
-      (defvar ido-cur-list 'nil)
-
-      (ido-mode 't)                            ;; enable ido mode
-      (ido-everywhere 't)                      ;; use ido-mode wherever possible
-      (ido-ubiquitous-mode 't)                 ;; enable ido-ubiquitous
-      (setq ido-enable-flex-matching 't)       ;; enable fuzzy search
-      (setq ido-use-filename-at-point 'nil)    ;; look for filename at point
-      (setq ido-use-virtual-buffers 't)        ;; allow me to open closed buffers, even
-
-      ;; switch to merged work directories during file input when no match is found
-      (setq ido-auto-merge-work-directories-length 0)
-      ;; allow the same buffer to be open in different frames
-      (setq ido-default-buffer-method 'selected-window)
-
-      (defun preamble/ido-choose-from-recentf ()
-        "Use ido to select a recently opened file from the `recentf-list'."
-        (interactive)
-        (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
-          (ido-switch-buffer)
-          (find-file (ido-completing-read "Open file: " recentf-list nil t))))
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/UndoTree][UndoTree]]
-    UndoTree is amazin'. It visually describes your change history for the current buffer in a nice
-    ascii-tree like structure. From there, it is trivially easy to view your changes, and easily
-    undo/redo according to Emacs' undo structure.
-
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `undo-tree' package..")
-      (preamble/require-package 'undo-tree)
-      (global-undo-tree-mode 1)
-      (diminish 'undo-tree-mode)
-    #+END_SRC
-** In-built Features                                                :ehanced:
-   The following modules configure a built-in feature, so as to suite to my personal taste.
-*** [[http://www.emacswiki.org/emacs/IncrementalSearch][Incremental Search]]
-    =isearch= is the Incremental Search feature of Emacs, and while it is really nice on its own, it
-    may need some basic extensions and features related to it.
-
-    Lets, add a function to automatically search for the current word in the buffer.
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "Adding extra functions for `isearch' package..")
-
-      ;; Search back/forth for the symbol at point
-      ;; See http://www.emacswiki.org/emacs/SearchAtPoint
-      (defun preamble/isearch-yank-symbol ()
-        "*Put symbol at current point into search string."
-        (interactive)
-        (let ((sym (symbol-at-point)))
-          (if sym
-              (progn
-                (setq isearch-regexp t
-                      isearch-string (concat "\\_<" (regexp-quote (symbol-name sym)) "\\_>")
-                      isearch-message (mapconcat 'isearch-text-char-description isearch-string "")
-                      isearch-yank-flag t))
-            (ding)))
-        (isearch-search-and-update))
-    #+END_SRC
-
-    Lets, also, add a function to zap (kill till) the first match of the current search string.
-    #+BEGIN_SRC emacs-lisp
-      ;; http://www.emacswiki.org/emacs/ZapToISearch
-      (defun zap-to-isearch (rbeg rend)
-        "Kill the region between the mark and the closest portion of
-      the isearch match string. The behaviour is meant to be analogous
-      to zap-to-char; let's call it zap-to-isearch. The deleted region
-      does not include the isearch word. This is meant to be bound only
-      in isearch mode.  The point of this function is that oftentimes
-      you want to delete some portion of text, one end of which happens
-      to be an active isearch word. The observation to make is that if
-      you use isearch a lot to move the cursor around (as you should,
-      it is much more efficient than using the arrows), it happens a
-      lot that you could just delete the active region between the mark
-      and the point, not include the isearch word."
-        (interactive "r")
-        (when (not mark-active)
-          (error "Mark is not active"))
-        (let* ((isearch-bounds (list isearch-other-end (point)))
-               (ismin (apply 'min isearch-bounds))
-               (ismax (apply 'max isearch-bounds))
-               )
-          (if (< (mark) ismin)
-              (kill-region (mark) ismin)
-            (if (> (mark) ismax)
-                (kill-region ismax (mark))
-              (error "Internal error in isearch kill function.")))
-          (isearch-exit)
-          ))
-
-      ;; http://www.emacswiki.org/emacs/ZapToISearch
-      (defun isearch-exit-other-end (rbeg rend)
-        "Exit isearch, but at the other end of the search string.
-      This is useful when followed by an immediate kill."
-        (interactive "r")
+            (setq isearch-regexp t
+                    isearch-string (concat "\\_<" (regexp-quote (symbol-name sym)) "\\_>")
+                    isearch-message (mapconcat 'isearch-text-char-description isearch-string "")
+                    isearch-yank-flag t))
+        (ding)))
+    (isearch-search-and-update))
+#+END_SRC
+
+**** Zap till First Match
+#+BEGIN_SRC emacs-lisp
+    ;; http://www.emacswiki.org/emacs/ZapToISearch
+    (defun zap-to-isearch (rbeg rend)
+    "Kill the region between the mark and the closest portion of
+    the isearch match string. The behaviour is meant to be analogous
+    to zap-to-char; let's call it zap-to-isearch. The deleted region
+    does not include the isearch word. This is meant to be bound only
+    in isearch mode.  The point of this function is that oftentimes
+    you want to delete some portion of text, one end of which happens
+    to be an active isearch word. The observation to make is that if
+    you use isearch a lot to move the cursor around (as you should,
+    it is much more efficient than using the arrows), it happens a
+    lot that you could just delete the active region between the mark
+    and the point, not include the isearch word."
+    (interactive "r")
+    (when (not mark-active)
+        (error "Mark is not active"))
+    (let* ((isearch-bounds (list isearch-other-end (point)))
+            (ismin (apply 'min isearch-bounds))
+            (ismax (apply 'max isearch-bounds))
+            )
+        (if (< (mark) ismin)
+            (kill-region (mark) ismin)
+        (if (> (mark) ismax)
+            (kill-region ismax (mark))
+            (error "Internal error in isearch kill function.")))
         (isearch-exit)
-        (goto-char isearch-other-end))
-    #+END_SRC
+        ))
 
-    Finally, map the above function to certain keybindings when inside =isearch-mode=. Also, make
-    sure that calling =occur= is, also, easier in this mode.
-    #+BEGIN_SRC emacs-lisp
-      ;; put symbol at current point into search string
-      (define-key isearch-mode-map "\C-\M-w" 'isearch-yank-symbol)
-      ;; zap to first match of the search string
-      (define-key isearch-mode-map [(meta z)] 'zap-to-isearch)
-      ;; exit isearch on the other end of it, so that yank can be easier
-      (define-key isearch-mode-map [(control return)] 'isearch-exit-other-end)
-      ;; activate occur easily inside isearch
-      (define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
-    #+END_SRC
+    ;; http://www.emacswiki.org/emacs/ZapToISearch
+    (defun isearch-exit-other-end (rbeg rend)
+    "Exit isearch, but at the other end of the search string.
+    This is useful when followed by an immediate kill."
+    (interactive "r")
+    (isearch-exit)
+    (goto-char isearch-other-end))
+#+END_SRC
+*** Related Key Bindings
+#+BEGIN_SRC emacs-lisp
+    ;; put symbol at current point into search string
+    (define-key isearch-mode-map "\C-\M-w" 'isearch-yank-symbol)
+    ;; zap to first match of the search string
+    (define-key isearch-mode-map [(meta z)] 'zap-to-isearch)
+    ;; exit isearch on the other end of it, so that yank can be easier
+    (define-key isearch-mode-map [(control return)] 'isearch-exit-other-end)
+    ;; activate occur easily inside isearch
+    (define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
+#+END_SRC
 
-*** [[http://www.emacswiki.org/emacs/uniquify][Uniquify]]
-    Uniquify is a built-in library that makes buffer names unique, when two files with same name are
-    open, so as to make them distinguishable.
+** mmm-mode
+[[https://github.com/purcell/mmm-mode][Multiple Major Modes]] is a minor mode for Emacs that allows multiple major modes to coexist in one
+buffer. It is well-suited to editing:
+- Preprocessed code, e.g. server-side Ruby, Perl or PHP embedded in HTML
+- Code generating code, such as HTML output by CGI scripts
+- Embedded code, such as Javascript in HTML
+- Literate programming: code interspersed with documentation, e.g. Noweb
+#+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'mmm-mode)
+    (require 'mmm-auto)
+    ; only enable when `mmm' is required
+    (setq mmm-global-mode 'buffers-with-submode-classes)
+    (setq mmm-submode-decoration-level 2)
+#+END_SRC
 
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `uniquify' feature..")
-      (require 'uniquify)
+** recentf
+[[http://www.emacswiki.org/emacs/RecentFiles][Recent Files]] is a minor mode that builds a list of recently opened files. This list is is auto-saved
+across Emacs sessions. You can then access this list through a menu, or keybinding.
+#+BEGIN_SRC emacs-lisp
+  (require 'recentf)
+  (recentf-mode)
+  (after 'recentf
+    (setq recentf-max-menu-items 25
+          recentf-max-saved-items 1000
+          recentf-exclude '("/tmp/" "/ssh:")))
+#+END_SRC
 
-      (after 'uniquify
-        (setq uniquify-buffer-name-style 'reverse)
-        (setq uniquify-separator " • ")
-        (setq uniquify-after-kill-buffer-p t)
-        (setq uniquify-ignore-buffers-re "^\\*"))
-    #+END_SRC
+** silver-searcher
+[[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] (=ag=) is an awesome utility, somewhat like =ack=, but faster. This module
+allows me to use the power of =ag= inside Emacs' Preamble. The github repository for this package
+can be found at: [[https://github.com/Wilfred/ag.el][Github: The Silver Searcher]].
+#+BEGIN_SRC emacs-lisp
+  (when (executable-find "ag")
+    (preamble/require-packages '(ag wgrep-ag))
+    (setq-default ag-highlight-search t))
+#+END_SRC
 
-*** [[http://www.emacswiki.org/emacs/RecentFiles][Recent Files]]
-    Recentf is a minor mode that builds a list of recently opened files. This list is is
-    automatically saved across Emacs sessions. You can then access this list through a menu, or
-    keybinding.
+** undo-tree
+[[http://www.emacswiki.org/emacs/UndoTree][UndoTree]] is amazin'. It visually describes your change history for the current buffer in a nice
+ascii-tree like structure. From there, it is trivially easy to view your changes, and easily
+undo/redo according to Emacs' undo structure.
+#+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'undo-tree)
+    (global-undo-tree-mode)
+    (diminish 'undo-tree-mode)
+#+END_SRC
+** uniquify
+[[http://www.emacswiki.org/emacs/uniquify][Uniquify]] is a built-in library that makes buffer names unique, when two files with same name are
+open, so as to make them distinguishable.
+#+BEGIN_SRC emacs-lisp
+  (require 'uniquify)
 
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `recentf' feature..")
-      (require 'recentf)
+  (after 'uniquify
+    (setq uniquify-buffer-name-style 'reverse)
+    (setq uniquify-separator " • ")
+    (setq uniquify-after-kill-buffer-p t)
+    (setq uniquify-ignore-buffers-re "^\\*"))
+#+END_SRC
 
-      (after 'recentf
-        (recentf-mode 1)
-        (setq recentf-max-menu-items 25
-              recentf-max-saved-items 1000
-              recentf-exclude '("/tmp/" "/ssh:")))
-    #+END_SRC
-
-*** [[http://www.emacswiki.org/emacs/HippieExpand][Hippie Expand]]
-    #+BEGIN_QUOTE
-      HippieExpand looks at the word before point and tries to expand it in various ways including
-      expanding from a fixed list (like =expand-abbrev=), expanding from matching text found in a
-      buffer (like =dabbrev-expand=) or expanding in ways defined by your own functions. Which of
-      these it tries and in what order is controlled by a configurable list of functions.
-    #+END_QUOTE
-
-    As stated above, =hippie-expand= uses a list of functions, which has been defined below in our
-    case:
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "configured `hippie-expand' feature..")
-      (after 'hippie-expand
-       (setq hippie-expand-try-functions-list
-             '(try-complete-file-name-partially
-               try-complete-file-name
-               try-expand-dabbrev
-               try-expand-dabbrev-all-buffers
-               try-expand-dabbrev-from-kill)))
-    #+END_SRC
-
-** Miscelleneous
-   #+BEGIN_SRC emacs-lisp
-     (preamble/require-packages '(regex-tool))
-   #+END_SRC
 * Version Management
-  Version management is the heart of my projects, in particular, [[http://git-scm.com/][git]]. This section defines various
+  Version management is the heart of my projects, in particular, [[http://git-scm.com][git]]. This section defines various
   settings so as to allow me to version control my projects from within Emacs' Preamble.
+** Related Modules
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages
+   '(  magit             ;; awesome git interface inside Emacs
+       git-blame         ;; emacs frontend for `git-blame' tool
+       gitignore-mode    ;; major mode for gitignore
+       gitconfig-mode    ;; major mode for gitconfig
+       git-commit-mode   ;; major mode for git commit
+       git-rebase-mode   ;; major mode for git rebase
+       git-messenger     ;; display why a line was changed as per git commits
+       git-gutter-fringe ;; display git status of lines in gutter
+       yagist            ;; gist management
+       github-browse-file ;; view the file we're editing in Github
+       bug-reference-github ;; Automatically set bug-reference-url-format and enable
+       ;; bug-reference-prog-mode buffers from Github repositories.
+       ))
 
-  Enable some packages that will be required for such configuration.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "enabled version management inside Emacs")
-    (preamble/require-packages '(
-      magit                  ;; awesome git interface inside Emacs
-      git-blame              ;; emacs frontend for `git-blame' tool
-      gitignore-mode         ;; major mode for gitignore
-      gitconfig-mode         ;; major mode for gitconfig
-      git-commit-mode        ;; major mode for git commit
-      git-rebase-mode        ;; major mode for git rebase
-      git-messenger          ;; display why a line was changed as per git commits
-      git-gutter-fringe      ;; display git status of lines in gutter
-      yagist                 ;; gist management
-      github-browse-file     ;; view the file we're editing in Github
-      bug-reference-github   ;; Automatically set bug-reference-url-format and enable
-                             ;; bug-reference-prog-mode buffers from Github repositories.
-    ))
+  ;; activate `bug-reference-github' in programming mode
+  (after 'bug-reference-github
+    (add-hook 'prog-mode-hook 'bug-reference-prog-mode))
+#+END_SRC
 
-    ;; activate `bug-reference-github' in programming mode
-    (after 'bug-reference-github
-      (add-hook 'prog-mode-hook 'bug-reference-prog-mode))
+** Magit Configuration
+Now, all I need is to setup [[https://github.com/magit/magit][magit]] as I intend it to perform inside my workflow.
+#+BEGIN_SRC emacs-lisp
+  (setq-default magit-save-some-buffers nil
+                magit-process-popup-time 10
+                magit-diff-refine-hunk t
+                magit-completing-read-function 'magit-ido-completing-read)
 
-  #+END_SRC
+  (after 'magit
+    ;; don't let magit-status mess up window configurations
+    ;; http://whattheemacsd.com/setup-magit.el-01.html
+    (defadvice magit-status (around magit-fullscreen activate)
+      (window-configuration-to-register :magit-fullscreen)
+      ad-do-it
+      (delete-other-windows))
 
-  Now, all I need is to setup [[https://github.com/magit/magit][magit]] as I intend it to perform inside my workflow.
-   #+BEGIN_SRC emacs-lisp
-     (setq-default
-      magit-save-some-buffers nil
-      magit-process-popup-time 10
-      magit-diff-refine-hunk t
-      magit-completing-read-function 'magit-ido-completing-read)
+    (defadvice magit-quit-window (around magit-restore-screen activate)
+      ad-do-it
+      (jump-to-register :magit-fullscreen)))
 
-     (after 'magit
-       ;; don't let magit-status mess up window configurations
-       ;; http://whattheemacsd.com/setup-magit.el-01.html
-       (defadvice magit-status (around magit-fullscreen activate)
-         (window-configuration-to-register :magit-fullscreen)
-         ad-do-it
-         (delete-other-windows))
-
-       (defadvice magit-quit-window (around magit-restore-screen activate)
-         ad-do-it
-         (jump-to-register :magit-fullscreen)))
-
-     ;;; when we start working on git-backed files, use git-wip if available
-     (after 'vc-git
-       (global-magit-wip-save-mode)
-       (diminish 'magit-wip-save-mode))
-   #+END_SRC
-
+  ;;; when we start working on git-backed files, use git-wip if available
+  (after 'vc-git
+    (global-magit-wip-save-mode)
+    (diminish 'magit-wip-save-mode))
+#+END_SRC
 * Editing
 ** Related Modules
-  Given below are some of the modules that are required for a better editing experience. Most of
-  these modules have no configuration required, and may need key binding(s), which are defined in
-  that section, exclusively.
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages
+   '( unfill                ; join several lines inside a region/para
+      whole-line-or-region  ; kill whole region/line based on if region is active
+      mic-paren             ; matching parenthesis even if outside current screen
+      pointback             ; per-window memory of buffer-point positions
+      multiple-cursors      ; self-explanatory
+      ace-jump-mode         ; quickly jump to a character on screen
+      page-break-lines      ; display ^L page breaks as tidy horizontal lines
+      move-text             ; move text easily up and down
+      visual-regexp         ; get visual indications for matched regexp
+      highlight-escape-sequences ))
+#+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "installed packages to enrich editing experience, if so required")
-    (preamble/require-packages
-     '( unfill                ; join several lines inside a region/para
-        whole-line-or-region  ; kill whole region/line based on if region is active
-        mic-paren             ; matching parenthesis even if outside current screen
-        pointback             ; per-window memory of buffer-point positions
-        multiple-cursors      ; self-explanatory
-        ace-jump-mode         ; quickly jump to a character on screen
-        page-break-lines      ; display ^L page breaks as tidy horizontal lines
-        move-text             ; move text easily up and down
-        visual-regexp         ; get visual indications for matched regexp
-        paredit               ; awesome parenthesis editing
-        highlight-escape-sequences ))
+** Related Configurations
+#+BEGIN_SRC emacs-lisp
+  ;; settings for `highlight-escape-sequences' package
+  (hes-mode)
 
-    ;; settings for `highlight-escape-sequences' package
-    (hes-mode 1)
+  ;; settings for `page-break-lines' package
+  (global-page-break-lines-mode)
+  (after 'page-break-lines (diminish 'page-break-lines-mode))
 
-    ;; settings for `page-break-lines' package
-    (global-page-break-lines-mode)
-    (after 'page-break-lines (diminish 'page-break-lines-mode))
+  ;; settings for `pointback' package
+  (global-pointback-mode)
+  (after 'skeleton
+    (defadvice skeleton-insert (before disable-pointback activate)
+      "Disable pointback when using skeleton functions like `sgml-tag'."
+      (when pointback-mode
+        (message "Disabling pointback.")
+        (pointback-mode -1))))
 
-    ;; settings for `pointback' package
-    (global-pointback-mode 1)
-    (after 'skeleton
-       (defadvice skeleton-insert (before disable-pointback activate)
-         "Disable pointback when using skeleton functions like `sgml-tag'."
-         (when pointback-mode
-           (message "Disabling pointback.")
-           (pointback-mode -1))))
-
-    ;; settings for `whole-line-or-region' package
-    (whole-line-or-region-mode 1)
-    (after 'whole-line-or-region
-      (diminish 'whole-line-or-region-mode)
-      (make-variable-buffer-local 'whole-line-or-region-mode))
+  ;; settings for `whole-line-or-region' package
+  (whole-line-or-region-mode)
+  (after 'whole-line-or-region
+    (diminish 'whole-line-or-region-mode)
+    (make-variable-buffer-local 'whole-line-or-region-mode))
+#+END_SRC
+** ParEdit
+*** Activation
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '(paredit paredit-everywhere))
+  (autoload 'enable-paredit-mode "paredit")
+  (after 'paredit (diminish 'paredit-mode " Par"))
+  ;; enable some handy paredit functions in all prog modes
+  (add-hook 'prog-mode-hook 'paredit-everywhere-mode)
   #+END_SRC
-*** ParEdit
-    #+BEGIN_SRC emacs-lisp
-      (preamble/require-packages '(paredit paredit-everywhere))
 
-      (autoload 'enable-paredit-mode "paredit")
+*** Key Bindings
+#+BEGIN_SRC emacs-lisp
+  (after 'paredit
+    (dolist (binding (list (kbd "C-<left>") (kbd "C-<right>")
+                           (kbd "C-M-<left>") (kbd "C-M-<right>")))
+      (define-key paredit-mode-map binding nil))
 
-      (defun maybe-map-paredit-newline ()
-        (unless (or (memq major-mode '(inferior-emacs-lisp-mode nrepl-mode))
-                    (minibufferp))
-          (local-set-key (kbd "RET") 'paredit-newline)))
+    ;; disable kill-sentence, which is easily confused with the kill-sexp binding, but doesn't
+    ;; preserve sexp structure
+    (define-key paredit-mode-map [remap kill-sentence] nil)
+    (define-key paredit-mode-map [remap backward-kill-sentence] nil))
+#+END_SRC
 
-      (add-hook 'paredit-mode-hook 'maybe-map-paredit-newline)
+*** ParEdit inside =mini-buffer=
+#+BEGIN_SRC emacs-lisp
+  ;; use paredit in the minibuffer
+  ;; http://emacsredux.com/blog/2013/04/18/evaluate-emacs-lisp-in-the-minibuffer/
+  (defvar paredit-minibuffer-commands '(eval-expression
+                                        pp-eval-expression
+                                        eval-expression-with-eldoc
+                                        ibuffer-do-eval
+                                        ibuffer-do-view-and-eval)
+    "Interactive commands for which paredit should be enabled in the minibuffer.")
+  (defun conditionally-enable-paredit-mode ()
+    "Enable paredit during lisp-related minibuffer commands."
+    (if (memq this-command paredit-minibuffer-commands)
+        (enable-paredit-mode)))
+  (add-hook 'minibuffer-setup-hook 'conditionally-enable-paredit-mode)
+#+END_SRC
 
-      (after 'paredit
-        (diminish 'paredit-mode " Par")
-        (dolist (binding (list (kbd "C-<left>") (kbd "C-<right>")
-                               (kbd "C-M-<left>") (kbd "C-M-<right>")))
-          (define-key paredit-mode-map binding nil))
-
-        ;; disable kill-sentence, which is easily confused with the kill-sexp
-        ;; binding, but doesn't preserve sexp structure
-        (define-key paredit-mode-map [remap kill-sentence] nil)
-        (define-key paredit-mode-map [remap backward-kill-sentence] nil))
-
-      ;; use paredit in the minibuffer
-      ;; TODO: break out into separate package
-      ;; http://emacsredux.com/blog/2013/04/18/evaluate-emacs-lisp-in-the-minibuffer/
-      (add-hook 'minibuffer-setup-hook 'conditionally-enable-paredit-mode)
-
-      (defvar paredit-minibuffer-commands '(eval-expression
-                                            pp-eval-expression
-                                            eval-expression-with-eldoc
-                                            ibuffer-do-eval
-                                            ibuffer-do-view-and-eval)
-        "Interactive commands for which paredit should be enabled in the minibuffer.")
-
-      (defun conditionally-enable-paredit-mode ()
-        "Enable paredit during lisp-related minibuffer commands."
-        (if (memq this-command paredit-minibuffer-commands)
-            (enable-paredit-mode)))
-
-      ;; enable some handy paredit functions in all prog modes
-      (add-hook 'prog-mode-hook 'paredit-everywhere-mode)
-    #+END_SRC
-*** Spell Check
-    #+BEGIN_SRC emacs-lisp
-      (when *spell-check-support-enabled*
-        (require 'ispell)
-        (when (executable-find ispell-program-name)
-          (require 'init-flyspell)))
-    #+END_SRC
-** General Configuration
-   The following block of code sets up several configuration options for the editor.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "configured editing environment..")
-     (electric-pair-mode 1)    ; automatically insert delimiter pairs
-     (delete-selection-mode 1) ; typed text replaces the active selection
-     (transient-mark-mode t)   ; highlight the region when mark is active
-     (cua-selection-mode t)    ; for rectangular selections, CUA is nice
-
-     (setq-default
-      case-fold-search t          ; searches and matches should ignore case
-      indent-tabs-mode nil        ; indentation can not insert tabs
-      )
-   #+END_SRC
-
-   We do not want to disable narrowing commands, or case-change functions.
-
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled some disabled commands")
-     (put 'narrow-to-region 'disabled nil)
-     (put 'narrow-to-page 'disabled nil)
-     (put 'narrow-to-defun 'disabled nil)
-     (put 'upcase-region 'disabled nil)
-     (put 'downcase-region 'disabled nil)
-   #+END_SRC
-
-   Next, we define some custom functions that help us in editing easily.
-
-   #+BEGIN_SRC emacs-lisp
-     (autoload 'zap-up-to-char "misc" "Kill up to, but not including
-     ARGth occurrence of CHAR.")
-
-     (defun duplicate-region (beg end)
-       "Insert a copy of the current region after the region."
-       (interactive "r")
-       (save-excursion
-         (goto-char end)
-         (insert (buffer-substring beg end))))
-
-     (defun duplicate-line-or-region (prefix)
-       "Duplicate either the current line or any current region."
-       (interactive "*p")
-       (whole-line-or-region-call-with-region 'duplicate-region prefix t))
-
-     (defun kill-back-to-indentation ()
-       "Kill from point back to the first non-whitespace character on the line."
-       (interactive)
-       (let ((prev-pos (point)))
-         (back-to-indentation)
-         (kill-region (point) prev-pos)))
-
-     (defun sort-lines-random (beg end)
-       "Sort lines in region randomly."
-       (interactive "r")
-       (save-excursion
-         (save-restriction
-           (narrow-to-region beg end)
-           (goto-char (point-min))
-           (let ;; To make `end-of-line' and etc. to ignore fields.
-               ((inhibit-field-text-motion t))
-             (sort-subr nil 'forward-line 'end-of-line nil nil
-                        (lambda (s1 s2) (eq (random 2) 0)))))))
-
-     (defun preamble/open-line-with-reindent (n)
-       "A version of `open-line' which reindents the start and end positions.
-     If there is a fill prefix and/or a `left-margin', insert them
-     on the new line if the line would have been blank.
-     With arg N, insert N newlines."
-       (interactive "*p")
-       (let* ((do-fill-prefix (and fill-prefix (bolp)))
-              (do-left-margin (and (bolp) (> (current-left-margin) 0)))
-              (loc (point-marker))
-              ;; Don't expand an abbrev before point.
-              (abbrev-mode nil))
-         (delete-horizontal-space t)
-         (newline n)
-         (indent-according-to-mode)
-         (when (eolp)
-           (delete-horizontal-space t))
-         (goto-char loc)
-         (while (> n 0)
-           (cond ((bolp)
-                  (if do-left-margin (indent-to (current-left-margin)))
-                  (if do-fill-prefix (insert-and-inherit fill-prefix))))
-           (forward-line 1)
-           (setq n (1- n)))
-         (goto-char loc)
-         (end-of-line)
-         (indent-according-to-mode)))
-    #+END_SRC
-
+** Spell Check
+#+BEGIN_SRC emacs-lisp
+  (when *spell-check-support-enabled*
+    (require 'ispell)
+    (when (executable-find ispell-program-name)
+      (require 'init-flyspell)))
+#+END_SRC
 * Org Mode
-  I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
-  want to capture links from my Mac applications and add them to =org-mode=, as well as with
-  =iCal=. Moreover, I often require to put a file-system subtree inside my =org-mode= documents.
+** General Configuration
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-done t                            ; record information when task is marked as DONE
+        org-completion-use-ido t                  ; use ido-completion when possible
+        org-agenda-start-on-weekday nil           ; monday as week's start
+        org-agenda-span 14                        ; show 2 weeks of agenda, by default
+        org-agenda-include-diary t                ; include `diary' in agenda
+        org-edit-timestamp-down-means-later t     ; S-down will increase time in timestamp
+        org-agenda-window-setup 'other-window     ; use `other-window' for agenda
+        org-fast-tag-selection-single-key 'expert ; fast tag selection
+        org-tags-column -100                      ; indent tags to the right
+        org-src-fontify-natively t                ; syntax-highlight source blocks
+        org-export-kill-product-buffer-when-displayed t)
 
-  #+BEGIN_SRC emacs-lisp
-    (preamble/require-package 'org-fstree)
+  (after 'org-mode (setq 'fill-column 100))       ; set column width to 100 for org-mode files
+#+END_SRC
+
+** OSX Integration
+I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
+want to capture links from my Mac applications and add them to =org-mode=, as well as with
+=iCal=. Moreover, I often require to put a file-system subtree inside my =org-mode= documents.
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-package 'org-fstree)
+  (when *is-mac*
+    (preamble/require-packages '(org-mac-link org-mac-iCal))
+    (autoload 'omlg-grab-link "org-mac-link"))
+#+END_SRC
+
+** Refile / Archives
+I have defined some configuration to make [[http://www.gnu.org/software/emacs/manual/html_node/org/Capture-_002d-Refile-_002d-Archive.html][refiling]] easier.
+#+BEGIN_SRC emacs-lisp
+  ; refile targets include this file and any file contributing to the agenda - up to 5 levels deep
+  (setq org-refile-targets (quote ((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))))
+  ; targets start with the file name - allows creating level 1 tasks
+  (setq org-refile-use-outline-path (quote file))
+  ; targets complete in steps so we start with filename, TAB shows the next level of targets etc
+  (setq org-outline-path-complete-in-steps t)
+#+END_SRC
+
+** Tagging
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!/@)")
+                (sequence "REPORT(r!)" "BUG(b!/@)" "KNOWNCAUSE(k!/@)" "|" "FIXED(f!/@)")
+                (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
+#+END_SRC
+
+** Clocking
+#+BEGIN_SRC emacs-lisp
+  ;; save the running clock and all clock history when exiting Emacs, load it on startup
+  (setq org-clock-persist t
+        org-clock-in-resume t
+        org-clock-persistence-insinuate t
+        org-clock-in-switch-to-state "STARTED"  ;; change task state to STARTED when clocking in
+        org-clock-into-drawer t  ;; save clock data and notes in the LOGBOOK drawer
+        org-clock-out-remove-zero-time-clocks t  ;; removes clocked tasks with 0:00 duration
+        )
+  ;; show the clocked-in task - if any - in the header line
+  (defun preamble/show-org-clock-in-header-line ()
+    (setq-default header-line-format '((" " org-mode-line-string " "))))
+  (defun preamble/hide-org-clock-from-header-line ()
+    (setq-default header-line-format nil))
+
+  (add-hook 'org-clock-in-hook 'preamble/show-org-clock-in-header-line)
+  (add-hook 'org-clock-out-hook 'preamble/hide-org-clock-from-header-line)
+  (add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
+#+END_SRC
+
+*** Related Key Bindings
+#+BEGIN_SRC emacs-lisp
+  (after 'org-clock
+    (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
+    (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
+#+END_SRC
+** Key Bindings
+#+BEGIN_SRC emacs-lisp
+  (after 'org
+    (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
     (when *is-mac*
-      (preamble/require-packages '(org-mac-link org-mac-iCal)))
-  #+END_SRC
-
-  I will, then, define some configuration for =org-mode= to behave nicely with me.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "configured =org-mode= to behave nicely with us")
-    (setq org-log-done t                       ; information to record when task moves to DONE state
-          org-completion-use-ido t             ; use ido-completion when possible
-          org-agenda-start-on-weekday nil
-          org-agenda-span 14
-          org-agenda-include-diary t
-          org-edit-timestamp-down-means-later t ; S-down will increase time in timestamp
-          org-agenda-window-setup 'current-window
-          org-fast-tag-selection-single-key 'expert ; fast tag selection
-          org-export-kill-product-buffer-when-displayed t
-          org-src-fontify-natively t
-          org-tags-column -100)
-  #+END_SRC
-
-  For [[http://www.gnu.org/software/emacs/manual/html_node/org/Capture-_002d-Refile-_002d-Archive.html][refiling purposes]], I have defined some configuration to allow it easily.
-  #+BEGIN_SRC emacs-lisp
-    ; refile targets include this file and any file contributing to the agenda - up to 5 levels deep
-    (setq org-refile-targets (quote ((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))))
-    ; targets start with the file name - allows creating level 1 tasks
-    (setq org-refile-use-outline-path (quote file))
-    ; targets complete in steps so we start with filename, TAB shows the next level of targets etc
-    (setq org-outline-path-complete-in-steps t)
-  #+END_SRC
-
-  I have, also, added some tags to match my workflow, like so:
-  #+BEGIN_SRC emacs-lisp
-    (setq org-todo-keywords
-          (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!/@)")
-                  (sequence "REPORT(r!)" "BUG(b!/@)" "KNOWNCAUSE(k!/@)" "|" "FIXED(f!/@)")
-                  (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
-  #+END_SRC
-
-  Next, I heavily make use of =org-clock=, and hence, have defined some configuration for the same.
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "configured =org-clock= as per our taste")
-    ;; save the running clock and all clock history when exiting Emacs, load it on startup
-    (setq org-clock-persist t)
-    (setq org-clock-in-resume t)
-    (setq org-clock-persistence-insinuate t)
-
-    ;; change task state to STARTED when clocking in
-    (setq org-clock-in-switch-to-state "STARTED")
-    ;; save clock data and notes in the LOGBOOK drawer
-    (setq org-clock-into-drawer t)
-    ;; removes clocked tasks with 0:00 duration
-    (setq org-clock-out-remove-zero-time-clocks t)
-
-    ;; show the clocked-in task - if any - in the header line
-    (defun preamble/show-org-clock-in-header-line ()
-      (setq-default header-line-format '((" " org-mode-line-string " "))))
-    (defun preamble/hide-org-clock-from-header-line ()
-      (setq-default header-line-format nil))
-
-    (add-hook 'org-clock-in-hook 'preamble/show-org-clock-in-header-line)
-    (add-hook 'org-clock-out-hook 'preamble/hide-org-clock-from-header-line)
-    (add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
-
-    (after 'org-clock
-      (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
-      (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
-  #+END_SRC
+      (define-key org-mode-map (kbd "M-h") nil)
+      (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
+#+END_SRC
 * Programming
-  This section contains various packages and their settings related to programming.
 ** Ruby Group
-   The languages/modes in this section include =ruby-mode=, =rails=, =yaml=, =erb=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =ruby-group=")
-     (preamble/require-packages '(ruby-mode ruby-hash-syntax inf-ruby
-                                            robe ruby-compilation yari yaml-mode
-                                            tagedit rinari))
+*** Packages
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '(ruby-mode
+                               ruby-hash-syntax
+                               inf-ruby
+                               robe
+                               ruby-compilation
+                               yari
+                               yaml-mode
+                               tagedit
+                               rinari))
+#+END_SRC
 
-     (add-to-list 'auto-mode-alist '("Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
-                                     "\\.rjs\\'" ".irbrc\\'" "\\.builder\\'" "\\.ru\\'"
-                                     "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'" . 'ruby-mode))
+*** Registered File Patterns
+#+BEGIN_SRC emacs-lisp
+  ;; files recognized by ruby mode
+  (add-to-list 'auto-mode-alist '("Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
+                                  "\\.rjs\\'" ".irbrc\\'" "\\.builder\\'" "\\.ru\\'"
+                                  "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'" . 'ruby-mode))
+#+END_SRC
 
-     (setq ruby-use-encoding-map nil)
+*** Configuration
+#+BEGIN_SRC emacs-lisp
+  (defalias 'ri 'yari)
+  (setq ruby-use-encoding-map nil)
 
-     (after 'ruby-mode
-       (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
-       (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command)
+  (after 'ruby-mode
+    ;; stupidly the non-bundled ruby-mode isn't a derived mode of
+    ;; prog-mode: we run the latter's hooks anyway in that case.
+    (add-hook 'ruby-mode-hook
+              '(lambda () (unless (derived-mode-p 'prog-mode) (run-hooks 'prog-mode-hook)))))
 
-       ;; stupidly the non-bundled ruby-mode isn't a derived mode of
-       ;; prog-mode: we run the latter's hooks anyway in that case.
-       (add-hook 'ruby-mode-hook
-                 (lambda () (unless (derived-mode-p 'prog-mode) (run-hooks 'prog-mode-hook)))))
+  ;;; robe: Code navigation, documentation and completion for Ruby
+  (after 'ruby-mode (add-hook 'ruby-mode-hook 'robe-mode))
+  (after 'robe (add-hook 'robe-mode-hook
+                         (lambda ()
+                           (add-to-list 'ac-sources 'ac-source-robe)
+                           (set-auto-complete-as-completion-at-point-function))))
+#+END_SRC
 
-     ;; ruby compilation
-     (let ((m ruby-mode-map))
-       (define-key m [S-f7] 'ruby-compilation-this-buffer)
-       (define-key m [f7] 'ruby-compilation-this-test)
-       (define-key m [f6] 'recompile))
+*** Rails
+#+BEGIN_SRC emacs-lisp
+  (after 'rinari (diminish 'rinari-minor-mode "Rin"))
+  (global-rinari-mode)
 
-     ;;; robe: Code navigation, documentation and completion for Ruby
-     (after 'ruby-mode (add-hook 'ruby-mode-hook 'robe-mode))
-     (after 'robe (add-hook 'robe-mode-hook
-       (lambda ()
-         (add-to-list 'ac-sources 'ac-source-robe)
-         (set-auto-complete-as-completion-at-point-function))))
+  (defun update-rails-ctags ()
+    (interactive)
+    (let ((default-directory (or (rinari-root) default-directory)))
+      (shell-command (concat "ctags -a -e -f " rinari-tags-file-name
+                             " --tag-relative -R app lib vendor test"))))
+#+END_SRC
 
-     ;;; ri support
-     (defalias 'ri 'yari)
+*** Embedded Ruby (ERB) using =mmm-mode=
+#+BEGIN_SRC emacs-lisp
+  (require 'derived)
+  (defun preamble/ensure-mmm-erb-loaded () (require 'mmm-erb))
+  (defun preamble/set-up-mode-for-erb (mode)
+    (add-hook (derived-mode-hook-name mode) 'preamble/ensure-mmm-erb-loaded)
+    (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb))
 
-     ;;; ERB
-     (defun preamble/ensure-mmm-erb-loaded () (require 'mmm-erb))
-     (require 'derived)
+  (dolist (mode '(html-mode html-erb-mode nxml-mode))
+    (progn
+      (preamble/set-up-mode-for-erb mode)
+      (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-js)
+      (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
 
-     (defun preamble/set-up-mode-for-erb (mode)
-       (add-hook (derived-mode-hook-name mode) 'preamble/ensure-mmm-erb-loaded)
-       (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb))
+  (mapc 'preamble/set-up-mode-for-erb
+        '(coffee-mode js-mode js2-mode js3-mode markdown-mode textile-mode))
 
-     (let ((html-erb-modes '(html-mode html-erb-mode nxml-mode)))
-       (dolist (mode html-erb-modes)
-         (preamble/set-up-mode-for-erb mode)
-         (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-js)
-         (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
+  (add-to-list 'auto-mode-alist '("\\.rhtml\\'" "\\.html\\.erb\\'" . 'html-erb-mode))
+  (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
+  (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\'" 'erb)
+  (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
 
-     (mapc 'preamble/set-up-mode-for-erb
-           '(coffee-mode js-mode js2-mode js3-mode markdown-mode textile-mode))
+  (dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
+    (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
+#+END_SRC
 
-     (after 'sgml-mode (tagedit-add-paredit-like-keybindings)) ;; tagedit
-     (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
+*** Key Bindings
+#+BEGIN_SRC emacs-lisp
+  (after 'ruby-mode
+    (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+    (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command))
 
-     (add-to-list 'auto-mode-alist '("\\.rhtml\\'" "\\.html\\.erb\\'" . 'html-erb-mode))
-     (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
-     (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\'" 'erb)
+  ;; ruby compilation
+  (let ((m ruby-mode-map))
+    (define-key m [S-f7] 'ruby-compilation-this-buffer)
+    (define-key m [f7] 'ruby-compilation-this-test)
+    (define-key m [f6] 'recompile))
+#+END_SRC
 
-     (dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
-       (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
-
-     ;; rails
-     (after 'rinari (diminish 'rinari-minor-mode "Rin"))
-     (global-rinari-mode)
-
-     (defun update-rails-ctags ()
-       (interactive)
-       (let ((default-directory (or (rinari-root) default-directory)))
-         (shell-command (concat "ctags -a -e -f " rinari-tags-file-name " --tag-relative -R app lib vendor test"))))
-
-   #+END_SRC
 ** PHP Group
-   The languages/modes that belong to this group include =php=, =smarty=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =php-group=")
-     (preamble/require-packages '(php-mode smarty-mode))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (preamble/require-packages '(php-mode smarty-mode))
+#+END_SRC
 ** Javascript Group
-   The languages/modes that belong to thid group include =json=, =javascript=, =coffee=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =javascript-group=")
-     (preamble/require-packages '( json js2-mode ac-js2 rainbow-delimiters coffee-mode))
+*** Packages and Configuration
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '( json js2-mode ac-js2 rainbow-delimiters coffee-mode))
 
-     (defvar preferred-javascript-indent-level 2)
-     (defcustom preferred-javascript-mode
-       (first (remove-if-not #'fboundp '(js2-mode js-mode)))
-       "Javascript mode to use for .js files."
-       :type 'symbol
-       :group 'programming
-       :options '(js2-mode js-mode))
+  (defvar preferred-javascript-indent-level 2)
+  (defcustom preferred-javascript-mode
+    (first (remove-if-not #'fboundp '(js2-mode js-mode)))
+    "Javascript mode to use for .js files."
+    :type 'symbol
+    :group 'programming
+    :options '(js2-mode js-mode))
 
-     ;; json
-     (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+  ;; json
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+  ;; js-mode
+  (setq js-indent-level preferred-javascript-indent-level)
+  (setq javascript-indent-level preferred-javascript-indent-level)
+  ;; node interpreter
+  (add-to-list 'interpreter-mode-alist (cons "node" preferred-javascript-mode))
+  ;; javascript (even inside erb)
+  (setq auto-mode-alist (cons `("\\.js\\(\\.erb\\)?\\'" . ,preferred-javascript-mode)
+                              (loop for entry in auto-mode-alist
+                                    unless (eq preferred-javascript-mode (cdr entry))
+                                    collect entry)))
+#+END_SRC
 
-     ;; javascript (even inside erb)
-     (setq auto-mode-alist (cons `("\\.js\\(\\.erb\\)?\\'" . ,preferred-javascript-mode)
-                                 (loop for entry in auto-mode-alist
-                                       unless (eq preferred-javascript-mode (cdr entry))
-                                       collect entry)))
+*** js2-mode
+#+BEGIN_SRC emacs-lisp
+  (setq js2-use-font-lock-faces t
+        js2-mode-must-byte-compile nil
+        js2-basic-offset preferred-javascript-indent-level
+        js2-indent-on-enter-key t
+        js2-auto-indent-p t
+        js2-bounce-indent-p nil)
+  (after 'js2-mode
+    (add-hook 'js2-mode-hook '(lambda() (setq mode-name "JS2")))
+    (js2-imenu-extras-setup))
+#+END_SRC
 
-     ;; js2-mode
-     (setq js2-use-font-lock-faces t
-           js2-mode-must-byte-compile nil
-           js2-basic-offset preferred-javascript-indent-level
-           js2-indent-on-enter-key t
-           js2-auto-indent-p t
-           js2-bounce-indent-p nil)
-     (after 'js2-mode
-       (add-hook 'js2-mode-hook '(lambda() (setq mode-name "JS2")))
-       (js2-imenu-extras-setup))
+*** CoffeeScript
+#+BEGIN_SRC emacs-lisp
+  (after 'coffee-mode
+    (setq coffee-js-mode preferred-javascript-mode
+          coffee-tab-width preferred-javascript-indent-level))
 
-     ;; js-mode
-     (setq js-indent-level preferred-javascript-indent-level)
-     (setq javascript-indent-level preferred-javascript-indent-level)
-
-     ;; node interpreter
-     (add-to-list 'interpreter-mode-alist (cons "node" preferred-javascript-mode))
-
-     ;; coffeescript
-     (after 'coffee-mode
-       (setq coffee-js-mode preferred-javascript-mode
-             coffee-tab-width preferred-javascript-indent-level))
-
-     (add-to-list 'auto-mode-alist '("\\.coffee\\.erb\\'" . coffee-mode))
-   #+END_SRC
+  (add-to-list 'auto-mode-alist '("\\.coffee\\.erb\\'" . coffee-mode))
+#+END_SRC
 ** Text Group
-   The languages/modes that belong to this group include =textile=, =markdown=, etc.
-    #+BEGIN_SRC emacs-lisp
-      (preamble/checkpoint "enabled support for =text-group=")
-      (preamble/require-packages '(textile-mode markdown-mode))
+*** Textile
+#+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'textile-mode)
 
-      ;; textile
-      (autoload 'textile-mode "textile-mode" "Mode for editing Textile documents" t)
-      (setq auto-mode-alist
-            (cons '("\\.textile\\'" . textile-mode) auto-mode-alist))
+    (autoload 'textile-mode "textile-mode" "Mode for editing Textile documents" t)
+    (setq auto-mode-alist
+        (cons '("\\.textile\\'" . textile-mode) auto-mode-alist))
+#+END_SRC
 
-      ;; markdown
-      (setq auto-mode-alist
-            (cons '("\\.\\(md\\|markdown\\)\\'" . markdown-mode) auto-mode-alist))
-    #+END_SRC
+*** Markdown
+#+BEGIN_SRC emacs-lisp
+    (preamble/require-package 'markdown-mode)
+
+    (setq auto-mode-alist
+        (cons '("\\.\\(md\\|markdown\\)\\'" . markdown-mode) auto-mode-alist))
+#+END_SRC
 ** XML Group
-   This languages/modes that belong to this group include =xml=, =rss=, =xslt=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =xml-group")
-     (add-to-list 'auto-mode-alist
-       (concat "\\." (regexp-opt
-         '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss" "gpx" "tcx")) "\\'") 'nxml-mode)
+*** Configuration
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist
+               (concat "\\."
+                       (regexp-opt '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss" "gpx" "tcx"))
+                       "\\'") 'nxml-mode)
+  ; generic xml-mode
+  (fset 'xml-mode 'nxml-mode)
+  (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
+  (add-hook 'nxml-mode-hook
+            '(lambda () (set (make-local-variable 'ido-use-filename-at-point) nil)))
+  (setq nxml-slash-auto-complete-flag t)
+#+END_SRC
 
-     ;; generic xml mode
-     (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))
-     (fset 'xml-mode 'nxml-mode)
-     (add-hook 'nxml-mode-hook (lambda ()
-       (set (make-local-variable 'ido-use-filename-at-point) nil)))
-     (setq nxml-slash-auto-complete-flag t)
+*** Pretty Format XML Markup
+#+BEGIN_SRC emacs-lisp
+  ;; see: http://sinewalker.wordpress.com/2008/06/26/pretty-printing-xml-with-emacs-nxml-mode/
+  (defun pp-xml-region (begin end)
+    "Pretty format XML markup in region. The function inserts
+      linebreaks to separate tags that have nothing but whitespace
+      between them.  It then indents the markup by using nxml's
+      indentation rules."
+    (interactive "r")
+    (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+        (backward-char) (insert "\n"))
+      (indent-region begin end)))
+#+END_SRC
 
-     ;; see: http://sinewalker.wordpress.com/2008/06/26/pretty-printing-xml-with-emacs-nxml-mode/
-     (defun pp-xml-region (begin end)
-       "Pretty format XML markup in region. The function inserts
-     linebreaks to separate tags that have nothing but whitespace
-     between them.  It then indents the markup by using nxml's
-     indentation rules."
-       (interactive "r")
-       (save-excursion
-         (nxml-mode)
-         (goto-char begin)
-         (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-           (backward-char) (insert "\n"))
-         (indent-region begin end)))
+*** TIDY integration
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-package 'tidy)
+  (add-hook 'nxml-mode-hook (lambda () (tidy-build-menu nxml-mode-map)))
+  (add-hook 'html-mode-hook (lambda () (tidy-build-menu html-mode-map)))
+#+END_SRC
 
-     ;; integration with tidy for html + xml
-     (preamble/require-package 'tidy)
-     (add-hook 'nxml-mode-hook (lambda () (tidy-build-menu nxml-mode-map)))
-     (add-hook 'html-mode-hook (lambda () (tidy-build-menu html-mode-map)))
-
-
-     (add-to-list 'auto-mode-alist '("\\.(jsp|tmpl)\\'" . 'html-mode))
-
-   #+END_SRC
 ** Design Group
-   The languages/modes in this section include =css=, =haml=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =design-group=")
-     (preamble/require-packages '(css-eldoc haml-mode htmlize))
+*** Configuration
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '(css-eldoc haml-mode htmlize))
+  (require 'rainbow-mode)
 
-     ;;; colourise hex colors
-     (dolist (hook '(css-mode-hook html-mode-hook sass-mode-hook))
-       (add-hook hook 'rainbow-mode))
-     ;; use eldoc for syntax hints
-     (autoload 'turn-on-css-eldoc "css-eldoc")
-     (add-hook 'css-mode-hook 'turn-on-css-eldoc)
+  ;;; colourise hex colors
+  (dolist (hook '(css-mode-hook html-mode-hook sass-mode-hook)) (add-hook hook 'rainbow-mode))
 
-     ;; to enable Skewer mode, check:
-     ;; https://github.com/purcell/emacs.d/blob/master/init-css.el
+  ;; use eldoc for syntax hints
+  (autoload 'turn-on-css-eldoc "css-eldoc")
+  (add-hook 'css-mode-hook 'turn-on-css-eldoc)
 
-     ;; SASS, SCSS, and Less
-     (preamble/require-packages '(sass-mode scss-mode less-css-mode))
-     (setq-default scss-compile-at-save nil)
+  ;; to enable Skewer mode, check:
+  ;; https://github.com/purcell/emacs.d/blob/master/init-css.el
 
-     ;;; auto-complete CSS keywords
-     (after 'auto-complete
-       (dolist (hook '(css-mode-hook sass-mode-hook scss-mode-hook))
-         (add-hook hook 'ac-css-mode-setup)))
-   #+END_SRC
+  ;; SASS, SCSS, and Less
+  (preamble/require-packages '(sass-mode scss-mode less-css-mode))
+  (setq-default scss-compile-at-save nil)
+
+  ;;; auto-complete CSS keywords
+  (after 'auto-complete
+    (dolist (hook '(css-mode-hook sass-mode-hook scss-mode-hook))
+      (add-hook hook 'ac-css-mode-setup)))
+#+END_SRC
+
+*** CSS embedded in HTML
+#+BEGIN_SRC emacs-lisp
+  (after 'mmm-vars
+    (mmm-add-group
+     'html-css
+     '((css-cdata
+        :submode css-mode
+        :face mmm-code-submode-face
+        :front "<style[^>]*>[ \t\n]*\\(//\\)?<!\\[CDATA\\[[ \t]*\n?"
+        :back "[ \t]*\\(//\\)?]]>[ \t\n]*</style>"
+        :insert ((?j js-tag nil @ "<style type=\"text/css\">"
+                     @ "\n" _ "\n" @ "</script>" @)))
+       (css
+        :submode css-mode
+        :face mmm-code-submode-face
+        :front "<style[^>]*>[ \t]*\n?"
+        :back "[ \t]*</style>"
+        :insert ((?j js-tag nil @ "<style type=\"text/css\">"
+                     @ "\n" _ "\n" @ "</style>" @)))
+       (css-inline
+        :submode css-mode
+        :face mmm-code-submode-face
+        :front "style=\""
+        :back "\""))))
+#+END_SRC
+
 ** Lisp Group
-   The languages/modes in this section include =lisp= and =elisp=.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =lisp-group=")
-     (preamble/require-packages '(elisp-slime-nav lively pretty-mode
-                                                  auto-compile hl-sexp
-                                                  rainbow-delimiters redshank
-                                                  macrostep))
+*** Packages
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '(elisp-slime-nav     ; use M-.|M- to jump-in and out of definitions
+                               lively              ; interactively updated text: http://git.io/gbjLUw
+                               pretty-mode         ; redisplay parts of buffer as pretty symbols
+                               auto-compile        ; automatically compile emacs-lisp libraries
+                               hl-sexp             ; highlight current `sexp'
+                               rainbow-delimiters  ; colorize parenthesis
+                               redshank            ; common-lisp editing extensions
+                               macrostep))         ; interactive macro expension inside eLisp
+#+END_SRC
 
-     (autoload 'turn-on-pretty-mode "pretty-mode")
-     (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-       (add-hook hook 'elisp-slime-nav-mode))
+*** Activation
+#+BEGIN_SRC emacs-lisp
+  (global-pretty-mode)
+  (after 'redshank (diminish 'redshank-mode))
 
-     ;; `hippie-expand' feature
-     (defun set-up-hippie-expand-for-elisp ()
-       "Locally set `hippie-expand' completion functions for use with Emacs Lisp."
-       (make-local-variable 'hippie-expand-try-functions-list)
-       (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol t)
-       (add-to-list 'hippie-expand-try-functions-list 'try-complete-lisp-symbol-partially t))
+  ;; activate `emacs-slime-nav'
+  (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+    (add-hook hook 'turn-on-elisp-slime-nav-mode))
 
-     ;; automatic byte compilation
-     (auto-compile-on-save-mode 1)
-     (auto-compile-on-load-mode 1)
+  ;; `hl-sexp': prevent flickery behaviour as `hl-sexp-mode' unhighlights before each command
+  (after 'hl-sexp
+    (defadvice hl-sexp-mode (after unflicker (&optional turn-on) activate)
+      (when turn-on
+        (remove-hook 'pre-command-hook #'hl-sexp-unhighlight))))
+#+END_SRC
 
-     ;; highlight current sexp
-     ;; prevent flickery behaviour due to `hl-sexp-mode' unhighlighting before each command
-     (after 'hl-sexp
-       (defadvice hl-sexp-mode (after unflicker (&optional turn-on) activate)
-         (when turn-on
-           (remove-hook 'pre-command-hook #'hl-sexp-unhighlight))))
+*** Emacs Lisp
+#+BEGIN_SRC emacs-lisp
+  (require 'derived)
+  (defun preamble/emacs-lisp-setup ()
+    "Enable features useful when working with elisp."
+    (elisp-slime-nav-mode)
+    (ac-emacs-lisp-mode-setup))
 
-     ;; enable desired features for all lisp modes
-     (after 'redshank (diminish 'redshank-mode))
+  (defconst preamble/elispy-modes
+    '(emacs-lisp-mode ielm-mode)
+    "Major modes relating to elisp.")
 
-     (defun preamble/lisp-setup ()
-       "Enable features useful in any Lisp mode."
-       (rainbow-delimiters-mode t)
-       (enable-paredit-mode)
-       (turn-on-eldoc-mode)
-       (redshank-mode))
+  (dolist (hook (mapcar #'derived-mode-hook-name preamble/elispy-modes))
+    (add-hook hook 'preamble/emacs-lisp-setup))
 
-     (defun preamble/emacs-lisp-setup ()
-       "Enable features useful when working with elisp."
-       (elisp-slime-nav-mode t)
-       (set-up-hippie-expand-for-elisp)
-       (ac-emacs-lisp-mode-setup))
+  (add-to-list 'auto-mode-alist '("\\.emacs-project\\'" . emacs-lisp-mode))
+  (add-to-list 'auto-mode-alist '("archive-contents\\'" . emacs-lisp-mode))
+#+END_SRC
 
-     (defconst preamble/elispy-modes
-       '(emacs-lisp-mode ielm-mode)
-       "Major modes relating to elisp.")
+**** Key Bindings
+#+BEGIN_SRC emacs-lisp
+  (define-key emacs-lisp-mode-map (kbd "C-x C-a") 'pp-macroexpand-last-sexp)
+  (define-key emacs-lisp-mode-map (kbd "C-x C-e") 'pp-eval-last-sexp)
+#+END_SRC
 
-     (defconst preamble/lispy-modes
-       (append preamble/elispy-modes
-               '(lisp-mode inferior-lisp-mode lisp-interaction-mode))
-       "All lispy major modes.")
+**** AutoCompiled Emacs Lisp Buffers
+#+BEGIN_SRC emacs-lisp
+  (auto-compile-on-save-mode)
+  (auto-compile-on-load-mode)
+#+END_SRC
 
-     (require 'derived)
+*** Lisp
+#+BEGIN_SRC emacs-lisp
+  (require 'derived)
+  (defun preamble/lisp-setup ()
+    "Enable features useful in any Lisp mode."
+    (rainbow-delimiters-mode)
+    (enable-paredit-mode)
+    (turn-on-eldoc-mode)
+    (redshank-mode)
+    (hl-sexp-mode))
 
-     (dolist (hook (mapcar #'derived-mode-hook-name preamble/lispy-modes))
-       (add-hook hook 'preamble/lisp-setup))
+  (defconst preamble/lispy-modes
+    (append preamble/elispy-modes
+            '(lisp-mode inferior-lisp-mode lisp-interaction-mode))
+    "All lispy major modes.")
 
-     (dolist (hook (mapcar #'derived-mode-hook-name preamble/elispy-modes))
-       (add-hook hook 'preamble/emacs-lisp-setup))
+  (dolist (hook (mapcar #'derived-mode-hook-name preamble/lispy-modes))
+    (add-hook hook 'preamble/lisp-setup))
 
-     (defun preamble/maybe-check-parens ()
-       "Run `check-parens' if this is a lispy mode."
-       (when (memq major-mode preamble/lispy-modes)
-         (check-parens)))
+  (defun preamble/maybe-check-parens ()
+    "Run `check-parens' if this is a lispy mode."
+    (when (memq major-mode preamble/lispy-modes)
+      (check-parens)))
 
-     (add-hook 'after-save-hook #'preamble/maybe-check-parens)
+  (add-hook 'after-save-hook #'preamble/maybe-check-parens)
+#+END_SRC
 
-     (add-to-list 'auto-mode-alist '("\\.emacs-project\\'" . emacs-lisp-mode))
-     (add-to-list 'auto-mode-alist '("archive-contents\\'" . emacs-lisp-mode))
+** Other Languages
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages '( crontab-mode
+                                csv-mode
+                                csv-nav
+                                sql-indent ))
 
-     (define-key emacs-lisp-mode-map (kbd "C-x C-a") 'pp-macroexpand-last-sexp)
-     (define-key emacs-lisp-mode-map (kbd "C-x C-e") 'pp-eval-last-sexp)
+  ;; crontab
+  (add-to-list 'auto-mode-alist '("\\.?cron\\(tab\\)?\\'" . 'crontab-mode))
 
-     (after 'lisp-mode
-       (define-key emacs-lisp-mode-map (kbd "C-c e") 'macrostep-expand))
-   #+END_SRC
-** Miscelleneous
-   The languages/modes that belong to this group include =crontab=, =sql=, etc.
-   #+BEGIN_SRC emacs-lisp
-     (preamble/checkpoint "enabled support for =miscelleneous-group=")
-     (preamble/require-packages '( crontab-mode
-                                   csv-mode csv-nav
-                                   sql-indent ))
+  ;; csv
+  (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . 'csv_mode))
+  (setq csv-separators '("," ";" "|" " "))
+#+END_SRC
 
-     ;; crontab
-     (add-to-list 'auto-mode-alist '("\\.?cron\\(tab\\)?\\'" . 'crontab-mode))
+*** SQL
+#+BEGIN_SRC emacs-lisp
+  (after 'sql
+    (require 'sql-indent)
+    (when (package-installed-p 'dash-at-point)
+      (defun preamble/maybe-set-dash-db-docset ()
+        (when (eq sql-product 'postgres)
+          (setq dash-at-point-docset "psql")))
 
-     ;; csv
-     (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . 'csv_mode))
-     (setq csv-separators '("," ";" "|" " "))
+      (add-hook 'sql-mode-hook 'preamble/maybe-set-dash-db-docset)
+      (add-hook 'sql-interactive-mode-hook 'preamble/maybe-set-dash-db-docset)
+      (defadvice sql-set-product (after set-dash-docset activate)
+        (preamble/maybe-set-dash-db-docset))))
 
-     ;; sql
-     (after 'sql
-       (require 'sql-indent)
-       (when (package-installed-p 'dash-at-point)
-         (defun preamble/maybe-set-dash-db-docset ()
-           (when (eq sql-product 'postgres)
-             (setq dash-at-point-docset "psql")))
+  (setq-default sql-input-ring-file-name
+                (expand-file-name ".sqli_history" preamble-dir))
+#+END_SRC
 
-         (add-hook 'sql-mode-hook 'preamble/maybe-set-dash-db-docset)
-         (add-hook 'sql-interactive-mode-hook 'preamble/maybe-set-dash-db-docset)
-         (defadvice sql-set-product (after set-dash-docset activate)
-           (preamble/maybe-set-dash-db-docset))))
-
-     (setq-default sql-input-ring-file-name
-        (expand-file-name ".sqli_history" preamble-dir))
-
-   #+END_SRC
 * Session Management
-  #+BEGIN_SRC emacs-lisp
-    ;; save a list of open files in ~/.emacs.d/.emacs.desktop
-    (setq desktop-path (list preamble-dir))
-    (desktop-save-mode 1)
+** Configuration
+#+BEGIN_SRC emacs-lisp
+  ;; save a list of open files in ~/.emacs.d/.emacs.desktop
+  (setq desktop-path (list preamble-dir))
+  (desktop-save-mode)
 
-    (defadvice desktop-read (around trace-desktop-errors activate)
-      (let ((debug-on-error t))
-        ad-do-it))
-    (defadvice desktop-read (around time-restore activate)
-      (let ((start-time (current-time)))
-        (prog1
-            ad-do-it
-          (message "Desktop restored in %.2fms"
-                   (preamble/time-subtract-millis (current-time)
-                                                  start-time)))))
+  ;; display time taken in restoring desktop
+  (defadvice desktop-read (around time-restore activate)
+    (let ((start-time (current-time)))
+      (prog1
+          ad-do-it
+        (message "Desktop restored in %.2fms"
+                 (preamble/time-subtract-millis (current-time) start-time)))))
 
-    (defadvice desktop-create-buffer (around time-create activate)
-      (let ((start-time (current-time))
-            (filename (ad-get-arg 1)))
-        (prog1
-            ad-do-it
-          (message "Desktop: %.2fms to restore %s"
-                   (preamble/time-subtract-millis (current-time)
-                                                  start-time)
-                   (when filename
-                     (abbreviate-file-name filename))))))
+  ;; display time taken in restoring a buffer
+  (defadvice desktop-create-buffer (around time-create activate)
+    (let ((start-time (current-time))
+          (filename (ad-get-arg 1)))
+      (prog1
+          ad-do-it
+        (message "Desktop: took me %.2fms to restore %s"
+                 (preamble/time-subtract-millis (current-time) start-time)
+                 (when filename
+                   (abbreviate-file-name filename))))))
+#+END_SRC
 
-    ;; restore histories and registers after saving
-    (preamble/require-package 'session)
+** Restore Session Variables
+#+BEGIN_SRC emacs-lisp
+  ;; restore histories and registers after saving
+  (preamble/require-package 'session)
 
-    (setq session-save-file (expand-file-name ".session" preamble-dir))
-    (add-hook 'after-init-hook 'session-initialize)
+  (setq session-save-file (expand-file-name ".session" preamble-dir))
+  (add-hook 'after-init-hook 'session-initialize)
 
-    ;; save a bunch of variables to the desktop file
-    ;; for lists specify the len of the maximal saved data also
-    (setq desktop-globals-to-save
-          (append '((extended-command-history . 30)
-                    (file-name-history        . 100)
-                    (ido-last-directory-list  . 100)
-                    (ido-work-directory-list  . 100)
-                    (ido-work-file-list       . 100)
-                    (grep-history             . 30)
-                    (compile-history          . 30)
-                    (minibuffer-history       . 50)
-                    (query-replace-history    . 60)
-                    (read-expression-history  . 60)
-                    (regexp-history           . 60)
-                    (regexp-search-ring       . 20)
-                    (search-ring              . 20)
-                    (comint-input-ring        . 50)
-                    (shell-command-history    . 50)
-                    desktop-missing-file-warning
-                    tags-file-name
-                    register-alist)))
+  ;; save a bunch of variables to the desktop file
+  ;; for lists specify the len of the maximal saved data also
+  (setq desktop-globals-to-save
+        (append '((extended-command-history . 30)
+                  (file-name-history        . 100)
+                  (ido-last-directory-list  . 100)
+                  (ido-work-directory-list  . 100)
+                  (ido-work-file-list       . 100)
+                  (grep-history             . 30)
+                  (compile-history          . 30)
+                  (minibuffer-history       . 50)
+                  (query-replace-history    . 60)
+                  (read-expression-history  . 60)
+                  (regexp-history           . 60)
+                  (regexp-search-ring       . 20)
+                  (search-ring              . 20)
+                  (comint-input-ring        . 50)
+                  (shell-command-history    . 50)
+                  desktop-missing-file-warning
+                  tags-file-name
+                  register-alist)))
+#+END_SRC
 
-    (when (eval-when-compile (string< emacs-version "24.3.50"))
-      (unless (boundp 'desktop-restore-frames)
-        (preamble/require-package 'frame-restore)
-        (frame-restore)))
+** Restore Frame
+#+BEGIN_SRC emacs-lisp
+  (when (eval-when-compile (string< emacs-version "24.3.50"))
+    (unless (boundp 'desktop-restore-frames)
+      (preamble/require-package 'frame-restore)
+      (frame-restore)))
+#+END_SRC
+* OSX Specific Configuration
+When working on my Macbook Pro '13, I prefer my keys to work a bit differently, and want some
+opitons to behave differently. The following code summarises so:
+#+BEGIN_SRC emacs-lisp
+  (when *is-mac*
+    (setq-default locate-command "mdfind")
+    (setq mac-command-modifier 'meta)
+    (setq mac-option-modifier 'none)
+    (setq default-input-method "MacOSX")
+    ;; make mouse wheel / trackpad scrolling less jerky
+    (setq mouse-wheel-scroll-amount '(0.001)))
 
+  ;; when using cocoa-emacs
+  (when *is-mac-gui*
+    ;; Woohoo!!
+    (global-set-key (kbd "M-`") 'ns-next-frame)
+    (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+    ;; what describe-key reports for cmd-option-h
+    (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
+    (after-load 'nxml-mode (define-key nxml-mode-map (kbd "M-h") nil)))
+#+END_SRC
+* Key Bindings                                                                            :noexport:
+  #+TBLNAME: key-bindings
+  |--------+------------+-------------------------------------------+-------------------------------------------------------------------|
+  | Keys   | Category   | Description                               | Command                                                           |
+  |--------+------------+-------------------------------------------+-------------------------------------------------------------------|
+  | C-c l  | General    | Store org-link to current location        | 'org-store-link                                                   |
+  | C-c a  | General    | View Org Agenda's Dashboard               | 'org-agenda                                                       |
+  | C-c p  | Editing    | Duplicate Line or Selected Region         | 'duplicate-line-or-region                                         |
+  | C-j    | Editing    | Jump to a character on the screen         | 'ace-jump-mode                                                    |
+  | C-c \\ | Formatting | Indent whole file according to major mode | '(lambda() (interactive) (indent-region (point-min) (point-max))) |
+  |--------+------------+-------------------------------------------+-------------------------------------------------------------------|
 
-  #+END_SRC
-* Environment Specific
-  I, often, work on more than one environment (machine), and need
-  special setup on such machines, sometimes.
+#+BEGIN_SRC emacs-lisp
+;; Convenient binding for vc-git-grep
+(global-set-key (kbd "C-x v f") 'vc-git-grep)
+(global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
+(global-set-key (kbd "C-x g") 'magit-status)
 
-** OSX
-    When working on my Macbook Pro '13, I prefer my keys to work a bit
-    differently, and want some opitons to behave differently. The following
-    code summarises so:
+(global-set-key [remap query-replace-regexp] 'vr/query-replace)
+(global-set-key [remap replace-regexp] 'vr/replace)
+(after 'move-text (move-text-default-bindings))
+(global-set-key [M-S-up] 'move-text-up)
+(global-set-key [M-S-down] 'move-text-down)
+(global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
+(global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
+(global-set-key [remap query-replace-regexp] 'vr/query-replace)
+(global-set-key [remap replace-regexp] 'vr/replace)
 
-    #+BEGIN_SRC emacs-lisp
-      (when *is-mac*
-        (preamble/checkpoint "configured Emacs Preamble' for Mac OSX..")
-        (setq-default locate-command "mdfind")
-        (setq mac-command-modifier 'meta)
-        (setq mac-option-modifier 'none)
-        (setq default-input-method "MacOSX")
-        ;; make mouse wheel / trackpad scrolling less jerky
-        (setq mouse-wheel-scroll-amount '(0.001)))
+(global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
+;; indent whole file according to its major-mode
+(global-set-key (kbd "C-=") 'er/expand-region)
+;; To be able to M-x without meta
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
 
-      ;; when using cocoa-emacs
-      (when *is-mac-gui*
-        (preamble/checkpoint "configured Emacs' Preamble for Cocoa Emacs..")
-        ;; Woohoo!!
-        (global-set-key (kbd "M-`") 'ns-next-frame)
-        (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
-        ;; what describe-key reports for cmd-option-h
-        (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
-        (after-load 'nxml-mode
-          (define-key nxml-mode-map (kbd "M-h") nil)))
-    #+END_SRC
-* Key Bindings
-  #+BEGIN_SRC emacs-lisp
-    (preamble/checkpoint "Setting up Key Bindings..")
+;; Vimmy alternatives to M-^ and C-u M-^
+(global-set-key (kbd "C-c j") 'join-line)
+(global-set-key (kbd "C-c J") (lambda () (interactive) (join-line 1)))
 
-    (after 'org
-      (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
-      (when *is-mac*
-        (define-key org-mode-map (kbd "M-h") nil)
-        (autoload 'omlg-grab-link "org-mac-link")
-        (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
-
-    (define-key global-map "\C-cl" 'org-store-link)
-    (define-key global-map "\C-ca" 'org-agenda)
-
-    ;; Convenient binding for vc-git-grep
-    (global-set-key (kbd "C-x v f") 'vc-git-grep)
-    (global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
-    (global-set-key (kbd "C-x g") 'magit-status)
-
-    (global-set-key [remap query-replace-regexp] 'vr/query-replace)
-    (global-set-key [remap replace-regexp] 'vr/replace)
-
-    (global-set-key (kbd "C-c p") 'duplicate-line-or-region)
-
-    (global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
-
-    (after 'move-text (move-text-default-bindings))
-    (global-set-key [M-S-up] 'move-text-up)
-    (global-set-key [M-S-down] 'move-text-down)
-
-    (global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
-
-    (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
-
-    (global-set-key [remap query-replace-regexp] 'vr/query-replace)
-    (global-set-key [remap replace-regexp] 'vr/replace)
-
-    ;; indent whole file according to its major-mode
-    (global-set-key (kbd "C-c C-\\") '(lambda() (interactive) (indent-region (point-min) (point-max))))
-    (global-set-key (kbd "C-=") 'er/expand-region)
-    ;; To be able to M-x without meta
-    (global-set-key (kbd "C-x C-m") 'execute-extended-command)
-
-    ;; Vimmy alternatives to M-^ and C-u M-^
-    (global-set-key (kbd "C-c j") 'join-line)
-    (global-set-key (kbd "C-c J") (lambda () (interactive) (join-line 1)))
-
-    (global-set-key (kbd "C-.") 'set-mark-command)
-    (global-set-key (kbd "C-x C-.") 'pop-global-mark)
-
-    (global-set-key (kbd "C-;") 'ace-jump-mode)
-    (global-set-key (kbd "C-:") 'ace-jump-word-mode)
+(global-set-key (kbd "C-.") 'set-mark-command)
+(global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
 
-    ;; multiple-cursors
-    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-    (global-set-key (kbd "C-+") 'mc/mark-next-like-this)
-    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-    ;; From active region to multiple cursors:
-    (global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
-    (global-set-key (kbd "C-c c c") 'mc/edit-lines)
-    (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
-    (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
-    (global-set-key (kbd "M-Z") 'zap-up-to-char)
-    (global-set-key (kbd "RET") 'newline-and-indent)
-    (global-set-key (kbd "C-M-=") 'preamble/increase-default-font-height)
-    (global-set-key (kbd "C-M--") 'preamble/decrease-default-font-height)
-    (global-set-key (kbd "<f7>") 'preamble/split-window)
-    (global-set-key (kbd "<f6>")
-                    (lambda ()
-                      (interactive)
-                      (switch-to-buffer nil)))
+;; multiple-cursors
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-+") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+;; From active region to multiple cursors:
+(global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
+(global-set-key (kbd "C-c c c") 'mc/edit-lines)
+(global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
+(global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+(global-set-key (kbd "M-Z") 'zap-up-to-char)
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-M-=") 'preamble/increase-default-font-height)
+(global-set-key (kbd "C-M--") 'preamble/decrease-default-font-height)
+(global-set-key (kbd "<f7>") 'preamble/split-window)
+(global-set-key (kbd "<f6>")
+                (lambda ()
+                    (interactive)
+                    (switch-to-buffer nil)))
 
 
-    (global-set-key (kbd "M-x") 'smex)
-    (global-set-key (kbd "C-x o") 'switch-window)
-    (global-set-key [(meta f11)] 'preamble/ido-choose-from-recentf)
-    (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-x o") 'switch-window)
+(global-set-key [(meta f11)] 'preamble/ido-choose-from-recentf)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
-    (global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "M-/") 'hippie-expand)
 
-    ;; stop C-z from minimizing windows under OS X
-    (global-set-key (kbd "C-z") '(lambda ()
-                                   (interactive) (unless *is-mac-gui*) (suspend-frame)))
+;; stop C-z from minimizing windows under OS X
+(global-set-key (kbd "C-z") '(lambda ()
+                                (interactive) (unless *is-mac-gui*) (suspend-frame)))
 
-    (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
-      ;; Command-Option-f to toggle fullscreen mode
-      ;; Hint: Customize `ns-use-native-fullscreen'
-      (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+(when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+    ;; Command-Option-f to toggle fullscreen mode
+    ;; Hint: Customize `ns-use-native-fullscreen'
+    (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
 
-    (global-set-key (kbd "M-C-8") '(lambda () (interactive) (adjust-opacity nil -5)))
-    (global-set-key (kbd "M-C-9") '(lambda () (interactive) (adjust-opacity nil 5)))
-    (global-set-key (kbd "M-C-0") '(lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
-  #+END_SRC
+(global-set-key (kbd "M-C-8") '(lambda () (interactive) (adjust-opacity nil -5)))
+(global-set-key (kbd "M-C-9") '(lambda () (interactive) (adjust-opacity nil 5)))
+(global-set-key (kbd "M-C-0") '(lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+#+END_SRC
 ** BUG pressing C-z will still minimize the window when using Emacs' GUI
-* Server
-  Allow =emacsclient= to connect to the current =emacs= instance.
-  #+BEGIN_SRC emacs-lisp
-    (require 'server)
-    (unless (server-running-p)
-      (server-start))
-  #+END_SRC
 * Updates
-  Emacs' Preamble is really smart! It can update itself, on the go.
-
-  #+BEGIN_SRC emacs-lisp
+Emacs' Preamble is really smart! It can update itself, on the go.
+#+BEGIN_SRC emacs-lisp
   (defun preamble/recompile-init ()
     "Byte-compile all your dotfiles again."
     (interactive)
@@ -1937,29 +1890,39 @@
       (shell-command "git pull")
       (preamble/recompile-init)
       (message "Update finished. Restart Emacs to complete the process.")))
-  #+END_SRC
+#+END_SRC
 
 ** TODO there should be a scheduler to automatically check for updates.
 
 * Epilogues
-  Things that need to be run at the end of the configuration have been specified here.
-  #+BEGIN_SRC emacs-lisp
-    ; (require 'init-locales)
-  #+END_SRC
-* Other Tasks
+Things that need to be run at the end of the configuration have been specified here.
+#+BEGIN_SRC emacs-lisp
+; (require 'init-locales)
+#+END_SRC
+* Other Tasks                                                                             :noexport:
+** DONE set a different =fill-column= particularly for this org file
+   CLOSED: [2013-09-29 Sun 01:34]
+   - State "DONE"       from "TODO"       [2013-09-29 Sun 01:34]
+** DONE remove the following settings, when configuration is complete.
+#+BEGIN_SRC emacs-lisp :tangle no
+    (auto-fill-mode 't)
+    (global-linum-mode 1)
+    (xterm-mouse-mode 1)
+    (setq-default fill-column 100)
+#+END_SRC
 ** TODO show total load time when Emacs has initialized in the mini-buffer
-   maybe we can use the function which prelude uses
+maybe we can use the function which prelude uses
 ** TODO tangling should only be done when changes are detected
-   This file should only be tangled when changes are detected to this file. This can be done by
-   generating MD5 hash of the current file, and then calling appropriate function to call either the
-   =readme.el= or =readme.org= for initialization purpose.
+This file should only be tangled when changes are detected to this file. This can be done by
+generating MD5 hash of the current file, and then calling appropriate function to call either the
+=readme.el= or =readme.org= for initialization purpose.
 ** TODO magit should be colorful
 ** TODO whitespace related settings should only take place in prog-mode
 ** TODO Org Block: Only colorize till fill column indicator
 ** TODO Quick Scratch for current mode
-    A hotkey should create a new =*scratch*= buffer with mode set to the
-    current mode. Moreover, I should be able to press =C-c C-c= to execute the
-    current line/expression there in (kinda like a repl within Emacs)
+A hotkey should create a new =*scratch*= buffer with mode set to the
+current mode. Moreover, I should be able to press =C-c C-c= to execute the
+current line/expression there in (kinda like a repl within Emacs)
 ** TODO mousewheel should be able to move up and down in buffer - cursor being at same place.
 ** DONE Delete trailing whitespace on save
 ** TODO ^L to <hl>: <hl> spans more than one line
@@ -1971,3 +1934,15 @@
 ** TODO jump to the location of last edit
 ** TODO org-mode export as html should syntax-highlight the code natively
 ** TODO ensure that emacs is started maximized
+** DONE activating =mmm-mode= gives error
+   CLOSED: [2013-09-29 Sun 01:32]
+  Error occurred is: =Can't preview LaTex fragment in a non-file buffer=
+** TODO Implement some =mmm= modes by taking help from [[https://github.com/purcell/mmm-mode/blob/master/mmm-sample.el][samples]].
+** Magit should quit itself when changes were pushed?
+* Emacs Options                                                                   :noexport:ARCHIVE:
+#+DESCRIPTION: Emacs' Preamble: Configuration for Emacs in a literal-programming (self-documenting) style.
+#+KEYWORDS:    org babel emacs configuration
+#+OPTIONS:     toc:3 todo:t html-style:nil
+#+STARTUP:     hideblocks content
+#+HTML_HEAD:   <link rel="stylesheet" href="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/styles/dark.css" />
+#+HTML_HEAD:   <script type="text/javascript" src="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/highlight.pack.js"></script>
