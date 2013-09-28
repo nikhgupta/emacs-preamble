@@ -60,7 +60,7 @@
     (message "Great. We can, now, proceed to literally load our configuration. :)")))
 
 ;; load our configuration file
-(org-babel-load-file (expand-file-name "readme.org" preamble-dir))
+(org-babel-load-file (expand-file-name "preamble.org" preamble-dir))
 
 ;; greet and display load time to the user
 (defun preamble/greet-user()
