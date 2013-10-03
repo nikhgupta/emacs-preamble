@@ -1,3 +1,4 @@
+#+TITLE:  Emacs' Preamble
 #+AUTHOR: Nikhil Gupta
 #+EMAIL:  me@nikhgupta.com
 #+DATE:   2013-09-21 Sun
@@ -7,15 +8,15 @@
 I have been a long-time [[http://www.vim.org][vim]] user, and started using [[http://gnu.org/s/emacs][Emacs]] because of the awesome [[http://orgmode.org][org-mode]] feature,
 it provides. Definitely, I have been impressed. People were right /for once/! I have, only, been
 using Emacs for a couple of weeks, and I'm already in love with it, primarily, because:
-- it has the neatest organizer in this world: the =org-mode=.
-- it uses =elisp= to programmatically change itself.
+  - it has the neatest organizer in this world: the =org-mode=.
+  - it uses =elisp= to pragmatically change itself.
 
 So, soon I was dwelling inside the dark world of getting my new editor resonate with myself. I tried
 several starter packages, /viz./:
-- [[http://github.com/overtone/emacs-live][Emacs Live]]
-- [[http://github.com/bbatsov/prelude][Emacs Prelude]]
-- [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
-- [[http://github.com/purcell/emacs.d][@purcell's emacs configuration]]
+  - [[http://github.com/overtone/emacs-live][Emacs Live]]
+  - [[http://github.com/bbatsov/prelude][Emacs Prelude]]
+  - [[http://eschulte.github.io/emacs24-starter-kit/][Emacs Starter Kit]]
+  - [[http://github.com/purcell/emacs.d][@purcell's Emacs configuration]]
 
 And, I really enjoyed my couple of days of flirting with these kits, and they were really nice, but
 somehow, they did not represent me.
@@ -39,8 +40,9 @@ Extending upon the same, the current Org-mode file documents my configuration fo
 named as *Emacs' Preamble*. The source code inside =elisp= source blocks is /tangled/ by Babel, and
 is then loaded as configuration via =org-babel-load-file= function. We make sure that only
 =emacs-lisp= based code is tangled by =org-mode=, as follows:
-#+BEGIN_SRC emacs-lisp
-  (org-babel-tangle-file "preamble.org" "preamble.el" "emacs-lisp")
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (org-babel-tangle-file "preamble.org" "output/preamble.el" "emacs-lisp")
 #+END_SRC
 
 ** Website
@@ -53,6 +55,32 @@ This configuration for Emacs, i.e. Emacs' Preamble is heavily inspired form (in 
 - [[https://github.com/purcell/emacs.d][@purcell's emacs.d]]
 - [[https://github.com/steckerhalter/steckemacs][steckemacs]]
 
+** License
+#+BEGIN_EXAMPLE
+Copyright (C) 2013  Nikhil Gupta <me@nikhgupta.com>
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+
+Code in this document is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either
+version 3 of the License, or (at your option) any later version.
+
+This code is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+#+END_EXAMPLE
+
+This document [[http://doc.nikhgupta.com/emacs-preamble.html]] which describes my current Emacs
+configuration (either in its [[http://doc.nikhgupta.com/emacs-preamble.html][HTML format]] or in its [[http://doc.nikhgupta.com/emacs-preamble.org][Org format]]) is licensed under the GNU Free
+Documentation License version 1.3 or later ([[http://www.gnu.org/copyleft/fdl.html]]).
+
+The code examples and CSS stylesheets are licensed under the GNU General Public License v3 or later
+([[http://www.gnu.org/licenses/gpl.html]]).
+
 ** Requirements
 I am really unsure about the requirements, but I'm using this configuration in *Mac OSX 10.8.2
 (Mountain Lion)*, *GNU Emacs 24.1.1*, and *org-mode v8.2*.
@@ -64,7 +92,7 @@ intended, on *Emacs v24+*. Older versions of Emacs might not work properly.
 
 ** Installation
 I tried to make sure that *Emacs' Preamble* can be installed in as minimum steps, as possible. At
-the moment, you can simply clone the github repository on your computer and link =~/.emacs.d= to
+the moment, you can simply clone the Github repository on your computer and link =~/.emacs.d= to
 that directory, e.g.:
 #+BEGIN_SRC bash
   git clone http://github.com/nikhgupta/preamble ~/Code/github/emacs-preamble
@@ -76,10 +104,10 @@ while, and maybe, a coffee will do me just good, at the moment.
 
 * Basic Configuration
 ** Initialization
-[[file:init.el][It all started with a big-bang!]] (in this case, a meagre =init.el= file)
+[[file:init.el][It all started with a big-bang!]] (in this case, a meager =init.el= file)
 
 #+BEGIN_QUOTE
-Oh, yes! Did I mention? I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].)
+Oh, yes! Did I mention? I'm a great fan of [[http://en.wikipedia.org/wiki/The_Big_Bang_Theory][The Big Bang Theory]].
 #+END_QUOTE
 
 The above file, basically, checks to see whether the Org-mode version is above =8.0=. If not, it
@@ -90,6 +118,25 @@ At the moment, I leave the [[http://www.gnu.org/software/emacs/manual/html_node/
 run it on my VPS, and connect remotely), and use the =emacsclient= commands to connect to it. This
 way, this configuration is loaded/tangled only once, providing super-fast experience for my
 /use-cases/.
+
+** Commentary
+#+BEGIN_SRC emacs-lisp :comments off
+  ;;; preamble.el --- Emacs' Preamble
+  ;;  Author : Nikhil Gupta
+  ;;  Email  : me@nikhgupta.com
+
+  ;;; Commentary:
+  ;;  -----------------------------------------
+  ;;  Do not edit the generated file, as it has
+  ;;  been generated, as a tangled file, by the
+  ;;  stupendous org-mode.
+  ;;
+  ;;  Make the changes in the corresponding
+  ;;  preamble.org file, instead.
+  ;;  -----------------------------------------
+
+  ;;; Code:
+#+END_SRC
 
 ** Compatibility
 Since, this configuration uses features that are new to =Emacs v24=, and since I don't have time
@@ -104,7 +151,7 @@ warning, if the Emacs version is below =v24=.
 ** Debugging
 *** Why?
 When working with such a configuration as this one, I often tend to pull my hair out.. This section
-helps me track down possible causes of such erratic behaviour of mine and be more insane,
+helps me track down possible causes of such erratic behavior of mine and be more insane,
 instead. Also, I hate those pesky plugins which make my *Emacs' Preamble* configuration far too
 slow. This section, further, helps me benchmark my configuration for the exact same purpose.
 
@@ -146,10 +193,10 @@ me by acting as indirect comments.
 Moreover, since, I am a quantified-geek, I love to measure various things. Why not measure time
 taken by our Emacs configuration, as well?
 
-This section, also, enables me to measure the time taken by various features in require'ing them, as
+This section, also, enables me to measure the time taken by various features in requiring them, as
 well as total time taken by the Emacs to load this configuration. When Emacs load this
 configuration, it displays which features were =require='d, and how much time that took. This is,
-especially, useful for debugging which module is making our Emacs startup, so slow.
+especially, useful for debugging which module is making our Emacs start-up, so slow.
 
 #+BEGIN_SRC emacs-lisp
   ;; function to display how much time a particular feature took to require..
@@ -157,6 +204,8 @@ especially, useful for debugging which module is making our Emacs startup, so sl
     (if debug-on-error ( message
                          "- At =%.2fms=, I required a feature: =%s=, which took me =%0.2fms=."
                          (preamble/load-time) package time)))
+
+  (defvar feature-required-time nil "Require time for a specific feature.")
 
   (defvar preamble/require-times nil
     "A list of (FEATURE . LOAD-DURATION).
@@ -182,7 +231,7 @@ especially, useful for debugging which module is making our Emacs startup, so sl
 
 ** Avoid Screen-flickering
 Now that, I have =Emacs v24= with me, I would first disable some of the GUI features early in the
-startup so as to ensure that the screen does not flicker when turning them off, otherwise.
+start-up so as to ensure that the screen does not flicker when turning them off, otherwise.
 #+BEGIN_SRC emacs-lisp
   (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
   (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -216,7 +265,7 @@ startup so as to ensure that the screen does not flicker when turning them off, 
 #+END_SRC
 
 *** Macros
-- Evaluate some =elisp= code, after a feature has been loaded.
+**** Evaluate =elisp= after feature has loaded
   #+BEGIN_SRC emacs-lisp
     (defmacro after (feature &rest body)
         "After FEATURE is loaded, evaluate BODY."
@@ -245,8 +294,8 @@ startup so as to ensure that the screen does not flicker when turning them off, 
                       "Emacs' Preamble was loaded in =%.2fms=.") (preamble/load-time)))
 #+END_SRC
 
-**** Add subfolders of a directory to load path
-I have added the following function to add all subdirectories inside a given directory to the
+**** Add sub-folders of a directory to load path
+I have added the following function to add all sub-directories inside a given directory to the
 =load-path=.
 #+BEGIN_SRC emacs-lisp
   (defun preamble/add-subfolders-to-load-path (parent-dir)
@@ -284,12 +333,13 @@ setting it up below, so that all the custom configuration exists in a separate f
   (load custom-file)
 #+END_SRC
 *** Vendors
-=vendors= directory was created for the purpose of putting up /un-published/ packages inside it, via
-git repository cloning. I'm just adding all of its subdirectories to the load path.
+=vendors= directory was created for the purpose of putting up /unpublished/ packages inside it, via
+git repository cloning. I'm just adding all of its sub-directories to the load path.
 #+BEGIN_SRC emacs-lisp
+  (mapc 'load (directory-files preamble-vendor-dir 't "^[^#].*el$"))
   (preamble/add-subfolders-to-load-path preamble-vendor-dir)
 #+END_SRC
-** General Behaviour
+** General Behavior
 *** Encoding Support
 Setup encoding used by the Emacs to =utf-8=, thereby, easing out my life.
 #+BEGIN_SRC emacs-lisp
@@ -300,7 +350,7 @@ Setup encoding used by the Emacs to =utf-8=, thereby, easing out my life.
   (prefer-coding-system 'utf-8)
 #+END_SRC
 
-*** Auto-reload file changed externally
+*** Auto-reload external file changes
 #+BEGIN_SRC emacs-lisp
   (global-auto-revert-mode)
   (setq global-auto-revert-non-file-buffers t
@@ -323,7 +373,8 @@ Setup encoding used by the Emacs to =utf-8=, thereby, easing out my life.
                 grep-highlight-matches t
                 bookmark-default-file preamble/bookmark-file ; default bookmark file
                 ediff-split-window-function 'split-window-horizontally
-                ediff-window-setup-function 'ediff-setup-windows-plain)
+                ediff-window-setup-function 'ediff-setup-windows-plain
+                ring-bell-function 'ignore)
 #+END_SRC
 
 ** General Appearance
@@ -334,8 +385,7 @@ Setup encoding used by the Emacs to =utf-8=, thereby, easing out my life.
   (setq-default blink-cursor-delay 0        ; seconds after which cursor starts to blink
                 blink-cursor-interval 0.4   ; length of cursor blink interval
                 line-spacing 0.2            ; space to put between lines
-                truncate-lines nil          ; display continuation lines
-                truncate-partial-width-windows nil)
+  )
 #+END_SRC
 
 *** Modeline
@@ -352,7 +402,25 @@ and automatically remove them when buffer is saved.
 
   ;; do not show trailing whitespace in some modes
   (dolist (hook '(term-mode-hook comint-mode-hook compilation-mode-hook))
-  (add-hook hook (lambda () (setq show-trailing-whitespace nil))))
+    (add-hook hook (lambda () (setq show-trailing-whitespace nil))))
+#+END_SRC
+
+*** Word Wrapping
+#+BEGIN_SRC emacs-lisp
+  (setq-default truncate-lines nil         ; display continuation lines
+                truncate-partial-width-windows nil)
+#+END_SRC
+*** Font Settings
+I love syntax highlighting.
+#+BEGIN_SRC elisp
+  (global-font-lock-mode 1)
+#+END_SRC
+
+Specify the default font as =Source Code Pro=, which should already be [[http://blogs.adobe.com/typblography/2012/09/source-code-pro.html][downloaded]] and installed.
+#+BEGIN_SRC elisp
+  (set-frame-font "Source Code Pro")
+  (set-face-attribute 'default nil :font "Source Code Pro" :height 140)
+  (set-face-font 'default "Source Code Pro")
 #+END_SRC
 
 *** Disable GUI dialog boxes
@@ -377,10 +445,11 @@ and automatically remove them when buffer is saved.
   (transient-mark-mode)              ; highlight the region when mark is active
   (cua-selection-mode 't)            ; for rectangular selections, CUA is nice
   (show-paren-mode)                  ; show matching parenthesis
-  (auto-fill-mode)                   ; automatically wrap lines when longer than `fill-column'
+  (global-visual-line-mode)          ; soft wrapping of lines
 
   (setq-default case-fold-search t   ; searches and matches should ignore case
                 indent-tabs-mode nil ; indentation can not insert tabs
+                tab-width 2          ; a TAB is 2 spaces, by default
                 fill-column 100)
 #+END_SRC
 *** Enable some disabled commands
@@ -394,68 +463,67 @@ We do not want to disable narrowing commands, or case-change functions.
 #+END_SRC
 *** Functions
 #+BEGIN_SRC emacs-lisp
-    (autoload 'zap-up-to-char "misc" "Kill up to, but not including
-    ARGth occurrence of CHAR.")
+  (autoload 'zap-up-to-char "misc" "Kill up to, but not including
+  ARGth occurrence of CHAR.")
 
-    (defun duplicate-region (beg end)
+  (defun Preamble/duplicate-region (beg end)
     "Insert a copy of the current region after the region."
     (interactive "r")
     (save-excursion
-        (goto-char end)
-        (insert (buffer-substring beg end))))
+      (goto-char end)
+      (insert (buffer-substring beg end))))
 
-    (defun duplicate-line-or-region (prefix)
+  (defun preamble/duplicate-line-or-region (prefix)
     "Duplicate either the current line or any current region."
     (interactive "*p")
-    (whole-line-or-region-call-with-region 'duplicate-region prefix t))
+    (whole-line-or-region-call-with-region 'preamble/duplicate-region prefix t))
 
-    (defun kill-back-to-indentation ()
+  (defun preamble/kill-back-to-indentation ()
     "Kill from point back to the first non-whitespace character on the line."
     (interactive)
     (let ((prev-pos (point)))
-        (back-to-indentation)
-        (kill-region (point) prev-pos)))
+      (back-to-indentation)
+      (kill-region (point) prev-pos)))
 
-    (defun sort-lines-random (beg end)
+  (defun preamble/sort-lines-random (beg end)
     "Sort lines in region randomly."
     (interactive "r")
     (save-excursion
-        (save-restriction
+      (save-restriction
         (narrow-to-region beg end)
         (goto-char (point-min))
         (let ;; To make `end-of-line' and etc. to ignore fields.
             ((inhibit-field-text-motion t))
-            (sort-subr nil 'forward-line 'end-of-line nil nil
-                    (lambda (s1 s2) (eq (random 2) 0)))))))
+          (sort-subr nil 'forward-line 'end-of-line nil nil
+                     (lambda (s1 s2) (eq (random 2) 0)))))))
 
-    (defun preamble/open-line-with-reindent (n)
+  (defun preamble/open-line-with-reindent (n)
     "A version of `open-line' which reindents the start and end positions.
-    If there is a fill prefix and/or a `left-margin', insert them
-    on the new line if the line would have been blank.
-    With arg N, insert N newlines."
+  If there is a fill prefix and/or a `left-margin', insert them
+  on the new line if the line would have been blank.
+  With arg N, insert N newlines."
     (interactive "*p")
     (let* ((do-fill-prefix (and fill-prefix (bolp)))
-            (do-left-margin (and (bolp) (> (current-left-margin) 0)))
-            (loc (point-marker))
-            ;; Don't expand an abbrev before point.
-            (abbrev-mode nil))
-        (delete-horizontal-space t)
-        (newline n)
-        (indent-according-to-mode)
-        (when (eolp)
+           (do-left-margin (and (bolp) (> (current-left-margin) 0)))
+           (loc (point-marker))
+           ;; Don't expand an abbrev before point.
+           (abbrev-mode nil))
+      (delete-horizontal-space t)
+      (newline n)
+      (indent-according-to-mode)
+      (when (eolp)
         (delete-horizontal-space t))
-        (goto-char loc)
-        (while (> n 0)
+      (goto-char loc)
+      (while (> n 0)
         (cond ((bolp)
-                (if do-left-margin (indent-to (current-left-margin)))
-                (if do-fill-prefix (insert-and-inherit fill-prefix))))
+               (if do-left-margin (indent-to (current-left-margin)))
+               (if do-fill-prefix (insert-and-inherit fill-prefix))))
         (forward-line 1)
         (setq n (1- n)))
-        (goto-char loc)
-        (end-of-line)
-        (indent-according-to-mode)))
+      (goto-char loc)
+      (end-of-line)
+      (indent-according-to-mode)))
 #+END_SRC
-
 ** Always Run Server
 #+BEGIN_SRC emacs-lisp
 (require 'server)
@@ -507,31 +575,11 @@ packages.
 Some packages are really trivial in nature, and nearly, need no configuration, at all. I have marked
 such packages to be installed, in this section. That way, I won't have to clobber up the
 configuration with different headings, and the likes.
-*** Related Functions
+*** Functions
 #+BEGIN_SRC emacs-lisp
-  ; define trivial packages
-  (defun preamble/packages-installed-p ()
-    "Check if all packages in `preamble-trivial-packages' are installed."
-    (every #'package-installed-p preamble-trivial-packages))
-
-  (defun preamble/require-package (package)
-    "Install PACKAGE unless already installed."
-    (unless (package-installed-p package)
-      (package-install package)))
-
-  (defun preamble/require-packages (packages)
-    "Ensure PACKAGES are installed.
-    Missing packages are installed automatically."
-    (mapc #'preamble/require-package packages))
-
   (defun preamble/install-packages ()
     "Install all packages listed in `preamble-trivial-packages'."
-    (unless (preamble/packages-installed-p)
-      ;; check for new packages (package versions)
-      (message "%s" "Emacs' Preamble is now refreshing its package database...")
-      (package-refresh-contents)
-      (message "%s" " done.")
-      ;; install the missing packages
+    (unless (every #'package-installed-p preamble-trivial-packages)
       (preamble/require-packages preamble-trivial-packages)))
 #+END_SRC
 
@@ -571,6 +619,7 @@ filetype.
       ("\\.less\\'" less-css-mode less-css-mode)
       ("\\.lua\\'" lua-mode lua-mode)
       ("\\.markdown\\'" markdown-mode markdown-mode)
+      ("\\.mkd\\'" markdown-mode markdown-mode)
       ("\\.md\\'" markdown-mode markdown-mode)
       ("\\.ml\\'" tuareg tuareg-mode)
       ("\\.pp\\'" puppet-mode puppet-mode)
@@ -623,7 +672,7 @@ my Shell or in my Editor, and hence, these two things need to be so adorable, an
 impressive, that I would never want to leave them alone.
 
 ** Themes
-*** Related Functions
+*** Functions
 #+BEGIN_SRC emacs-lisp
   ;; ensures that themes will be applied even if they have not been customized
   (defun preamble/reapply-themes ()
@@ -659,6 +708,10 @@ need more than that, even if I am bored.
     (interactive) (color-theme-sanityinc-solarized-dark))
   (defun eighties() "Activate an 80's theme."
     (interactive) (color-theme-sanityinc-tomorrow-eighties))
+  (defun day() "Activate theme for a day."
+    (interactive) (color-theme-sanityinc-tomorrow-day))
+  (defun night() "Activate theme for a night."
+    (interactive) (color-theme-sanityinc-tomorrow-night))
 #+END_SRC
 
 ** Frame and Windows
@@ -678,9 +731,9 @@ similar support is built-in inside Emacs v24.4+.
 
 *** Better Frame Title
 #+BEGIN_SRC emacs-lisp
-    (setq frame-title-format
-    '((:eval (if (buffer-file-name)
-        (abbreviate-file-name (buffer-file-name)) "%b"))))
+  (setq frame-title-format
+  '((:eval (if (buffer-file-name)
+      (abbreviate-file-name (buffer-file-name)) "%b"))))
 #+END_SRC
 
 *** Adjust Frame's Opacity
@@ -692,37 +745,12 @@ similar support is built-in inside Emacs v24.4+.
         (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
 
 #+END_SRC
-*** Hook on: after frame is made
-Since, I use both the GUI as well as the Terminal version of Emacs, depending upon the task at hand,
-I have added 2 different hooks that are binded to =after-make-frame-functions= hook. Furthermore,
-one of these hooks pertains to the GUI version, while the other one pertains to the Terminal version
-of Emacs. These hooks are run when a new frame is created by Emacs.
-#+BEGIN_SRC emacs-lisp
-    (defvar preamble/after-make-console-frame-hooks '()
-    "Hooks to run after creating a new TTY frame")
-    (defvar preamble/after-make-window-system-frame-hooks '()
-    "Hooks to run after creating a new window-system frame")
-
-    (defun preamble/run-after-make-frame-hooks (frame)
-    "Run configured hooks in response to the newly-created FRAME.
-    Selectively runs either `preamble/after-make-console-frame-hooks' or
-    `preamble/after-make-window-system-frame-hooks'"
-    (with-selected-frame frame
-        (run-hooks (if window-system
-                        'preamble/after-make-window-system-frame-hooks
-                    'preamble/after-make-console-frame-hooks))))
-
-    (add-hook 'after-make-frame-functions 'preamble/run-after-make-frame-hooks)
-#+END_SRC
-
 *** Mouse Support in Terminal
 When making new Terminal, i.e. =tty= frames in Emacs, I want to ensure that I am able to use mouse
 there, as well as paste by clicking mouse middle button.
 #+BEGIN_SRC emacs-lisp
-    (add-hook 'preamble/after-make-console-frame-hooks
-    (lambda ()
-        (xterm-mouse-mode)
-        (when (fboundp 'mwheel-install) (mwheel-install))))
+  (xterm-mouse-mode)
+  (when (fboundp 'mwheel-install) (mwheel-install))
 #+END_SRC
 
 *** Switching between Windows
@@ -731,12 +759,12 @@ and eyes, therefore, I make use of the really nice [[http://github.com/dimitri/s
 =winner-mode= built-in Emacs. Winner Mode allows us to /undo/ (and /redo/) changes in the window
 configuration with the key commands =C-c left=, and =C-c right= (which, is pretty neat!)
 #+BEGIN_SRC emacs-lisp
-    (when (fboundp 'winner-mode) (winner-mode))
+  (when (fboundp 'winner-mode) (winner-mode))
 
-    (preamble/require-package 'switch-window)
-    (require 'switch-window)
-    ;; we must bind the "C-x o" key appropriately, now.
-    (setq switch-window-shortcut-style 'quail)
+  (preamble/require-package 'switch-window)
+  (require 'switch-window)
+  ;; we must bind the "C-x o" key appropriately, now.
+  (setq switch-window-shortcut-style 'quail)
 #+END_SRC
 
 * Basic Modules
@@ -811,7 +839,7 @@ Finally, define some sources for AC, and setup some modes to use AC, by default.
 #+BEGIN_SRC emacs-lisp
     (preamble/require-package 'diminish)
 #+END_SRC
-*** Diminish Major Modes
+*** Diminishing Major Modes
 #+BEGIN_SRC emacs-lisp
 (add-hook 'emacs-lisp-mode-hook (lambda() (setq mode-name "eL"))) ; emacs lisp
 #+END_SRC
@@ -824,6 +852,8 @@ Finally, define some sources for AC, and setup some modes to use AC, by default.
   (after 'dired
     (require 'dired+)
     (setq dired-recursive-deletes 'top))
+  ;; disable line wrapping in dired mode
+  (add-hook 'dired-mode-hook (lambda () (setq truncate-lines t)))
 #+END_SRC
 *** Related Key Bindings
 #+BEGIN_SRC emacs-lisp
@@ -866,7 +896,6 @@ function to properly activate =fci-mode= in this case.
       (with-current-buffer buffer
         (when (and (boundp 'fci-mode) fci-mode)
           (turn-on-fci-mode)))))
-
 #+END_SRC
 
 ** flycheck
@@ -896,6 +925,7 @@ As stated above, =hippie-expand= uses a list of functions, which has been define
             try-expand-dabbrev-all-buffers
             try-expand-dabbrev-from-kill)))
 #+END_SRC
+
 ** ibuffer
 [[https://github.com/purcell/ibuffer-vc][ibuffer-vc]] adds functionality to Emacs' [[http://www.emacswiki.org/emacs/IbufferMode][iBuffer Mode]] by grouping buffers according to their parent
 VC (version-control) root directory, and by displaying and/or sorting files by their VC status.
@@ -920,17 +950,17 @@ in, then by filename or process name.
 Now, the default display of =dired= command is a bit non-resonating with what my eyes want to see,
 and therefore, lets change the configuration of =ibuffer= to suit my pair of eyes.
 #+BEGIN_SRC emacs-lisp
-    (after 'ibuffer
+  (after 'ibuffer
     ;; use human readable size column instead of original one
     (define-ibuffer-column size-h
-        (:name "Size" :inline t)
-        (cond
-        ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-        ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-        (t (format "%8d" (buffer-size))))))
+      (:name "Size" :inline t)
+      (cond
+       ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+       ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+       (t (format "%8d" (buffer-size))))))
 
-    ;; modify the default ibuffer-formats
-    (setq ibuffer-formats
+  ;; modify the default ibuffer-formats
+  (setq ibuffer-formats
         '((mark modified read-only vc-status-mini " "
                 (name 18 18 :left :elide)         " "
                 (size-h 9 -1 :right)              " "
@@ -938,7 +968,7 @@ and therefore, lets change the configuration of =ibuffer= to suit my pair of eye
                 (vc-status 16 16 :left)           " "
                 filename-and-process)))
 
-    (setq ibuffer-filter-group-name-face 'font-lock-doc-face)
+  (setq ibuffer-filter-group-name-face 'font-lock-doc-face)
 #+END_SRC
 
 ** ido-mode
@@ -981,7 +1011,6 @@ and the same power is available for executings commands, as well as a heap of ot
 ** isearch
 [[http://www.emacswiki.org/emacs/IncrementalSearch][Incremental Search]], i.e. Emacs' =isearch= is the Incremental Search feature of Emacs, and while it
 is really nice on its own, it may need some basic extensions and features related to it.
-
 *** Functions
 **** Search for Current Word
 #+BEGIN_SRC emacs-lisp
@@ -1039,16 +1068,13 @@ is really nice on its own, it may need some basic extensions and features relate
     (isearch-exit)
     (goto-char isearch-other-end))
 #+END_SRC
-*** Related Key Bindings
+*** Key Bindings
 #+BEGIN_SRC emacs-lisp
-    ;; put symbol at current point into search string
-    (define-key isearch-mode-map "\C-\M-w" 'isearch-yank-symbol)
-    ;; zap to first match of the search string
-    (define-key isearch-mode-map [(meta z)] 'zap-to-isearch)
-    ;; exit isearch on the other end of it, so that yank can be easier
-    (define-key isearch-mode-map [(control return)] 'isearch-exit-other-end)
-    ;; activate occur easily inside isearch
-    (define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
+  (define-key isearch-mode-map (kbd "C-y") 'isearch-yank-kill)
+  (define-key isearch-mode-map (kbd "C-M-w") 'isearch-yank-symbol)
+  (define-key isearch-mode-map (kbd "M-z") 'zap-to-isearch)
+  (define-key isearch-mode-map (kbd "C-RET") 'isearch-exit-other-end)
+  (define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
 #+END_SRC
 
 ** mmm-mode
@@ -1088,6 +1114,10 @@ can be found at: [[https://github.com/Wilfred/ag.el][Github: The Silver Searcher
     (setq-default ag-highlight-search t))
 #+END_SRC
 
+** tramp
+#+BEGIN_SRC emacs-lisp
+  (setq tramp-default-method "ftp")
+#+END_SRC
 ** undo-tree
 [[http://www.emacswiki.org/emacs/UndoTree][UndoTree]] is amazin'. It visually describes your change history for the current buffer in a nice
 ascii-tree like structure. From there, it is trivially easy to view your changes, and easily
@@ -1109,59 +1139,8 @@ open, so as to make them distinguishable.
     (setq uniquify-after-kill-buffer-p t)
     (setq uniquify-ignore-buffers-re "^\\*"))
 #+END_SRC
-
-* Version Management
-  Version management is the heart of my projects, in particular, [[http://git-scm.com][git]]. This section defines various
-  settings so as to allow me to version control my projects from within Emacs' Preamble.
-** Related Modules
-#+BEGIN_SRC emacs-lisp
-  (preamble/require-packages
-   '(  magit             ;; awesome git interface inside Emacs
-       git-blame         ;; emacs frontend for `git-blame' tool
-       gitignore-mode    ;; major mode for gitignore
-       gitconfig-mode    ;; major mode for gitconfig
-       git-commit-mode   ;; major mode for git commit
-       git-rebase-mode   ;; major mode for git rebase
-       git-messenger     ;; display why a line was changed as per git commits
-       git-gutter-fringe ;; display git status of lines in gutter
-       yagist            ;; gist management
-       github-browse-file ;; view the file we're editing in Github
-       bug-reference-github ;; Automatically set bug-reference-url-format and enable
-       ;; bug-reference-prog-mode buffers from Github repositories.
-       ))
-
-  ;; activate `bug-reference-github' in programming mode
-  (after 'bug-reference-github
-    (add-hook 'prog-mode-hook 'bug-reference-prog-mode))
-#+END_SRC
-
-** Magit Configuration
-Now, all I need is to setup [[https://github.com/magit/magit][magit]] as I intend it to perform inside my workflow.
-#+BEGIN_SRC emacs-lisp
-  (setq-default magit-save-some-buffers nil
-                magit-process-popup-time 10
-                magit-diff-refine-hunk t
-                magit-completing-read-function 'magit-ido-completing-read)
-
-  (after 'magit
-    ;; don't let magit-status mess up window configurations
-    ;; http://whattheemacsd.com/setup-magit.el-01.html
-    (defadvice magit-status (around magit-fullscreen activate)
-      (window-configuration-to-register :magit-fullscreen)
-      ad-do-it
-      (delete-other-windows))
-
-    (defadvice magit-quit-window (around magit-restore-screen activate)
-      ad-do-it
-      (jump-to-register :magit-fullscreen)))
-
-  ;;; when we start working on git-backed files, use git-wip if available
-  (after 'vc-git
-    (global-magit-wip-save-mode)
-    (diminish 'magit-wip-save-mode))
-#+END_SRC
 * Editing
-** Related Modules
+** Packages
 #+BEGIN_SRC emacs-lisp
   (preamble/require-packages
    '( unfill                ; join several lines inside a region/para
@@ -1176,7 +1155,7 @@ Now, all I need is to setup [[https://github.com/magit/magit][magit]] as I inten
       highlight-escape-sequences ))
 #+END_SRC
 
-** Related Configurations
+** Configurations
 #+BEGIN_SRC emacs-lisp
   ;; settings for `highlight-escape-sequences' package
   (hes-mode)
@@ -1250,21 +1229,44 @@ Now, all I need is to setup [[https://github.com/magit/magit][magit]] as I inten
 * Org Mode
 ** General Configuration
 #+BEGIN_SRC emacs-lisp
+  ;; set directories used by `org-mode'
+  (setq org-directory (expand-file-name "~/Organizer"))
+  (setq org-archive-location (concat org-directory "/archives" ))
+  (setq org-capture-location (concat org-directory "/captures" ))
+
+  ;; replace initial/scratch buffer with our primary `.org' file
+  (setq initial-buffer-choice (concat org-directory "/start.org"))
+
+  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
   (setq org-log-done t                            ; record information when task is marked as DONE
         org-completion-use-ido t                  ; use ido-completion when possible
-        org-agenda-start-on-weekday nil           ; monday as week's start
-        org-agenda-span 14                        ; show 2 weeks of agenda, by default
-        org-agenda-include-diary t                ; include `diary' in agenda
         org-edit-timestamp-down-means-later t     ; S-down will increase time in timestamp
-        org-agenda-window-setup 'other-window     ; use `other-window' for agenda
         org-fast-tag-selection-single-key 'expert ; fast tag selection
-        org-tags-column -100                      ; indent tags to the right
+        org-tags-column -145                      ; indent tags to the right
+        org-special-ctrl-a/e 't                   ; make them jump to start/end of headings
         org-src-fontify-natively t                ; syntax-highlight source blocks
         org-export-kill-product-buffer-when-displayed t)
 
-  (after 'org-mode (setq 'fill-column 100))       ; set column width to 100 for org-mode files
+  (after 'org-mode (setq 'fill-column 145))       ; set column width to 100 for org-mode files
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)    ; Turn on `auto-fill'
+
 #+END_SRC
 
+** Agenda Setup
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-start-on-weekday nil         ; monday as week's start
+      org-agenda-span 14                        ; show 2 weeks of agenda, by default
+      org-agenda-include-diary t                ; include `diary' in agenda
+      org-agenda-window-setup 'other-window     ; use `other-window' for agenda
+      org-agenda-files (quote ("~/Organizer"
+                               "~/Organizer/ideas"
+                               "~/Organizer/captures"
+                               "~/Organizer/articles"
+                               "~/Organizer/tasks"
+                               "~/Organizer/tidbits"
+                               "~/Organizer/work"
+                               "~/Organizer/personal")))
+#+END_SRC
 ** OSX Integration
 I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
 want to capture links from my Mac applications and add them to =org-mode=, as well as with
@@ -1279,20 +1281,71 @@ want to capture links from my Mac applications and add them to =org-mode=, as we
 ** Refile / Archives
 I have defined some configuration to make [[http://www.gnu.org/software/emacs/manual/html_node/org/Capture-_002d-Refile-_002d-Archive.html][refiling]] easier.
 #+BEGIN_SRC emacs-lisp
-  ; refile targets include this file and any file contributing to the agenda - up to 5 levels deep
-  (setq org-refile-targets (quote ((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5))))
-  ; targets start with the file name - allows creating level 1 tasks
-  (setq org-refile-use-outline-path (quote file))
-  ; targets complete in steps so we start with filename, TAB shows the next level of targets etc
-  (setq org-outline-path-complete-in-steps t)
+  ; Refile targets include this file and any file contributing to the agenda - up to 2 levels deep
+  (setq org-refile-targets (quote ((nil :maxlevel . 2) (org-agenda-files :maxlevel . 2))))
+
+  ; Use full outline paths for refile targets - we file directly with IDO
+  (setq org-refile-use-outline-path t)
+
+  ; Targets complete directly with IDO
+  (setq org-outline-path-complete-in-steps nil)
+
+  ; Allow refile to create parent tasks with confirmation
+  (setq org-refile-allow-creating-parent-nodes (quote confirm))
+
+  ; Use IDO for org-completion
+  (setq org-completion-use-ido t)
+
+  ; Use the current window for indirect buffer display
+  (setq org-indirect-buffer-display 'current-window)
+
+  ;;;; Refile settings
+  ; Exclude DONE state tasks from refile targets
+  (defun preamble/verify-refile-target ()
+      "Exclude todo keywords with a done state from refile targets"
+        (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+  (setq org-refile-target-verify-function 'preamble/verify-refile-target)
+
+  ; timestamp refiling
+  (setq org-log-refile 'time)
+
+  ; update counters
+  (add-hook 'org-after-refile-insert-hook 'org-update-parent-todo-statistics)
 #+END_SRC
 
-** Tagging
+** TODO Keywords / Tagging
 #+BEGIN_SRC emacs-lisp
+  (setq org-use-fast-todo-selection t)
+  (setq org-treat-S-cursor-todo-selection-as-state-change nil) ;; do not activate state changes on cycling
+
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!/@)")
-                (sequence "REPORT(r!)" "BUG(b!/@)" "KNOWNCAUSE(k!/@)" "|" "FIXED(f!/@)")
-                (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
+        (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d@/!)")
+                (sequence "REPORT(r!)" "BUG(b@/!)" "KNOWNCAUSE(k@/!)" "|" "FIXED(f@/!)")
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
+  ;; configure most used tags for fast access
+  (setq org-tag-alist '(("@work" . ?w) ("@home" . ?h) ("laptop" . ?l) (:newline . nil)
+                        ("@personal" . ?p)
+                        ("relationships" . ?r) ("introspection" . ?i) (:newline . nil)
+                        ("@devesh" . ?d)
+                        ("code" . ?c) ("emacs" . ?e) ("zsh" . ?z)     (:newline . nil)))
+
+  ;; moving a task to CANCELLED adds a CANCELLED tag
+  ;; moving a task to WAITING adds a WAITING tag
+  ;; moving a task to HOLD adds WAITING and HOLD tags
+  ;; moving a task to a done state removes WAITING and HOLD tags
+  ;; moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
+  ;; moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
+  ;; moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
+  ;; (setq org-todo-state-tags-triggers
+  ;;     (quote (("CANCELLED" ("CANCELLED" . t))
+  ;;             ("WAITING" ("WAITING" . t))
+  ;;             ("HOLD" ("WAITING" . t) ("HOLD" . t))
+  ;;             (done ("WAITING") ("HOLD"))
+  ;;             ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+  ;;             ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+  ;;             ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 #+END_SRC
 
 ** Clocking
@@ -1316,12 +1369,41 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
   (add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
 #+END_SRC
 
-*** Related Key Bindings
+** Captures
 #+BEGIN_SRC emacs-lisp
-  (after 'org-clock
-    (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
-    (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
+  ;; I use C-c c to start capture mode
+  (global-set-key (kbd "C-c c") 'org-capture)
+
+  ;; set files used by `org-capture'
+  (setq org-journal-file (concat org-directory "/personal/diary.org"))
+  (setq org-default-notes-file (concat org-capture-location "/refile.org"))
+  (setq org-tasks-capture-file (concat org-capture-location "/tasks.org"))
+  (setq org-links-capture-file (concat org-capture-location "/links.org"))
+
+  (defun org-journal-entry-time() (format-time-string "%I:%M %p"))
+
+  ;; customizations for `org-capture'
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline org-tasks-capture-file "Tasks")
+           "* TODO %?\n%i\n")
+          ("n" "Note" entry (file+datetree org-default-notes-file "Notes")
+           "* %? :NOTE:\n%U\n%a\n%?" :clock-in t :clock-resume t)
+          ("j" "Journal" entry (file+datetree org-journal-file "Journal")
+           "* at %(org-journal-entry-time)\n  %U\n  %?" :clock-in t :clock-resume t)
+          ("l" "Link" plain (file org-links-capture-file "Links")
+           "- %?\n %x\n")
+          ("r" "respond" entry (file org-default-notes-file)
+           "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+          ("w" "org-protocol" entry (file org-default-notes-file)
+           "* TODO Review %c\n%U\n" :immediate-finish t)
+          ("m" "Meeting" entry (file org-default-notes-file)
+           "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+          ("p" "Phone call" entry (file org-default-notes-file)
+           "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+          ("h" "Habit" entry (file org-default-notes-file)
+           "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))
 #+END_SRC
+
 ** Key Bindings
 #+BEGIN_SRC emacs-lisp
   (after 'org
@@ -1329,6 +1411,11 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
     (when *is-mac*
       (define-key org-mode-map (kbd "M-h") nil)
       (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
+
+  ;; Standard key bindings
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
 #+END_SRC
 * Programming
 ** Ruby Group
@@ -1768,6 +1855,57 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
       (preamble/require-package 'frame-restore)
       (frame-restore)))
 #+END_SRC
+
+* Version Management
+  Version management is the heart of my projects, in particular, [[http://git-scm.com][git]]. This section defines various
+  settings so as to allow me to version control my projects from within Emacs' Preamble.
+** Related Modules
+#+BEGIN_SRC emacs-lisp
+  (preamble/require-packages
+   '(  magit             ;; awesome git interface inside Emacs
+       git-blame         ;; emacs frontend for `git-blame' tool
+       gitignore-mode    ;; major mode for gitignore
+       gitconfig-mode    ;; major mode for gitconfig
+       git-commit-mode   ;; major mode for git commit
+       git-rebase-mode   ;; major mode for git rebase
+       git-messenger     ;; display why a line was changed as per git commits
+       git-gutter-fringe ;; display git status of lines in gutter
+       yagist            ;; gist management
+       github-browse-file ;; view the file we're editing in Github
+       bug-reference-github ;; Automatically set bug-reference-url-format and enable
+       ;; bug-reference-prog-mode buffers from Github repositories.
+       ))
+
+  ;; activate `bug-reference-github' in programming mode
+  (after 'bug-reference-github
+    (add-hook 'prog-mode-hook 'bug-reference-prog-mode))
+#+END_SRC
+
+** Magit Configuration
+Now, all I need is to setup [[https://github.com/magit/magit][magit]] as I intend it to perform inside my workflow.
+#+BEGIN_SRC emacs-lisp
+  (setq-default magit-save-some-buffers nil
+                magit-process-popup-time 10
+                magit-diff-refine-hunk t
+                magit-completing-read-function 'magit-ido-completing-read)
+
+  (after 'magit
+    ;; don't let magit-status mess up window configurations
+    ;; http://whattheemacsd.com/setup-magit.el-01.html
+    (defadvice magit-status (around magit-fullscreen activate)
+      (window-configuration-to-register :magit-fullscreen)
+      ad-do-it
+      (delete-other-windows))
+
+    (defadvice magit-quit-window (around magit-restore-screen activate)
+      ad-do-it
+      (jump-to-register :magit-fullscreen)))
+
+  ;;; when we start working on git-backed files, use git-wip if available
+  (after 'vc-git
+    (global-magit-wip-save-mode)
+    (diminish 'magit-wip-save-mode))
+#+END_SRC
 * OSX Specific Configuration
 When working on my Macbook Pro '13, I prefer my keys to work a bit differently, and want some
 opitons to behave differently. The following code summarises so:
@@ -1789,90 +1927,72 @@ opitons to behave differently. The following code summarises so:
     (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
     (after-load 'nxml-mode (define-key nxml-mode-map (kbd "M-h") nil)))
 #+END_SRC
-* Key Bindings                                                                            :noexport:
-  #+TBLNAME: key-bindings
-  |--------+------------+-------------------------------------------+-------------------------------------------------------------------|
-  | Keys   | Category   | Description                               | Command                                                           |
-  |--------+------------+-------------------------------------------+-------------------------------------------------------------------|
-  | C-c l  | General    | Store org-link to current location        | 'org-store-link                                                   |
-  | C-c a  | General    | View Org Agenda's Dashboard               | 'org-agenda                                                       |
-  | C-c p  | Editing    | Duplicate Line or Selected Region         | 'duplicate-line-or-region                                         |
-  | C-j    | Editing    | Jump to a character on the screen         | 'ace-jump-mode                                                    |
-  | C-c \\ | Formatting | Indent whole file according to major mode | '(lambda() (interactive) (indent-region (point-min) (point-max))) |
-  |--------+------------+-------------------------------------------+-------------------------------------------------------------------|
 
+* Key Bindings
+** FIXME Global Mappings
 #+BEGIN_SRC emacs-lisp
-;; Convenient binding for vc-git-grep
-(global-set-key (kbd "C-x v f") 'vc-git-grep)
-(global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
-(global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x C-m") 'execute-extended-command)
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c p") 'duplicate-line-or-region)
+  (global-set-key (kbd "C-j") 'ace-jump-mode)
+  (global-set-key (kbd "C-=") 'er/expand-region)
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-c C-\\") '(lambda() (interactive) (indent-region (point-min) (point-max))))
+  (global-set-key (kbd "C-x v f") 'vc-git-grep)
+  (global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
+  (global-set-key (kbd "C-c j") '(lambda()(interactive)(join-line -1)))
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "C-x o") 'switch-window)
+  ; (global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
+  ; (global-set-key (kbd "C-c c c") 'mc/edit-lines)
+  ; (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
+  ; (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+  (global-set-key (kbd "RET") 'newline-and-indent)
+  (global-set-key (kbd "<f7>") 'preamble/split-window)
+  (global-set-key (kbd "<f6>") '(lambda() (interactive)(switch-to-buffer nil)))
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "M-/") 'hippie-expand)
+  (global-set-key (kbd "<f11>") 'preamble/ido-choose-from-recentf)
 
-(global-set-key [remap query-replace-regexp] 'vr/query-replace)
-(global-set-key [remap replace-regexp] 'vr/replace)
-(after 'move-text (move-text-default-bindings))
-(global-set-key [M-S-up] 'move-text-up)
-(global-set-key [M-S-down] 'move-text-down)
-(global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
-(global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
-(global-set-key [remap query-replace-regexp] 'vr/query-replace)
-(global-set-key [remap replace-regexp] 'vr/replace)
+  (global-set-key (kbd "C-.") 'set-mark-command)
+  (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
-(global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
-;; indent whole file according to its major-mode
-(global-set-key (kbd "C-=") 'er/expand-region)
-;; To be able to M-x without meta
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+  ;; multiple-cursors
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-+") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  ; key (kbd "M-Z") 'zap-up-to-char)
+  (global-set-key (kbd "C-M-=") 'preamble/increase-default-font-height)
+  (global-set-key (kbd "C-M--") 'preamble/decrease-default-font-height)
 
-;; Vimmy alternatives to M-^ and C-u M-^
-(global-set-key (kbd "C-c j") 'join-line)
-(global-set-key (kbd "C-c J") (lambda () (interactive) (join-line 1)))
+  ;; stop C-z from minimizing windows under OS X
+  (global-set-key (kbd "C-z") '(lambda ()
+                                  (interactive) (unless *is-mac-gui*) (suspend-frame)))
 
-(global-set-key (kbd "C-.") 'set-mark-command)
-(global-set-key (kbd "C-x C-.") 'pop-global-mark)
+  (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+      ;; Command-Option-f to toggle fullscreen mode
+      ;; Hint: Customize `ns-use-native-fullscreen'
+      (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
 
+  (global-set-key (kbd "M-C-8") '(lambda () (interactive) (adjust-opacity nil -5)))
+  (global-set-key (kbd "M-C-9") '(lambda () (interactive) (adjust-opacity nil 5)))
+  (global-set-key (kbd "M-C-0") '(lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
 
-;; multiple-cursors
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-+") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-;; From active region to multiple cursors:
-(global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
-(global-set-key (kbd "C-c c c") 'mc/edit-lines)
-(global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
-(global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
-(global-set-key (kbd "M-Z") 'zap-up-to-char)
-(global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "C-M-=") 'preamble/increase-default-font-height)
-(global-set-key (kbd "C-M--") 'preamble/decrease-default-font-height)
-(global-set-key (kbd "<f7>") 'preamble/split-window)
-(global-set-key (kbd "<f6>")
-                (lambda ()
-                    (interactive)
-                    (switch-to-buffer nil)))
+  (global-set-key [remap query-replace-regexp] 'vr/query-replace)
+  (global-set-key [remap replace-regexp] 'vr/replace)
+  (after 'move-text (move-text-default-bindings))
+  (global-set-key [M-S-up] 'move-text-up)
+  (global-set-key [M-S-down] 'move-text-down)
+  (global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
+  (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
+  (global-set-key [remap query-replace-regexp] 'vr/query-replace)
+  (global-set-key [remap replace-regexp] 'vr/replace)
 
-
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-x o") 'switch-window)
-(global-set-key [(meta f11)] 'preamble/ido-choose-from-recentf)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-(global-set-key (kbd "M-/") 'hippie-expand)
-
-;; stop C-z from minimizing windows under OS X
-(global-set-key (kbd "C-z") '(lambda ()
-                                (interactive) (unless *is-mac-gui*) (suspend-frame)))
-
-(when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
-    ;; Command-Option-f to toggle fullscreen mode
-    ;; Hint: Customize `ns-use-native-fullscreen'
-    (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
-
-(global-set-key (kbd "M-C-8") '(lambda () (interactive) (adjust-opacity nil -5)))
-(global-set-key (kbd "M-C-9") '(lambda () (interactive) (adjust-opacity nil 5)))
-(global-set-key (kbd "M-C-0") '(lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+  (global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
 #+END_SRC
-** BUG pressing C-z will still minimize the window when using Emacs' GUI
+
 * Updates
 Emacs' Preamble is really smart! It can update itself, on the go.
 #+BEGIN_SRC emacs-lisp
@@ -1894,12 +2014,19 @@ Emacs' Preamble is really smart! It can update itself, on the go.
 
 ** TODO there should be a scheduler to automatically check for updates.
 
-* Epilogues
+* Epilogue
 Things that need to be run at the end of the configuration have been specified here.
 #+BEGIN_SRC emacs-lisp
 ; (require 'init-locales)
+
+(provide 'preamble)
+;;; preamble.el ends here
 #+END_SRC
 * Other Tasks                                                                             :noexport:
+** BUG pressing C-z will still minimize the window when using Emacs' GUI
+** BUG HTMLize and FCI-mode does not work together.
+Using HTMLize and FCI-mode together produces arbitrary garbage characters when this file is
+exported, in the source blocks.
 ** DONE set a different =fill-column= particularly for this org file
    CLOSED: [2013-09-29 Sun 01:34]
    - State "DONE"       from "TODO"       [2013-09-29 Sun 01:34]
@@ -1910,13 +2037,19 @@ Things that need to be run at the end of the configuration have been specified h
     (xterm-mouse-mode 1)
     (setq-default fill-column 100)
 #+END_SRC
-** TODO show total load time when Emacs has initialized in the mini-buffer
+** DONE show total load time when Emacs has initialized in the mini-buffer
+   CLOSED: [2013-10-22 Tue 16:34]
+   - State "DONE"       from "TODO"       [2013-10-22 Tue 16:34]
 maybe we can use the function which prelude uses
-** TODO tangling should only be done when changes are detected
+** DONE tangling should only be done when changes are detected
+   CLOSED: [2013-10-22 Tue 16:34]
+   - State "DONE"       from "TODO"       [2013-10-22 Tue 16:34]
 This file should only be tangled when changes are detected to this file. This can be done by
 generating MD5 hash of the current file, and then calling appropriate function to call either the
 =readme.el= or =readme.org= for initialization purpose.
-** TODO magit should be colorful
+** DONE magit should be colorful
+   CLOSED: [2013-10-22 Tue 16:35]
+   - State "DONE"       from "TODO"       [2013-10-22 Tue 16:35]
 ** TODO whitespace related settings should only take place in prog-mode
 ** TODO Org Block: Only colorize till fill column indicator
 ** TODO Quick Scratch for current mode
@@ -1932,17 +2065,26 @@ current line/expression there in (kinda like a repl within Emacs)
 ** TODO *Messages* buffer should use =org-mode=
 ** TODO Distraction free mode?
 ** TODO jump to the location of last edit
-** TODO org-mode export as html should syntax-highlight the code natively
+** DONE org-mode export as html should syntax-highlight the code natively
+   CLOSED: [2013-10-22 Tue 16:35]
+   - State "DONE"       from "TODO"       [2013-10-22 Tue 16:35]
 ** TODO ensure that emacs is started maximized
 ** DONE activating =mmm-mode= gives error
    CLOSED: [2013-09-29 Sun 01:32]
   Error occurred is: =Can't preview LaTex fragment in a non-file buffer=
 ** TODO Implement some =mmm= modes by taking help from [[https://github.com/purcell/mmm-mode/blob/master/mmm-sample.el][samples]].
-** Magit should quit itself when changes were pushed?
+** CANCELLED Magit should quit itself when changes were pushed?
+   CLOSED: [2013-10-22 Tue 16:36]
 * Emacs Options                                                                   :noexport:ARCHIVE:
+#+LANGUAGE:    en
+#+OPTIONS:     H:3 num:t toc:2 \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:nil
+#+OPTIONS:     TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+OPTIONS:     author:t creator:t timestamp:t email:t
+#+KEYWORDS:    org-mode Emacs configuration organization preamble workflow
 #+DESCRIPTION: Emacs' Preamble: Configuration for Emacs in a literal-programming (self-documenting) style.
-#+KEYWORDS:    org babel emacs configuration
-#+OPTIONS:     toc:3 todo:t html-style:nil
-#+STARTUP:     hideblocks content
-#+HTML_HEAD:   <link rel="stylesheet" href="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/styles/dark.css" />
-#+HTML_HEAD:   <script type="text/javascript" src="http://www.cs.berkeley.edu/~prmohan/emacs/highlight/highlight.pack.js"></script>
+#+SEQ_TODO:    FIXME FIXED
+#+PROPERTY:    comments org
+#+INFOJS_OPT:  view:nil toc:t ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+HTML_HEAD:   <meta charset="UTF-8">

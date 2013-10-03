@@ -1,10 +1,14 @@
 elpa/
+output/
 *.html
 *~
 *.el
-!/init.el
-!/custom.el
 *.elc
 ac-comphist.dat
 .session
 .emacs.desktop
+tramp
+!.gitkeep
+!/init.el
+!/custom.el
+.emacs.desktop.lock
