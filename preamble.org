@@ -692,12 +692,12 @@ need more than that, even if I am bored.
 #+BEGIN_SRC emacs-lisp
   (preamble/require-packages '( noctilux-theme zenburn-theme sublime-themes
                                                color-theme-sanityinc-solarized
-                                               color-theme-sanityinc-tomorrow ))
+                                               color-theme-sanityinc-tomorrow base16-theme ))
 #+END_SRC
 
 *** Current Theme
 #+BEGIN_SRC emacs-lisp
-  (setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
+  (setq-default custom-enabled-themes '(base16-eighties))
 #+END_SRC
 *** Quick Access to Themes
 #+BEGIN_SRC emacs-lisp
@@ -1242,12 +1242,12 @@ open, so as to make them distinguishable.
         org-completion-use-ido t                  ; use ido-completion when possible
         org-edit-timestamp-down-means-later t     ; S-down will increase time in timestamp
         org-fast-tag-selection-single-key 'expert ; fast tag selection
-        org-tags-column -145                      ; indent tags to the right
+        org-tags-column -100                      ; indent tags to the right
         org-special-ctrl-a/e 't                   ; make them jump to start/end of headings
         org-src-fontify-natively t                ; syntax-highlight source blocks
         org-export-kill-product-buffer-when-displayed t)
 
-  (after 'org-mode (setq 'fill-column 145))       ; set column width to 100 for org-mode files
+  (after 'org-mode (setq 'fill-column 100))       ; set column width to 100 for org-mode files
   (add-hook 'org-mode-hook 'turn-on-auto-fill)    ; Turn on `auto-fill'
 
 #+END_SRC
@@ -1316,11 +1316,18 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
 
 ** TODO Keywords / Tagging
 #+BEGIN_SRC emacs-lisp
-  (setq org-use-fast-todo-selection t)
-  (setq org-treat-S-cursor-todo-selection-as-state-change nil) ;; do not activate state changes on cycling
+  (setq org-log-repeat 'time
+        org-log-redeadline 'note
+        org-log-reschedule 'time
+        org-agenda-skip-scheduled-if-done 'nil
+        org-use-fast-todo-selection 't
+        org-treat-S-cursor-todo-selection-as-state-change 'nil
+        org-hierarchical-todo-statistics 'nil
+        org-deadline-warning-days 14
+        org-agenda-show-inherited-tags 'timeline)
 
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d@/!)")
+        (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!)")
                 (sequence "REPORT(r!)" "BUG(b@/!)" "KNOWNCAUSE(k@/!)" "|" "FIXED(f@/!)")
                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
@@ -1568,24 +1575,19 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
     (preamble/require-package 'textile-mode)
 
     (autoload 'textile-mode "textile-mode" "Mode for editing Textile documents" t)
-    (setq auto-mode-alist
-        (cons '("\\.textile\\'" . textile-mode) auto-mode-alist))
+    (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
 #+END_SRC
 
 *** Markdown
 #+BEGIN_SRC emacs-lisp
     (preamble/require-package 'markdown-mode)
 
-    (setq auto-mode-alist
-        (cons '("\\.\\(md\\|markdown\\)\\'" . markdown-mode) auto-mode-alist))
+    (add-to-list 'auto-mode-alist '("\\.\\(md\\|markdown\\)\\'" . markdown-mode))
 #+END_SRC
 ** XML Group
 *** Configuration
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist
-               (concat "\\."
-                       (regexp-opt '("xml" "xsd" "sch" "rng" "xslt" "svg" "rss" "gpx" "tcx"))
-                       "\\'") 'nxml-mode)
+  (add-to-list 'auto-mode-alist '("\\.\\(xml\\|xsd\\|sch\\|rng\\|xslt\\|svg\\|rss\\|gpx\\|tcx\\)\\'" . nxml-mode))
   ; generic xml-mode
   (fset 'xml-mode 'nxml-mode)
   (setq magic-mode-alist (cons '("<\\?xml " . nxml-mode) magic-mode-alist))

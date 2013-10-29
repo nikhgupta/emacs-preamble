@@ -12,3 +12,4 @@ tramp
 !/init.el
 !/custom.el
 .emacs.desktop.lock
+.org-id-locations
