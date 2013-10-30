@@ -1232,7 +1232,6 @@ open, so as to make them distinguishable.
   ;; set directories used by `org-mode'
   (setq org-directory (expand-file-name "~/Organizer"))
   (setq org-archive-location (concat org-directory "/archives" ))
-  (setq org-capture-location (concat org-directory "/captures" ))
 
   ;; replace initial/scratch buffer with our primary `.org' file
   (setq initial-buffer-choice (concat org-directory "/start.org"))
@@ -1258,11 +1257,12 @@ open, so as to make them distinguishable.
       org-agenda-span 14                        ; show 2 weeks of agenda, by default
       org-agenda-include-diary t                ; include `diary' in agenda
       org-agenda-window-setup 'other-window     ; use `other-window' for agenda
+      org-deadline-warning-days 14
+      org-agenda-skip-scheduled-if-done 'nil
       org-agenda-files (quote ("~/Organizer"
                                "~/Organizer/ideas"
                                "~/Organizer/captures"
                                "~/Organizer/articles"
-                               "~/Organizer/tasks"
                                "~/Organizer/tidbits"
                                "~/Organizer/work"
                                "~/Organizer/personal")))
@@ -1319,11 +1319,9 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
   (setq org-log-repeat 'time
         org-log-redeadline 'note
         org-log-reschedule 'time
-        org-agenda-skip-scheduled-if-done 'nil
         org-use-fast-todo-selection 't
         org-treat-S-cursor-todo-selection-as-state-change 'nil
         org-hierarchical-todo-statistics 'nil
-        org-deadline-warning-days 14
         org-agenda-show-inherited-tags 'timeline)
 
   (setq org-todo-keywords
@@ -1332,27 +1330,11 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
   ;; configure most used tags for fast access
-  (setq org-tag-alist '(("@work" . ?w) ("@home" . ?h) ("laptop" . ?l) (:newline . nil)
-                        ("@personal" . ?p)
-                        ("relationships" . ?r) ("introspection" . ?i) (:newline . nil)
-                        ("@devesh" . ?d)
-                        ("code" . ?c) ("emacs" . ?e) ("zsh" . ?z)     (:newline . nil)))
-
-  ;; moving a task to CANCELLED adds a CANCELLED tag
-  ;; moving a task to WAITING adds a WAITING tag
-  ;; moving a task to HOLD adds WAITING and HOLD tags
-  ;; moving a task to a done state removes WAITING and HOLD tags
-  ;; moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
-  ;; moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
-  ;; moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
-  ;; (setq org-todo-state-tags-triggers
-  ;;     (quote (("CANCELLED" ("CANCELLED" . t))
-  ;;             ("WAITING" ("WAITING" . t))
-  ;;             ("HOLD" ("WAITING" . t) ("HOLD" . t))
-  ;;             (done ("WAITING") ("HOLD"))
-  ;;             ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-  ;;             ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-  ;;             ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+  ;; (setq org-tag-alist '(("@work" . ?w) ("@home" . ?h) ("laptop" . ?l) (:newline . nil)
+  ;;                       ("@personal" . ?p)
+  ;;                       ("relationships" . ?r) ("introspection" . ?i) (:newline . nil)
+  ;;                       ("@devesh" . ?d)
+  ;;                       ("code" . ?c) ("emacs" . ?e) ("zsh" . ?z)     (:newline . nil)))
 #+END_SRC
 
 ** Clocking
@@ -1378,26 +1360,21 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
 
 ** Captures
 #+BEGIN_SRC emacs-lisp
-  ;; I use C-c c to start capture mode
-  (global-set-key (kbd "C-c c") 'org-capture)
-
   ;; set files used by `org-capture'
   (setq org-journal-file (concat org-directory "/personal/diary.org"))
-  (setq org-default-notes-file (concat org-capture-location "/refile.org"))
-  (setq org-tasks-capture-file (concat org-capture-location "/tasks.org"))
-  (setq org-links-capture-file (concat org-capture-location "/links.org"))
-
+  (setq org-default-notes-file (concat org-directory "/refile.org"))
+  (setq org-default-tasks-file (concat org-directory "/tasks.org"))
   (defun org-journal-entry-time() (format-time-string "%I:%M %p"))
 
   ;; customizations for `org-capture'
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline org-tasks-capture-file "Tasks")
+        '(("t" "Todo" entry (file+headline org-default-notes-file)
            "* TODO %?\n%i\n")
           ("n" "Note" entry (file+datetree org-default-notes-file "Notes")
            "* %? :NOTE:\n%U\n%a\n%?" :clock-in t :clock-resume t)
           ("j" "Journal" entry (file+datetree org-journal-file "Journal")
            "* at %(org-journal-entry-time)\n  %U\n  %?" :clock-in t :clock-resume t)
-          ("l" "Link" plain (file org-links-capture-file "Links")
+          ("l" "Link" plain (file org-default-notes-file "Links")
            "- %?\n %x\n")
           ("r" "respond" entry (file org-default-notes-file)
            "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
@@ -1420,9 +1397,10 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
       (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
 
   ;; Standard key bindings
-  (global-set-key "\C-cl" 'org-store-link)
-  (global-set-key "\C-ca" 'org-agenda)
-  (global-set-key "\C-cb" 'org-iswitchb)
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c b") 'org-iswitchb)
+  (global-set-key (kbd "C-c c") 'org-capture)
 #+END_SRC
 * Programming
 ** Ruby Group
