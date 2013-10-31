@@ -1232,9 +1232,10 @@ open, so as to make them distinguishable.
   ;; set directories used by `org-mode'
   (setq org-directory (expand-file-name "~/Organizer"))
   (setq org-archive-location (concat org-directory "/archives" ))
+  (setq org-special-directory (concat org-directory "/special"))
 
   ;; replace initial/scratch buffer with our primary `.org' file
-  (setq initial-buffer-choice (concat org-directory "/start.org"))
+  (setq initial-buffer-choice (concat org-special-directory "/start.org"))
 
   (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
   (setq org-log-done t                            ; record information when task is marked as DONE
@@ -1248,24 +1249,23 @@ open, so as to make them distinguishable.
 
   (after 'org-mode (setq 'fill-column 100))       ; set column width to 100 for org-mode files
   (add-hook 'org-mode-hook 'turn-on-auto-fill)    ; Turn on `auto-fill'
-
 #+END_SRC
 
 ** Agenda Setup
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-start-on-weekday nil         ; monday as week's start
-      org-agenda-span 14                        ; show 2 weeks of agenda, by default
-      org-agenda-include-diary t                ; include `diary' in agenda
-      org-agenda-window-setup 'other-window     ; use `other-window' for agenda
-      org-deadline-warning-days 14
-      org-agenda-skip-scheduled-if-done 'nil
-      org-agenda-files (quote ("~/Organizer"
-                               "~/Organizer/ideas"
-                               "~/Organizer/captures"
-                               "~/Organizer/articles"
-                               "~/Organizer/tidbits"
-                               "~/Organizer/work"
-                               "~/Organizer/personal")))
+        org-agenda-span 14                        ; show 2 weeks of agenda, by default
+        org-agenda-include-diary t                ; include `diary' in agenda
+        org-agenda-window-setup 'other-window     ; use `other-window' for agenda
+        org-deadline-warning-days 14
+        org-agenda-skip-scheduled-if-done 't
+        org-habit-show-habits-only-for-today 't
+        org-agenda-files (quote ("~/Organizer"
+                                 "~/Organizer/articles"
+                                 "~/Organizer/ideas"
+                                 "~/Organizer/special"
+                                 "~/Organizer/tidbits"
+                                 "~/Organizer/work")))
 #+END_SRC
 ** OSX Integration
 I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
@@ -1282,7 +1282,7 @@ want to capture links from my Mac applications and add them to =org-mode=, as we
 I have defined some configuration to make [[http://www.gnu.org/software/emacs/manual/html_node/org/Capture-_002d-Refile-_002d-Archive.html][refiling]] easier.
 #+BEGIN_SRC emacs-lisp
   ; Refile targets include this file and any file contributing to the agenda - up to 2 levels deep
-  (setq org-refile-targets (quote ((nil :maxlevel . 2) (org-agenda-files :maxlevel . 2))))
+  (setq org-refile-targets (quote ((nil :maxlevel . 3) (org-agenda-files :maxlevel . 3))))
 
   ; Use full outline paths for refile targets - we file directly with IDO
   (setq org-refile-use-outline-path t)
@@ -1315,19 +1315,58 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
 #+END_SRC
 
 ** TODO Keywords / Tagging
+I have set =org-mode= to log the time when a task is repeated (for habit-tracking) and when it is
+rescheduled. Furthermore, I would like to take a quick note, when I am changing the deadline for a
+task. I am using custom workflows for task management:
+- *TODO*: a task.
+- *STARTED*: when I have started working on a *TODO*.
+- *NEXT*: *TODOs* I want to work on, next. Possibly, a next action in a project.
+- *REVIEW*: tasks that I have completed, but I need to check if there is something I need to check
+  or share from the experience of this task. Furthermore, it is a persistent tag for some of the
+  review processes, I use in my workflow, e.g. reviewing this emacs setup once a month.
+- *DONE*: a completed task, which will be either archived using org-archive or deleted within 7 days.
+- *ARCHIVE*: a completed task that I will like to keep for a longer time.
+
+Being a developer, I need an additional set of workflow, which tackles bug-fixing scenario.
+
+A last set of todo workflow involves keywords such as *WAITING*, *HOLD*, *SOMEDAY*, *CANCELLED*,
+etc. and give a special meaning to the task.
+- *WAITING*: a part of the task was delegated and can not be continued for this reason.
+- *HOLD*: tasks that I have started working on, but can not continue for some reason.
+- *SOMEDAY*: tasks I would like to finish in future, but have no specific deadlines.
+- *CANCELLED*: tasks which have been cancelled for some reason.
+
+For me, a project is any task which has sub-tasks. Easy for me to remember and less burden classifying
+what constitutes a project and what not.
 #+BEGIN_SRC emacs-lisp
   (setq org-log-repeat 'time
         org-log-redeadline 'note
         org-log-reschedule 'time
         org-use-fast-todo-selection 't
         org-treat-S-cursor-todo-selection-as-state-change 'nil
-        org-hierarchical-todo-statistics 'nil
-        org-agenda-show-inherited-tags 'timeline)
+        org-hierarchical-todo-statistics 'nil)
 
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!)")
-                (sequence "REPORT(r!)" "BUG(b@/!)" "KNOWNCAUSE(k@/!)" "|" "FIXED(f@/!)")
-                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+        (quote ((sequence "TODO(t)" "STARTED(s!)" "NEXT(n)" "REVIEW(r@/!)" "|" "DONE(d!)" "ARCHIVED(a)")
+                (sequence "REPORT(R!)" "BUG(b@/!)" "KNOWNCAUSE(k@/!)" "|" "FIXED(f@/!)")
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)"))))
+
+  ;; Setting Colours (faces) for todo states to give clearer view of work
+  (setq org-todo-keyword-faces
+    '(("TODO" . org-warning)
+      ("STARTED" . "yellow")
+      ("NEXT" . "magenta")
+      ("REVIEW" . "orange")
+      ("DONE" . "green")
+      ("ARCHIVED" . "blue")
+      ("WAITING" . "cyan")
+      ("HOLD" . "cyan")
+      ("SOMEDAY" . "grey")
+      ("CANCELLED" . outline-9)))
+
+  ; position the habit graph on the agenda to the right of the default
+  (setq org-habit-graph-column 50)
+  (run-at-time "10:00" 86400 '(lambda () (setq org-habit-show-habits t)))
 
   ;; configure most used tags for fast access
   ;; (setq org-tag-alist '(("@work" . ?w) ("@home" . ?h) ("laptop" . ?l) (:newline . nil)
@@ -1361,19 +1400,19 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
 ** Captures
 #+BEGIN_SRC emacs-lisp
   ;; set files used by `org-capture'
-  (setq org-journal-file (concat org-directory "/personal/diary.org"))
-  (setq org-default-notes-file (concat org-directory "/refile.org"))
-  (setq org-default-tasks-file (concat org-directory "/tasks.org"))
+  (setq org-journal-file (concat org-special-directory "/diary.org"))
+  (setq org-default-notes-file (concat org-special-directory "/refile.org"))
+  (setq org-default-tasks-file (concat org-special-directory "/tasks.org"))
   (defun org-journal-entry-time() (format-time-string "%I:%M %p"))
 
   ;; customizations for `org-capture'
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline org-default-notes-file)
+        '(("t" "Todo" entry (file+headline org-default-tasks-file "Captured")
            "* TODO %?\n%i\n")
           ("n" "Note" entry (file+datetree org-default-notes-file "Notes")
            "* %? :NOTE:\n%U\n%a\n%?" :clock-in t :clock-resume t)
           ("j" "Journal" entry (file+datetree org-journal-file "Journal")
-           "* at %(org-journal-entry-time)\n  %U\n  %?" :clock-in t :clock-resume t)
+           "* at %(org-journal-entry-time) :crypt:\n  %U\n  %?" :clock-in t :clock-resume t)
           ("l" "Link" plain (file org-default-notes-file "Links")
            "- %?\n %x\n")
           ("r" "respond" entry (file org-default-notes-file)
@@ -1384,10 +1423,24 @@ I have defined some configuration to make [[http://www.gnu.org/software/emacs/ma
            "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
           ("p" "Phone call" entry (file org-default-notes-file)
            "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-          ("h" "Habit" entry (file org-default-notes-file)
+          ("h" "Habit" entry (file+headline org-default-tasks-file "Captured")
            "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))
 #+END_SRC
 
+** Encryption
+#+BEGIN_SRC emacs-lisp
+  ;;; file encryption
+  (setq epa-file-inhibit-auto-save 't)
+
+  ;;; encryption sections of a file
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  ;; GPG key to use for encryption
+  ;; Either the Key ID or set to nil to use symmetric encryption.
+  (setq org-crypt-key "me@nikhgupta.com")
+  (setq org-crypt-disable-auto-save 'encrypt)
+#+END_SRC
 ** Key Bindings
 #+BEGIN_SRC emacs-lisp
   (after 'org
@@ -1915,7 +1968,8 @@ opitons to behave differently. The following code summarises so:
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c p") 'duplicate-line-or-region)
-  (global-set-key (kbd "C-j") 'ace-jump-mode)
+  (global-set-key (kbd "C-f") 'ace-jump-char-mode)
+
   (global-set-key (kbd "C-=") 'er/expand-region)
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-c C-\\") '(lambda() (interactive) (indent-region (point-min) (point-max))))
@@ -1933,7 +1987,7 @@ opitons to behave differently. The following code summarises so:
   (global-set-key (kbd "<f6>") '(lambda() (interactive)(switch-to-buffer nil)))
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (global-set-key (kbd "M-/") 'hippie-expand)
-  (global-set-key (kbd "<f11>") 'preamble/ido-choose-from-recentf)
+  (global-set-key (kbd "C-x C-d") 'preamble/ido-choose-from-recentf)
 
   (global-set-key (kbd "C-.") 'set-mark-command)
   (global-set-key (kbd "C-x C-.") 'pop-global-mark)
@@ -2002,13 +2056,14 @@ Things that need to be run at the end of the configuration have been specified h
 (provide 'preamble)
 ;;; preamble.el ends here
 #+END_SRC
-* Other Tasks                                                                             :noexport:
+* Other Tasks
+  :noexport:
 ** BUG pressing C-z will still minimize the window when using Emacs' GUI
 ** BUG HTMLize and FCI-mode does not work together.
 Using HTMLize and FCI-mode together produces arbitrary garbage characters when this file is
 exported, in the source blocks.
 ** DONE set a different =fill-column= particularly for this org file
-   CLOSED: [2013-09-29 Sun 01:34]
+   :CLOSED: [2013-09-29 Sun 01:34]
    - State "DONE"       from "TODO"       [2013-09-29 Sun 01:34]
 ** DONE remove the following settings, when configuration is complete.
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -2018,17 +2073,17 @@ exported, in the source blocks.
     (setq-default fill-column 100)
 #+END_SRC
 ** DONE show total load time when Emacs has initialized in the mini-buffer
-   CLOSED: [2013-10-22 Tue 16:34]
+   :CLOSED: [2013-10-22 Tue 16:34]
    - State "DONE"       from "TODO"       [2013-10-22 Tue 16:34]
 maybe we can use the function which prelude uses
 ** DONE tangling should only be done when changes are detected
-   CLOSED: [2013-10-22 Tue 16:34]
+   :CLOSED: [2013-10-22 Tue 16:34]
    - State "DONE"       from "TODO"       [2013-10-22 Tue 16:34]
 This file should only be tangled when changes are detected to this file. This can be done by
 generating MD5 hash of the current file, and then calling appropriate function to call either the
 =readme.el= or =readme.org= for initialization purpose.
 ** DONE magit should be colorful
-   CLOSED: [2013-10-22 Tue 16:35]
+   :CLOSED: [2013-10-22 Tue 16:35]
    - State "DONE"       from "TODO"       [2013-10-22 Tue 16:35]
 ** TODO whitespace related settings should only take place in prog-mode
 ** TODO Org Block: Only colorize till fill column indicator
@@ -2046,16 +2101,17 @@ current line/expression there in (kinda like a repl within Emacs)
 ** TODO Distraction free mode?
 ** TODO jump to the location of last edit
 ** DONE org-mode export as html should syntax-highlight the code natively
-   CLOSED: [2013-10-22 Tue 16:35]
+   :CLOSED: [2013-10-22 Tue 16:35]
    - State "DONE"       from "TODO"       [2013-10-22 Tue 16:35]
 ** TODO ensure that emacs is started maximized
 ** DONE activating =mmm-mode= gives error
-   CLOSED: [2013-09-29 Sun 01:32]
+   :CLOSED: [2013-09-29 Sun 01:32]
   Error occurred is: =Can't preview LaTex fragment in a non-file buffer=
 ** TODO Implement some =mmm= modes by taking help from [[https://github.com/purcell/mmm-mode/blob/master/mmm-sample.el][samples]].
 ** CANCELLED Magit should quit itself when changes were pushed?
-   CLOSED: [2013-10-22 Tue 16:36]
-* Emacs Options                                                                   :noexport:ARCHIVE:
+   :CLOSED: [2013-10-22 Tue 16:36]
+* Emacs Options
+  :noexport:ARCHIVE:
 #+LANGUAGE:    en
 #+OPTIONS:     H:3 num:t toc:2 \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:nil
 #+OPTIONS:     TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
