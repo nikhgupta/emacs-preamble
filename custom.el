@@ -10,7 +10,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (sanityinc-tomorrow-eighties)))
+ '(custom-enabled-themes (quote (base16-eighties)))
  '(custom-safe-themes (quote ("1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "51bea7765ddaee2aac2983fac8099ec7d62dff47b708aa3595ad29899e9e9e44" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "978bd4603630ecb1f01793af60beb52cb44734fc14b95c62e7b1a05f89b6c811" "d293542c9d4be8a9e9ec8afd6938c7304ac3d0d39110344908706614ed5861c9" "88d556f828e4ec17ac074077ef9dcaa36a59dccbaa6f2de553d6528b4df79cbd" "f220c05492910a305f5d26414ad82bf25a321c35aa05b1565be12f253579dec6" "61d1a82d5eaafffbdd3cab1ac843da873304d1f05f66ab5a981f833a3aec3fc0" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(initial-frame-alist (quote ((fullscreen . maximized))))
  '(linum-delay t)
@@ -28,6 +28,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:background "nil"))))
  '(linum ((t (:inherit (shadow default) :background "color-236" :foreground "color-239"))))
+ '(org-agenda-dimmed-todo-face ((t (:inherit outline-9))))
  '(org-block-background ((t (:background "#383838"))))
  '(org-block-begin-line ((t (:inherit org-meta-line :background "#555555" :foreground "#cccccc"))) t)
  '(org-block-end-line ((t (:inherit org-meta-line :background "#555555" :foreground "#cccccc"))) t)

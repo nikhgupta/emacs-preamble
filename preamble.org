@@ -751,6 +751,12 @@ there, as well as paste by clicking mouse middle button.
 #+BEGIN_SRC emacs-lisp
   (xterm-mouse-mode)
   (when (fboundp 'mwheel-install) (mwheel-install))
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+  (setq scroll-step 1) ;; keyboard scroll one line at a time
+  (setq scroll-conservatively 10000)
+  (setq auto-window-vscroll nil)
 #+END_SRC
 
 *** Switching between Windows
@@ -1234,6 +1240,9 @@ open, so as to make them distinguishable.
   (setq org-archive-location (concat org-directory "/archives" ))
   (setq org-special-directory (concat org-directory "/special"))
 
+  (setq org-global-properties
+              '(("Effort_ALL". "0 0:10 0:30 1:00 2:00 3:00 4:00")))
+
   ;; replace initial/scratch buffer with our primary `.org' file
   (setq initial-buffer-choice (concat org-special-directory "/start.org"))
 
@@ -1256,16 +1265,24 @@ open, so as to make them distinguishable.
   (setq org-agenda-start-on-weekday nil         ; monday as week's start
         org-agenda-span 14                        ; show 2 weeks of agenda, by default
         org-agenda-include-diary t                ; include `diary' in agenda
-        org-agenda-window-setup 'other-window     ; use `other-window' for agenda
+;        org-agenda-window-setup 'other-window     ; use `other-window' for agenda
         org-deadline-warning-days 14
         org-agenda-skip-scheduled-if-done 't
         org-habit-show-habits-only-for-today 't
+        org-agenda-dim-blocked-tasks 't
         org-agenda-files (quote ("~/Organizer"
                                  "~/Organizer/articles"
                                  "~/Organizer/ideas"
                                  "~/Organizer/special"
                                  "~/Organizer/tidbits"
                                  "~/Organizer/work")))
+
+   (setq org-agenda-custom-commands
+           '(("n" "Next Tasks to Work on" todo "NEXT"
+              ((org-agenda-max-entries 5)
+               (org-agenda-sorting-strategy '(priority-up effort-down))))
+             ("r" "Tasks that need refiling" tags-todo "REFILE")
+             ("i" "Important Tasks" tags-todo "important")))
 #+END_SRC
 ** OSX Integration
 I am using *MacOSX*, and I want my =org-mode= to interact with various applications on it, e.g. I
@@ -1343,13 +1360,20 @@ what constitutes a project and what not.
         org-log-redeadline 'note
         org-log-reschedule 'time
         org-use-fast-todo-selection 't
+        org-enforce-todo-dependencies 't
+        org-enforce-todo-checkbox-dependencies 't
         org-treat-S-cursor-todo-selection-as-state-change 'nil
         org-hierarchical-todo-statistics 'nil)
+
+  (setq org-enable-priority-commands t)
+  (setq org-highest-priority ?A)
+  (setq org-default-priority ?E)
+  (setq org-lowest-priority ?E)
 
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "STARTED(s!)" "NEXT(n)" "REVIEW(r@/!)" "|" "DONE(d!)" "ARCHIVED(a)")
                 (sequence "REPORT(R!)" "BUG(b@/!)" "KNOWNCAUSE(k@/!)" "|" "FIXED(f@/!)")
-                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)"))))
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)" "DUPE(D)"))))
 
   ;; Setting Colours (faces) for todo states to give clearer view of work
   (setq org-todo-keyword-faces
@@ -1969,6 +1993,9 @@ opitons to behave differently. The following code summarises so:
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c p") 'duplicate-line-or-region)
   (global-set-key (kbd "C-f") 'ace-jump-char-mode)
+
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
 
   (global-set-key (kbd "C-=") 'er/expand-region)
   (global-set-key (kbd "C-x g") 'magit-status)
