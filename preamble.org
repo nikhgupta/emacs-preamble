@@ -697,7 +697,7 @@ need more than that, even if I am bored.
 
 *** Current Theme
 #+BEGIN_SRC emacs-lisp
-  (setq-default custom-enabled-themes '(base16-eighties))
+  (setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
 #+END_SRC
 *** Quick Access to Themes
 #+BEGIN_SRC emacs-lisp
@@ -1262,10 +1262,10 @@ open, so as to make them distinguishable.
 
 ** Agenda Setup
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-start-on-weekday nil         ; monday as week's start
-        org-agenda-span 14                        ; show 2 weeks of agenda, by default
-        org-agenda-include-diary t                ; include `diary' in agenda
-;        org-agenda-window-setup 'other-window     ; use `other-window' for agenda
+  (setq org-agenda-start-on-weekday nil             ; monday as week's start
+        org-agenda-span 14                          ; show 2 weeks of agenda, by default
+;        org-agenda-include-diary 't                 ; include `diary' in agenda
+;        org-agenda-window-setup 'other-window      ; use `other-window' for agenda
         org-deadline-warning-days 14
         org-agenda-skip-scheduled-if-done 't
         org-habit-show-habits-only-for-today 't
@@ -1276,6 +1276,8 @@ open, so as to make them distinguishable.
                                  "~/Organizer/special"
                                  "~/Organizer/tidbits"
                                  "~/Organizer/work")))
+
+   (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
 
    (setq org-agenda-custom-commands
            '(("n" "Next Tasks to Work on" todo "NEXT"
@@ -1851,8 +1853,8 @@ what constitutes a project and what not.
 ** Configuration
 #+BEGIN_SRC emacs-lisp
   ;; save a list of open files in ~/.emacs.d/.emacs.desktop
-  (setq desktop-path (list preamble-dir))
-  (desktop-save-mode)
+;  (setq desktop-path (list preamble-dir))
+;  (desktop-save-mode)
 
   ;; display time taken in restoring desktop
   (defadvice desktop-read (around time-restore activate)
