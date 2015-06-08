@@ -1,0 +1,2741 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Emacs-preamble by nikhgupta</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Emacs-preamble</h1>
+        <p class="header">Emacs&#39; Preamble</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/nikhgupta/emacs-preamble/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/nikhgupta/emacs-preamble/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/nikhgupta/emacs-preamble">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/nikhgupta">nikhgupta</a></p>
+
+
+      </header>
+      <section>
+        <div id="table-of-contents">
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li>
+<a href="#sec-1">1. Emacs' Preamble</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Motivation</a></li>
+<li><a href="#sec-1-2">1.2. Philosophy</a></li>
+<li><a href="#sec-1-3">1.3. Website</a></li>
+<li><a href="#sec-1-4">1.4. Credits</a></li>
+<li><a href="#sec-1-5">1.5. License</a></li>
+<li><a href="#sec-1-6">1.6. Requirements</a></li>
+<li><a href="#sec-1-7">1.7. Installation</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-2">2. Basic Configuration</a>
+<ul>
+<li><a href="#sec-2-1">2.1. Initialization</a></li>
+<li><a href="#sec-2-2">2.2. Commentary</a></li>
+<li><a href="#sec-2-3">2.3. Compatibility</a></li>
+<li><a href="#sec-2-4">2.4. Debugging</a></li>
+<li><a href="#sec-2-5">2.5. Avoid Screen-flickering</a></li>
+<li><a href="#sec-2-6">2.6. Custom Routines</a></li>
+<li><a href="#sec-2-7">2.7. General Behavior</a></li>
+<li><a href="#sec-2-8">2.8. General Appearance</a></li>
+<li><a href="#sec-2-9">2.9. Editor Behaviour</a></li>
+<li><a href="#sec-2-10">2.10. Always Run Server</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-3">3. Packages</a>
+<ul>
+<li><a href="#sec-3-1">3.1. Repositories</a></li>
+<li><a href="#sec-3-2">3.2. On Demand Installation</a></li>
+<li><a href="#sec-3-3">3.3. Trivial Packages</a></li>
+<li><a href="#sec-3-4">3.4. File-type Specific Packages</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-4">4. User Interface</a>
+<ul>
+<li><a href="#sec-4-1">4.1. Themes</a></li>
+<li><a href="#sec-4-2">4.2. Frame and Windows</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-5">5. Basic Modules</a>
+<ul>
+<li><a href="#sec-5-1">5.1. auto-complete</a></li>
+<li><a href="#sec-5-2">5.2. diminish</a></li>
+<li><a href="#sec-5-3">5.3. dired</a></li>
+<li><a href="#sec-5-4">5.4. fci-mode</a></li>
+<li><a href="#sec-5-5">5.5. flycheck</a></li>
+<li><a href="#sec-5-6">5.6. hippie-expand</a></li>
+<li><a href="#sec-5-7">5.7. ibuffer</a></li>
+<li><a href="#sec-5-8">5.8. ido-mode</a></li>
+<li><a href="#sec-5-9">5.9. isearch</a></li>
+<li><a href="#sec-5-10">5.10. mmm-mode</a></li>
+<li><a href="#sec-5-11">5.11. recentf</a></li>
+<li><a href="#sec-5-12">5.12. silver-searcher</a></li>
+<li><a href="#sec-5-13">5.13. tramp</a></li>
+<li><a href="#sec-5-14">5.14. undo-tree</a></li>
+<li><a href="#sec-5-15">5.15. uniquify</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-6">6. Editing</a>
+<ul>
+<li><a href="#sec-6-1">6.1. Packages</a></li>
+<li><a href="#sec-6-2">6.2. Configurations</a></li>
+<li><a href="#sec-6-3">6.3. ParEdit</a></li>
+<li><a href="#sec-6-4">6.4. Spell Check</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-7">7. Org Mode</a>
+<ul>
+<li><a href="#sec-7-1">7.1. General Configuration</a></li>
+<li><a href="#sec-7-2">7.2. Agenda Setup</a></li>
+<li><a href="#sec-7-3">7.3. OSX Integration</a></li>
+<li><a href="#sec-7-4">7.4. Refile / Archives</a></li>
+<li><a href="#sec-7-5">7.5. TODO Keywords / Tagging</a></li>
+<li><a href="#sec-7-6">7.6. Clocking</a></li>
+<li><a href="#sec-7-7">7.7. Captures</a></li>
+<li><a href="#sec-7-8">7.8. Encryption</a></li>
+<li><a href="#sec-7-9">7.9. Key Bindings</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-8">8. Programming</a>
+<ul>
+<li><a href="#sec-8-1">8.1. Ruby Group</a></li>
+<li><a href="#sec-8-2">8.2. PHP Group</a></li>
+<li><a href="#sec-8-3">8.3. Javascript Group</a></li>
+<li><a href="#sec-8-4">8.4. Text Group</a></li>
+<li><a href="#sec-8-5">8.5. XML Group</a></li>
+<li><a href="#sec-8-6">8.6. Design Group</a></li>
+<li><a href="#sec-8-7">8.7. Lisp Group</a></li>
+<li><a href="#sec-8-8">8.8. Other Languages</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-9">9. Session Management</a>
+<ul>
+<li><a href="#sec-9-1">9.1. Configuration</a></li>
+<li><a href="#sec-9-2">9.2. Restore Session Variables</a></li>
+<li><a href="#sec-9-3">9.3. Restore Frame</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-10">10. Version Management</a>
+<ul>
+<li><a href="#sec-10-1">10.1. Related Modules</a></li>
+<li><a href="#sec-10-2">10.2. Magit Configuration</a></li>
+</ul>
+</li>
+<li><a href="#sec-11">11. OSX Specific Configuration</a></li>
+<li>
+<a href="#sec-12">12. Key Bindings</a>
+<ul>
+<li><a href="#sec-12-1">12.1. FIXME Global Mappings</a></li>
+</ul>
+</li>
+<li>
+<a href="#sec-13">13. Updates</a>
+<ul>
+<li><a href="#sec-13-1">13.1. TODO there should be a scheduler to automatically check for updates.</a></li>
+</ul>
+</li>
+<li><a href="#sec-14">14. Epilogue</a></li>
+<li>
+<a href="#sec-15">15. Other Tasks</a>
+<ul>
+<li><a href="#sec-15-1">15.1. BUG pressing C-z will still minimize the window when using Emacs' GUI</a></li>
+<li><a href="#sec-15-2">15.2. BUG HTMLize and FCI-mode does not work together.</a></li>
+<li><a href="#sec-15-3">15.3. DONE set a different <code>fill-column</code> particularly for this org file</a></li>
+<li><a href="#sec-15-4">15.4. DONE remove the following settings, when configuration is complete.</a></li>
+<li><a href="#sec-15-5">15.5. DONE show total load time when Emacs has initialized in the mini-buffer</a></li>
+<li><a href="#sec-15-6">15.6. DONE tangling should only be done when changes are detected</a></li>
+<li><a href="#sec-15-7">15.7. DONE magit should be colorful</a></li>
+<li><a href="#sec-15-8">15.8. TODO whitespace related settings should only take place in prog-mode</a></li>
+<li><a href="#sec-15-9">15.9. TODO Org Block: Only colorize till fill column indicator</a></li>
+<li><a href="#sec-15-10">15.10. TODO Quick Scratch for current mode</a></li>
+<li><a href="#sec-15-11">15.11. TODO mousewheel should be able to move up and down in buffer - cursor being at same place.</a></li>
+<li><a href="#sec-15-12">15.12. DONE Delete trailing whitespace on save</a></li>
+<li><a href="#sec-15-13">15.13. TODO ^L to &lt;hl&gt;: &lt;hl&gt; spans more than one line</a></li>
+<li><a href="#sec-15-14">15.14. TODO fci-mode should take care of blocks, as well.</a></li>
+<li><a href="#sec-15-15">15.15. TODO fci-mode does not work in GUI mode</a></li>
+<li><a href="#sec-15-16">15.16. TODO visual bell should appear inside mini-buffer</a></li>
+<li><a href="#sec-15-17">15.17. TODO <b>Messages</b> buffer should use <code>org-mode</code></a></li>
+<li><a href="#sec-15-18">15.18. TODO Distraction free mode?</a></li>
+<li><a href="#sec-15-19">15.19. TODO jump to the location of last edit</a></li>
+<li><a href="#sec-15-20">15.20. DONE org-mode export as html should syntax-highlight the code natively</a></li>
+<li><a href="#sec-15-21">15.21. TODO ensure that emacs is started maximized</a></li>
+<li><a href="#sec-15-22">15.22. DONE activating <code>mmm-mode</code> gives error</a></li>
+<li><a href="#sec-15-23">15.23. TODO Implement some <code>mmm</code> modes by taking help from samples.</a></li>
+<li><a href="#sec-15-24">15.24. CANCELLED Magit should quit itself when changes were pushed?</a></li>
+</ul>
+</li>
+<li><a href="#sec-16">16. Emacs Options</a></li>
+</ul>
+</div>
+
+<p></p>
+</div>
+
+<h1>
+<a id="emacs-preamble" class="anchor" href="#emacs-preamble" aria-hidden="true"><span class="octicon octicon-link"></span></a>Emacs' Preamble<a id="sec-1" name="sec-1"></a>
+</h1>
+
+<h2>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation<a id="sec-1-1" name="sec-1-1"></a>
+</h2>
+
+<p>I have been a long-time <a href="http://www.vim.org">vim</a> user, and started using <a href="http://gnu.org/s/emacs">Emacs</a> because of the awesome <a href="http://orgmode.org">org-mode</a> feature,
+it provides. Definitely, I have been impressed. People were right <em>for once</em>! I have, only, been
+using Emacs for a couple of weeks, and I'm already in love with it, primarily, because:</p>
+
+<ul>
+<li>  it has the neatest organizer in this world: the <code>org-mode</code>.</li>
+<li>  it uses <code>elisp</code> to pragmatically change itself.</li>
+</ul>
+
+<p>So, soon I was dwelling inside the dark world of getting my new editor resonate with myself. I tried
+several starter packages, <em>viz.</em>:</p>
+
+<ul>
+<li>  <a href="http://github.com/overtone/emacs-live">Emacs Live</a>
+</li>
+<li>  <a href="http://github.com/bbatsov/prelude">Emacs Prelude</a>
+</li>
+<li>  <a href="http://eschulte.github.io/emacs24-starter-kit/">Emacs Starter Kit</a>
+</li>
+<li>  <a href="http://github.com/purcell/emacs.d">@purcell's Emacs configuration</a>
+</li>
+</ul>
+
+<p>And, I really enjoyed my couple of days of flirting with these kits, and they were really nice, but
+somehow, they did not represent me.</p>
+
+<blockquote>
+<p>My editor felt like someone else' baby in my hands - it was adorable, and cute and what not, but it
+wasn't mine. :)</p>
+</blockquote>
+
+<p>So, I started working on my own take at Emacs' configuration, finally, and proudly, called it:
+<a href="http://github.com/nikhgupta/preamble">Emacs' Preamble</a> - made it, remade it, and remade it again and again and each time, I switched the
+way it represented itself. I had already seen <a href="http://dl.dropboxusercontent.com/u/3968124/sacha-emacs.html">Sacha Chua's Emacs Configuration</a>, and wanted my own to
+be based upon <a href="http://orgmode.org/worg/org-contrib/babel/">org-babel</a>, as well.</p>
+
+<h2>
+<a id="philosophy" class="anchor" href="#philosophy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Philosophy<a id="sec-1-2" name="sec-1-2"></a>
+</h2>
+
+<p><code>org-babel</code> is <em>awesome</em>. It empowers Org-mode to execute source code within Org-mode documents. It
+is built upon the principles of <a href="http://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a>, and can embed multiple languages within a
+single document.</p>
+
+<p>Extending upon the same, the current Org-mode file documents my configuration for Emacs, sanely
+named as <strong>Emacs' Preamble</strong>. The source code inside <code>elisp</code> source blocks is <em>tangled</em> by Babel, and
+is then loaded as configuration via <code>org-babel-load-file</code> function. We make sure that only
+<code>emacs-lisp</code> based code is tangled by <code>org-mode</code>, as follows:</p>
+
+<pre><code>(org-babel-tangle-file "preamble.org" "output/preamble.el" "emacs-lisp")
+</code></pre>
+
+<h2>
+<a id="website" class="anchor" href="#website" aria-hidden="true"><span class="octicon octicon-link"></span></a>Website<a id="sec-1-3" name="sec-1-3"></a>
+</h2>
+
+<p><strong>Emacs' Preamble</strong> exists in a <a href="http://github.com/nikhgupta/preamble">repository</a> on <a href="http://github.com">Github</a>, and can be read there, as Github easily converts
+<code>org-mode</code> documents in a readable format. However, I have created a <a href="http://nikhgupta.com/preamble">dedicated section</a> on my
+website, where the documentation (i.e. this file, itself) can be read in a much prettier format.</p>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits<a id="sec-1-4" name="sec-1-4"></a>
+</h2>
+
+<p>This configuration for Emacs, i.e. Emacs' Preamble is heavily inspired form (in order):</p>
+
+<ul>
+<li>  <a href="https://github.com/purcell/emacs.d">@purcell's emacs.d</a>
+</li>
+<li>  <a href="https://github.com/steckerhalter/steckemacs">steckemacs</a>
+</li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License<a id="sec-1-5" name="sec-1-5"></a>
+</h2>
+
+<pre><code>Copyright (C) 2013  Nikhil Gupta &lt;me@nikhgupta.com&gt;
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+
+Code in this document is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either
+version 3 of the License, or (at your option) any later version.
+
+This code is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+</code></pre>
+
+<p>This document <a href="http://doc.nikhgupta.com/emacs-preamble.html">http://doc.nikhgupta.com/emacs-preamble.html</a> which describes my current Emacs
+configuration (either in its <a href="http://doc.nikhgupta.com/emacs-preamble.html">HTML format</a> or in its <a href="http://doc.nikhgupta.com/emacs-preamble.org">Org format</a>) is licensed under the GNU Free
+Documentation License version 1.3 or later (<a href="http://www.gnu.org/copyleft/fdl.html">http://www.gnu.org/copyleft/fdl.html</a>).</p>
+
+<p>The code examples and CSS stylesheets are licensed under the GNU General Public License v3 or later
+(<a href="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</a>).</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements<a id="sec-1-6" name="sec-1-6"></a>
+</h2>
+
+<p>I am really unsure about the requirements, but I'm using this configuration in <strong>Mac OSX 10.8.2
+(Mountain Lion)</strong>, <strong>GNU Emacs 24.1.1</strong>, and <strong>org-mode v8.2</strong>.</p>
+
+<blockquote>
+<p><strong>Emacs' Preamble</strong> was designed on <code>Emacs v24.1.1</code>, and therefore, I am sure that it will perform, as
+intended, on <strong>Emacs v24+</strong>. Older versions of Emacs might not work properly.</p>
+</blockquote>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation<a id="sec-1-7" name="sec-1-7"></a>
+</h2>
+
+<p>I tried to make sure that <strong>Emacs' Preamble</strong> can be installed in as minimum steps, as possible. At
+the moment, you can simply clone the Github repository on your computer and link <code>~/.emacs.d</code> to
+that directory, e.g.:</p>
+
+<pre><code>git clone http://github.com/nikhgupta/preamble ~/Code/github/emacs-preamble
+ln -nfs ~/Code/github/emacs-preamble ~/.emacs.d
+</code></pre>
+
+<p>That's it. Now, I'll fire my <code>emacs</code> to install the dependencies and packages. I'll sit back for a
+while, and maybe, a coffee will do me just good, at the moment.</p>
+
+<h1>
+<a id="basic-configuration" class="anchor" href="#basic-configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Configuration<a id="sec-2" name="sec-2"></a>
+</h1>
+
+<h2>
+<a id="initialization" class="anchor" href="#initialization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Initialization<a id="sec-2-1" name="sec-2-1"></a>
+</h2>
+
+<p><a href="init.el">It all started with a big-bang!</a> (in this case, a meager <code>init.el</code> file)</p>
+
+<blockquote>
+<p>Oh, yes! Did I mention? I'm a great fan of <a href="http://en.wikipedia.org/wiki/The_Big_Bang_Theory">The Big Bang Theory</a>.</p>
+</blockquote>
+
+<p>The above file, basically, checks to see whether the Org-mode version is above <code>8.0</code>. If not, it
+upgrades Org-mode by installing it via Emacs' Package Manager, and then tangles and loads <code>elisp</code>
+source codes inside the current file by using <code>org-babel-load-file</code> function.</p>
+
+<p>At the moment, I leave the <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html">Emacs Server</a> running on my machine, when it boots up (I, later, plan to
+run it on my VPS, and connect remotely), and use the <code>emacsclient</code> commands to connect to it. This
+way, this configuration is loaded/tangled only once, providing super-fast experience for my
+<em>use-cases</em>.</p>
+
+<h2>
+<a id="commentary" class="anchor" href="#commentary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commentary<a id="sec-2-2" name="sec-2-2"></a>
+</h2>
+
+<pre><code>;;; preamble.el --- Emacs' Preamble
+;;  Author : Nikhil Gupta
+;;  Email  : me@nikhgupta.com
+
+;;; Commentary:
+;;  -----------------------------------------
+;;  Do not edit the generated file, as it has
+;;  been generated, as a tangled file, by the
+;;  stupendous org-mode.
+;;
+;;  Make the changes in the corresponding
+;;  preamble.org file, instead.
+;;  -----------------------------------------
+
+;;; Code:
+</code></pre>
+
+<h2>
+<a id="compatibility" class="anchor" href="#compatibility" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compatibility<a id="sec-2-3" name="sec-2-3"></a>
+</h2>
+
+<p>Since, this configuration uses features that are new to <code>Emacs v24</code>, and since I don't have time
+enough to work out a <em>compatible</em> configuration for older version of Emacs, display a friendly
+warning, if the Emacs version is below <code>v24</code>.</p>
+
+<pre><code>(when (version&lt; emacs-version "24")
+  (warn "Only Emacs version 24 and up are supported."))
+</code></pre>
+
+<h2>
+<a id="debugging" class="anchor" href="#debugging" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debugging<a id="sec-2-4" name="sec-2-4"></a>
+</h2>
+
+<h3>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?<a id="sec-2-4-1" name="sec-2-4-1"></a>
+</h3>
+
+<p>When working with such a configuration as this one, I often tend to pull my hair out.. This section
+helps me track down possible causes of such erratic behavior of mine and be more insane,
+instead. Also, I hate those pesky plugins which make my <strong>Emacs' Preamble</strong> configuration far too
+slow. This section, further, helps me benchmark my configuration for the exact same purpose.</p>
+
+<h3>
+<a id="toggling-debugger" class="anchor" href="#toggling-debugger" aria-hidden="true"><span class="octicon octicon-link"></span></a>Toggling Debugger<a id="sec-2-4-2" name="sec-2-4-2"></a>
+</h3>
+
+<p>The settings of this section are turned on or off via the following variable:</p>
+
+<pre><code>(setq debug-on-error 'nil)  ; set to 't to enable debugging messages
+</code></pre>
+
+<h3>
+<a id="checkpoints" class="anchor" href="#checkpoints" aria-hidden="true"><span class="octicon octicon-link"></span></a>Checkpoints<a id="sec-2-4-3" name="sec-2-4-3"></a>
+</h3>
+
+<p>Since, this is one huge file, it is often hard to debug where a particular error has occurred, and
+therefore, I need some visual clue of some type, a.k.a. <code>checkpoints</code>. The following functions,
+together, help me with that. I can, simply, make a call to the <code>preamble/checkpoint</code> function, in
+order to echo something inside my <code>*Messages*</code> buffer, and immediately, know nearby location of
+where Emacs has stopped loading this configuration. Not to mention, these checkpoints, further, help
+me by acting as indirect comments.</p>
+
+<pre><code>;; subtract two time entities
+(defun preamble/time-subtract-millis (b a)
+"Function that can subtract time string A from time string B."
+(* 1000.0 (float-time (time-subtract b a))))
+
+;; convenient function to measure load-time since initialization
+(defun preamble/load-time()
+"Return total load-time from the initialization."
+(preamble/time-subtract-millis (current-time) before-init-time))
+
+;; function to display which section is being loaded..
+(defun preamble/checkpoint (msg)
+"Echo MSG to *Messages*, thereby, making it act as a checkpoint."
+(if debug-on-error (message "- At =%.2fms=, I %s.." (preamble/load-time) msg)))
+
+;; an example of above
+(preamble/checkpoint "initialized benchmarking")
+</code></pre>
+
+<h3>
+<a id="benchmarking" class="anchor" href="#benchmarking" aria-hidden="true"><span class="octicon octicon-link"></span></a>Benchmarking<a id="sec-2-4-4" name="sec-2-4-4"></a>
+</h3>
+
+<p>Moreover, since, I am a quantified-geek, I love to measure various things. Why not measure time
+taken by our Emacs configuration, as well?</p>
+
+<p>This section, also, enables me to measure the time taken by various features in requiring them, as
+well as total time taken by the Emacs to load this configuration. When Emacs load this
+configuration, it displays which features were <code>require</code>'d, and how much time that took. This is,
+especially, useful for debugging which module is making our Emacs start-up, so slow.</p>
+
+<pre><code>;; function to display how much time a particular feature took to require..
+(defun preamble/require-time-message(package time)
+  (if debug-on-error ( message
+                       "- At =%.2fms=, I required a feature: =%s=, which took me =%0.2fms=."
+                       (preamble/load-time) package time)))
+
+(defvar feature-required-time nil "Require time for a specific feature.")
+
+(defvar preamble/require-times nil
+  "A list of (FEATURE . LOAD-DURATION).
+LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
+
+(defadvice require
+  (around build-require-times (feature &amp;optional filename noerror) activate)
+  "Note in `preamble/require-times' the time taken to require each feature."
+  (let* ((already-loaded (memq feature features))
+         (require-start-time (and (not already-loaded) (current-time))))
+    (prog1
+        ad-do-it
+      (when (and (not already-loaded) (memq feature features) debug-on-error)
+        (setq feature-required-time
+              (preamble/time-subtract-millis (current-time) require-start-time))
+        (preamble/require-time-message feature feature-required-time)
+        (add-to-list 'preamble/require-times
+                     (cons feature
+                           (preamble/time-subtract-millis (current-time)
+                                                          require-start-time))
+                     t)))))
+</code></pre>
+
+<h2>
+<a id="avoid-screen-flickering" class="anchor" href="#avoid-screen-flickering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Avoid Screen-flickering<a id="sec-2-5" name="sec-2-5"></a>
+</h2>
+
+<p>Now that, I have <code>Emacs v24</code> with me, I would first disable some of the GUI features early in the
+start-up so as to ensure that the screen does not flicker when turning them off, otherwise.</p>
+
+<pre><code>(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(setq inhibit-startup-message 't) ; disable ugly start screen
+</code></pre>
+
+<h2>
+<a id="custom-routines" class="anchor" href="#custom-routines" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Routines<a id="sec-2-6" name="sec-2-6"></a>
+</h2>
+
+<h3>
+<a id="variables" class="anchor" href="#variables" aria-hidden="true"><span class="octicon octicon-link"></span></a>Variables<a id="sec-2-6-1" name="sec-2-6-1"></a>
+</h3>
+
+<pre><code>(defvar preamble-dir
+(file-name-directory (file-truename load-file-name))
+"The root directory for Emacs' Preamble configuration.")
+
+(defvar preamble-vendor-dir (concat preamble-dir "/vendors")
+"The directory which contains files from our vendors.")
+
+(defvar preamble/bookmark-file (expand-file-name ".bookmarks.el" preamble-dir)
+"The file where all the bookmarks will be saved.")
+</code></pre>
+
+<h3>
+<a id="constants" class="anchor" href="#constants" aria-hidden="true"><span class="octicon octicon-link"></span></a>Constants<a id="sec-2-6-2" name="sec-2-6-2"></a>
+</h3>
+
+<pre><code>(defconst *is-mac* (eq system-type 'darwin))
+(defconst *is-linux* (eq system-type 'gnu/linux))
+(defconst *is-windows* (eq system-type 'windows-nt))
+(defconst *is-cygwin* (eq system-type 'cygwin))
+(defconst *is-mac-gui* (and *is-mac* window-system))
+(defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+(defconst *spell-check-support-enabled* nil)
+</code></pre>
+
+<h3>
+<a id="macros" class="anchor" href="#macros" aria-hidden="true"><span class="octicon octicon-link"></span></a>Macros<a id="sec-2-6-3" name="sec-2-6-3"></a>
+</h3>
+
+<ol>
+<li>
+<p>Evaluate <code>elisp</code> after feature has loaded</p>
+
+<pre><code>(defmacro after (feature &amp;rest body)
+    "After FEATURE is loaded, evaluate BODY."
+    (declare (indent defun))
+    `(eval-after-load ,feature
+    '(progn ,@body)))
+</code></pre>
+</li>
+</ol>
+
+<h3>
+<a id="functions" class="anchor" href="#functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functions<a id="sec-2-6-4" name="sec-2-6-4"></a>
+</h3>
+
+<ol>
+<li>
+<p>Evaluate <code>elisp</code> code after initialization</p>
+
+<pre><code>(defun preamble/eval-after-init (form)
+    "Add `(lambda () FORM)' to `after-init-hook'.
+    If Emacs has already finished initialization, also eval FORM immediately."
+    (let ((func (list 'lambda nil form)))
+    (add-hook 'after-init-hook func)
+    (when after-init-time
+        (eval form))))
+</code></pre>
+</li>
+<li>
+<p>Greet the user and display load time</p>
+
+<pre><code>(defun preamble/greet-user-with-load-time()
+    "Greet and display load time to the user."
+    (message (concat "--------------------------------------------------------------------\n"
+                    "*Welcome to Emacs' Preamble.*\n"
+                    "Emacs' Preamble was loaded in =%.2fms=.") (preamble/load-time)))
+</code></pre>
+</li>
+<li>
+<p>Add sub-folders of a directory to load path</p>
+
+<p>I have added the following function to add all sub-directories inside a given directory to the
+<code>load-path</code>.</p>
+
+<pre><code>(defun preamble/add-subfolders-to-load-path (parent-dir)
+  "Add all level PARENT-DIR subdirs to the `load-path'."
+  (dolist (f (directory-files parent-dir))
+    (let ((name (expand-file-name f parent-dir)))
+      (when (and (file-directory-p name)
+                 (not (equal f ".."))
+                 (not (equal f ".")))
+        (add-to-list 'load-path name)
+        (preamble/add-subfolders-to-load-path name)))))
+</code></pre>
+</li>
+<li>
+<p>Open the most recent buffer, quickly.</p>
+
+<p>Define a really handy function to quickly split the current window to open the most recent buffer.</p>
+
+<pre><code>;; Borrowed from http://postmomentum.ch/blog/201304/blog-on-emacs
+(defun preamble/split-window()
+"Split the window to see the most recent buffer in the other window.
+Call a second time to restore the original window configuration."
+(interactive)
+(if (eq last-command 'preamble/split-window)
+    (progn
+        (jump-to-register :preamble/split-window)
+        (setq this-command 'preamble/unsplit-window))
+    (window-configuration-to-register :preamble/split-window)
+    (switch-to-buffer-other-window nil)))
+</code></pre>
+</li>
+</ol>
+
+<h3>
+<a id="settings" class="anchor" href="#settings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Settings<a id="sec-2-6-5" name="sec-2-6-5"></a>
+</h3>
+
+<p>Emacs uses a <em>custom file</em> to store changes done via <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html">Emacs' Easy Customization</a> method. I'm, simply,
+setting it up below, so that all the custom configuration exists in a separate file.</p>
+
+<pre><code>(setq custom-file (expand-file-name "custom.el" preamble-dir))
+(load custom-file)
+</code></pre>
+
+<h3>
+<a id="vendors" class="anchor" href="#vendors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Vendors<a id="sec-2-6-6" name="sec-2-6-6"></a>
+</h3>
+
+<p><code>vendors</code> directory was created for the purpose of putting up <em>unpublished</em> packages inside it, via
+git repository cloning. I'm just adding all of its sub-directories to the load path.</p>
+
+<pre><code>(mapc 'load (directory-files preamble-vendor-dir 't "^[^#].*el$"))
+(preamble/add-subfolders-to-load-path preamble-vendor-dir)
+</code></pre>
+
+<h2>
+<a id="general-behavior" class="anchor" href="#general-behavior" aria-hidden="true"><span class="octicon octicon-link"></span></a>General Behavior<a id="sec-2-7" name="sec-2-7"></a>
+</h2>
+
+<h3>
+<a id="encoding-support" class="anchor" href="#encoding-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Encoding Support<a id="sec-2-7-1" name="sec-2-7-1"></a>
+</h3>
+
+<p>Setup encoding used by the Emacs to <code>utf-8</code>, thereby, easing out my life.</p>
+
+<pre><code>(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+</code></pre>
+
+<h3>
+<a id="auto-reload-external-file-changes" class="anchor" href="#auto-reload-external-file-changes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Auto-reload external file changes<a id="sec-2-7-2" name="sec-2-7-2"></a>
+</h3>
+
+<pre><code>(global-auto-revert-mode)
+(setq global-auto-revert-non-file-buffers t
+      auto-revert-verbose nil)
+</code></pre>
+
+<h3>
+<a id="miscelleneous" class="anchor" href="#miscelleneous" aria-hidden="true"><span class="octicon octicon-link"></span></a>Miscelleneous<a id="sec-2-7-3" name="sec-2-7-3"></a>
+</h3>
+
+<pre><code>(eval-when-compile (require 'cl))         ; load common lisp
+(fset 'yes-or-no-p 'y-or-n-p)             ; shut up, and be concise
+
+(setq-default gc-cons-threshold 50000000  ; perform garbage collection at 50MB (instead of 0.76MB)
+              buffers-menu-max-size 30    ; max num of entries in Buffers menu
+              compilation-scroll-output t ; scroll down to show last line in compilation mode
+              make-backup-files nil       ; do not make backups for files
+              mouse-yank-at-point t       ; mouse yank at point instead of at click
+              save-interprogram-paste-before-kill t ; save clipboard into kill ring b4 replacing it
+              scroll-preserve-screen-position 'always ; point keeps its position when scrolling
+              set-mark-command-repeat-pop t ; repeating C-SPC after popping mark pops it again
+              grep-scroll-output t
+              grep-highlight-matches t
+              bookmark-default-file preamble/bookmark-file ; default bookmark file
+              ediff-split-window-function 'split-window-horizontally
+              ediff-window-setup-function 'ediff-setup-windows-plain
+              ring-bell-function 'ignore)
+</code></pre>
+
+<h2>
+<a id="general-appearance" class="anchor" href="#general-appearance" aria-hidden="true"><span class="octicon octicon-link"></span></a>General Appearance<a id="sec-2-8" name="sec-2-8"></a>
+</h2>
+
+<h3>
+<a id="editor" class="anchor" href="#editor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Editor<a id="sec-2-8-1" name="sec-2-8-1"></a>
+</h3>
+
+<pre><code>(global-linum-mode)           ; display line numbers
+
+(setq-default blink-cursor-delay 0        ; seconds after which cursor starts to blink
+              blink-cursor-interval 0.4   ; length of cursor blink interval
+              line-spacing 0.2            ; space to put between lines
+)
+</code></pre>
+
+<h3>
+<a id="modeline" class="anchor" href="#modeline" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modeline<a id="sec-2-8-2" name="sec-2-8-2"></a>
+</h3>
+
+<pre><code>(column-number-mode)                    ; display column number in mode line
+</code></pre>
+
+<h3>
+<a id="whitespace" class="anchor" href="#whitespace" aria-hidden="true"><span class="octicon octicon-link"></span></a>WhiteSpace<a id="sec-2-8-3" name="sec-2-8-3"></a>
+</h3>
+
+<p>I despise <code>whitespace</code>, esp. the freaky trailing ones. So, I explicitely set them to be visible,
+and automatically remove them when buffer is saved.</p>
+
+<pre><code>(setq show-trailing-whitespace 't)        ; show trailing whitespace in editor
+(add-hook 'before-save-hook 'delete-trailing-whitespace) ; delete them when buffer is saved
+
+;; do not show trailing whitespace in some modes
+(dolist (hook '(term-mode-hook comint-mode-hook compilation-mode-hook))
+  (add-hook hook (lambda () (setq show-trailing-whitespace nil))))
+</code></pre>
+
+<h3>
+<a id="word-wrapping" class="anchor" href="#word-wrapping" aria-hidden="true"><span class="octicon octicon-link"></span></a>Word Wrapping<a id="sec-2-8-4" name="sec-2-8-4"></a>
+</h3>
+
+<pre><code>(setq-default truncate-lines nil         ; display continuation lines
+              truncate-partial-width-windows nil)
+</code></pre>
+
+<h3>
+<a id="font-settings" class="anchor" href="#font-settings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Font Settings<a id="sec-2-8-5" name="sec-2-8-5"></a>
+</h3>
+
+<p>I love syntax highlighting.</p>
+
+<pre><code>(global-font-lock-mode 1)
+</code></pre>
+
+<p>Specify the default font as <code>Source Code Pro</code>, which should already be <a href="http://blogs.adobe.com/typblography/2012/09/source-code-pro.html">downloaded</a> and installed.</p>
+
+<pre><code>(set-frame-font "Source Code Pro")
+(set-face-attribute 'default nil :font "Source Code Pro" :height 140)
+(set-face-font 'default "Source Code Pro")
+</code></pre>
+
+<h3>
+<a id="disable-gui-dialog-boxes" class="anchor" href="#disable-gui-dialog-boxes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disable GUI dialog boxes<a id="sec-2-8-6" name="sec-2-8-6"></a>
+</h3>
+
+<pre><code>(setq use-file-dialog 'nil) ; use mini-buffer for file dialogs
+(setq use-dialog-box  'nil) ; use mini-buffer for everythin' else..
+(eval '(setq inhibit-startup-echo-area-message "nikhgupta"))
+</code></pre>
+
+<h3>
+<a id="miscelleneous-1" class="anchor" href="#miscelleneous-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Miscelleneous<a id="sec-2-8-7" name="sec-2-8-7"></a>
+</h3>
+
+<pre><code>(setq-default tooltip-delay 1.5         ; seconds to wait before displaying tooltip
+              visible-bell t            ; try to flash the frame to represent bell
+              indicate-empty-lines t    ; show an indicator in left fringe for lines not in buffer
+              )
+</code></pre>
+
+<h2>
+<a id="editor-behaviour" class="anchor" href="#editor-behaviour" aria-hidden="true"><span class="octicon octicon-link"></span></a>Editor Behaviour<a id="sec-2-9" name="sec-2-9"></a>
+</h2>
+
+<h3>
+<a id="modes" class="anchor" href="#modes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modes<a id="sec-2-9-1" name="sec-2-9-1"></a>
+</h3>
+
+<pre><code>(electric-pair-mode)               ; automatically insert delimiter pairs
+(delete-selection-mode)            ; typed text replaces the active selection
+(transient-mark-mode)              ; highlight the region when mark is active
+(cua-selection-mode 't)            ; for rectangular selections, CUA is nice
+(show-paren-mode)                  ; show matching parenthesis
+(global-visual-line-mode)          ; soft wrapping of lines
+
+(setq-default case-fold-search t   ; searches and matches should ignore case
+              indent-tabs-mode nil ; indentation can not insert tabs
+              tab-width 2          ; a TAB is 2 spaces, by default
+              fill-column 100)
+</code></pre>
+
+<h3>
+<a id="enable-some-disabled-commands" class="anchor" href="#enable-some-disabled-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Enable some disabled commands<a id="sec-2-9-2" name="sec-2-9-2"></a>
+</h3>
+
+<p>We do not want to disable narrowing commands, or case-change functions.</p>
+
+<pre><code>(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-defun 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+</code></pre>
+
+<h3>
+<a id="functions-1" class="anchor" href="#functions-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functions<a id="sec-2-9-3" name="sec-2-9-3"></a>
+</h3>
+
+<pre><code>(autoload 'zap-up-to-char "misc" "Kill up to, but not including
+ARGth occurrence of CHAR.")
+
+(defun Preamble/duplicate-region (beg end)
+  "Insert a copy of the current region after the region."
+  (interactive "r")
+  (save-excursion
+    (goto-char end)
+    (insert (buffer-substring beg end))))
+
+(defun preamble/duplicate-line-or-region (prefix)
+  "Duplicate either the current line or any current region."
+  (interactive "*p")
+  (whole-line-or-region-call-with-region 'preamble/duplicate-region prefix t))
+
+(defun preamble/kill-back-to-indentation ()
+  "Kill from point back to the first non-whitespace character on the line."
+  (interactive)
+  (let ((prev-pos (point)))
+    (back-to-indentation)
+    (kill-region (point) prev-pos)))
+
+(defun preamble/sort-lines-random (beg end)
+  "Sort lines in region randomly."
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (let ;; To make `end-of-line' and etc. to ignore fields.
+          ((inhibit-field-text-motion t))
+        (sort-subr nil 'forward-line 'end-of-line nil nil
+                   (lambda (s1 s2) (eq (random 2) 0)))))))
+
+(defun preamble/open-line-with-reindent (n)
+  "A version of `open-line' which reindents the start and end positions.
+If there is a fill prefix and/or a `left-margin', insert them
+on the new line if the line would have been blank.
+With arg N, insert N newlines."
+  (interactive "*p")
+  (let* ((do-fill-prefix (and fill-prefix (bolp)))
+         (do-left-margin (and (bolp) (&gt; (current-left-margin) 0)))
+         (loc (point-marker))
+         ;; Don't expand an abbrev before point.
+         (abbrev-mode nil))
+    (delete-horizontal-space t)
+    (newline n)
+    (indent-according-to-mode)
+    (when (eolp)
+      (delete-horizontal-space t))
+    (goto-char loc)
+    (while (&gt; n 0)
+      (cond ((bolp)
+             (if do-left-margin (indent-to (current-left-margin)))
+             (if do-fill-prefix (insert-and-inherit fill-prefix))))
+      (forward-line 1)
+      (setq n (1- n)))
+    (goto-char loc)
+    (end-of-line)
+    (indent-according-to-mode)))
+</code></pre>
+
+<h2>
+<a id="always-run-server" class="anchor" href="#always-run-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Always Run Server<a id="sec-2-10" name="sec-2-10"></a>
+</h2>
+
+<pre><code>(require 'server)
+(unless (server-running-p)
+    (server-start))
+</code></pre>
+
+<h1>
+<a id="packages" class="anchor" href="#packages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Packages<a id="sec-3" name="sec-3"></a>
+</h1>
+
+<h2>
+<a id="repositories" class="anchor" href="#repositories" aria-hidden="true"><span class="octicon octicon-link"></span></a>Repositories<a id="sec-3-1" name="sec-3-1"></a>
+</h2>
+
+<p>OK, so I am using the default <a href="http://www.emacswiki.org/emacs/ELPA">Package Manager</a> that is shipped with Emacs 24 to load my packages
+(anything else, does not make sense, anyways). However, I must, first, tell it to use more sources
+to search for a given package (a.k.a. <code>yum</code>). I am using <a href="http://www.emacswiki.org/emacs-en/Marmalade">Marmalade</a>, <a href="http://www.emacswiki.org/emacs-en/MELPA">MELPA</a>, &amp; <a href="http://orgmode.org/elpa.html">Org ELPA</a> repositories,
+for this purpose.</p>
+
+<pre><code>(require 'package)
+(setq package-archives
+      '(("marmalade" . "http://marmalade-repo.org/packages/")
+        ("org"       . "http://orgmode.org/elpa/")
+        ("melpa"     . "http://melpa.milkbox.net/packages/")))
+(package-initialize)
+</code></pre>
+
+<h2>
+<a id="on-demand-installation" class="anchor" href="#on-demand-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>On Demand Installation<a id="sec-3-2" name="sec-3-2"></a>
+</h2>
+
+<p>I have added some convenient functions to install a package, only when it is explicitely told to do
+so, which means that instead of adding these packages to the list of our packages (that need to be
+installed and checked on every run of Emacs) in the next section, we are now able to <code>install</code> them
+right along with the rest of their configuration. This is called <strong>On Demand Installation</strong> of the
+packages.</p>
+
+<pre><code>;; on-demand installation of a package
+(defun preamble/require-package (package &amp;optional min-version no-refresh)
+  "Install given PACKAGE, optionally requiring MIN-VERSION.
+If NO-REFRESH is non-nil, the available package lists will not be
+re-downloaded in order to locate PACKAGE."
+  (if (package-installed-p package min-version)
+      t
+    (if (or (assoc package package-archive-contents) no-refresh)
+        (package-install package)
+      (progn
+        (package-refresh-contents)
+        (preamble/require-package package min-version t)))))
+
+;; on-demand installation of multiple packages
+(defun preamble/require-packages(packages-list)
+  "Install packages from a given PACKAGES-LIST, using `preamble-require-package' function."
+  (mapc #'preamble/require-package packages-list))
+</code></pre>
+
+<h2>
+<a id="trivial-packages" class="anchor" href="#trivial-packages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Trivial Packages<a id="sec-3-3" name="sec-3-3"></a>
+</h2>
+
+<p>Some packages are really trivial in nature, and nearly, need no configuration, at all. I have marked
+such packages to be installed, in this section. That way, I won't have to clobber up the
+configuration with different headings, and the likes.</p>
+
+<h3>
+<a id="functions-2" class="anchor" href="#functions-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functions<a id="sec-3-3-1" name="sec-3-3-1"></a>
+</h3>
+
+<pre><code>(defun preamble/install-packages ()
+  "Install all packages listed in `preamble-trivial-packages'."
+  (unless (every #'package-installed-p preamble-trivial-packages)
+    (preamble/require-packages preamble-trivial-packages)))
+</code></pre>
+
+<h3>
+<a id="installed-packages" class="anchor" href="#installed-packages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installed Packages<a id="sec-3-3-2" name="sec-3-3-2"></a>
+</h3>
+
+<pre><code>(defvar preamble-trivial-packages '( dash
+                                     diminish
+                                     expand-region
+                                     flycheck
+                                     regex-tool
+                                     smex)
+  "A list of trivial packages that are installed on startup.")
+
+(preamble/install-packages)
+</code></pre>
+
+<h2>
+<a id="file-type-specific-packages" class="anchor" href="#file-type-specific-packages" aria-hidden="true"><span class="octicon octicon-link"></span></a>File-type Specific Packages<a id="sec-3-4" name="sec-3-4"></a>
+</h2>
+
+<p>I have added a macro <code>preamble/auto-install</code> to automatically install the appropriate mode for a
+file with given extension, when it is opened. Furthermore, the macro ensures that the file is, then,
+opened in that mode. This can be used to automatically install the required packages for a specific
+filetype.</p>
+
+<h3>
+<a id="map-exntensions-to-modes" class="anchor" href="#map-exntensions-to-modes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Map exntensions to modes<a id="sec-3-4-1" name="sec-3-4-1"></a>
+</h3>
+
+<pre><code>(defvar preamble/auto-install-alist
+  '(("\\.clj\\'" clojure-mode clojure-mode)
+    ("\\.coffee\\'" coffee-mode coffee-mode)
+    ("\\.css\\'" css-mode css-mode)
+    ("\\.csv\\'" csv-mode csv-mode)
+    ("\\.d\\'" d-mode d-mode)
+    ("\\.dart\\'" dart-mode dart-mode)
+    ("\\.erl\\'" erlang erlang-mode)
+    ("\\.feature\\'" feature-mode feature-mode)
+    ("\\.go\\'" go-mode go-mode)
+    ("\\.groovy\\'" groovy-mode groovy-mode)
+    ("\\.haml\\'" haml-mode haml-mode)
+    ("\\.hs\\'" haskell-mode haskell-mode)
+    ("\\.latex\\'" auctex LaTeX-mode)
+    ("\\.less\\'" less-css-mode less-css-mode)
+    ("\\.lua\\'" lua-mode lua-mode)
+    ("\\.markdown\\'" markdown-mode markdown-mode)
+    ("\\.mkd\\'" markdown-mode markdown-mode)
+    ("\\.md\\'" markdown-mode markdown-mode)
+    ("\\.ml\\'" tuareg tuareg-mode)
+    ("\\.pp\\'" puppet-mode puppet-mode)
+    ("\\.php\\'" php-mode php-mode)
+    ("PKGBUILD\\'" pkgbuild-mode pkgbuild-mode)
+    ("\\.sass\\'" sass-mode sass-mode)
+    ("\\.scala\\'" scala-mode2 scala-mode)
+    ("\\.scss\\'" scss-mode scss-mode)
+    ("\\.slim\\'" slim-mode slim-mode)
+    ("\\.textile\\'" textile-mode textile-mode)
+    ("\\.yml\\'" yaml-mode yaml-mode))
+  "A list of filetype vs mode mappings.")
+</code></pre>
+
+<h3>
+<a id="add-filetype-mapping-to-auto-mode-alist" class="anchor" href="#add-filetype-mapping-to-auto-mode-alist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add filetype mapping to <code>auto-mode-alist</code><a id="sec-3-4-2" name="sec-3-4-2"></a>
+</h3>
+
+<pre><code>(defmacro preamble/auto-install (extension package mode)
+  "When file with EXTENSION is opened triggers auto-install of PACKAGE.
+PACKAGE is installed only if not already present.  The file is opened in MODE."
+  `(add-to-list 'auto-mode-alist
+                `(,extension . (lambda ()
+                                 (unless (package-installed-p ',package)
+                                   (package-install ',package))
+                                 (,mode)))))
+
+(mapc (lambda (entry)
+        (let ((extension (car entry))
+              (package (cadr entry))
+              (mode (cadr (cdr entry))))
+          (unless (package-installed-p package)
+            (preamble/auto-install extension package mode))))
+      preamble/auto-install-alist)
+
+;; some modes don't have autoloads for the auto-mode-alist
+;; so we add them manually if package is already installed
+(when (package-installed-p 'markdown-mode)
+  (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+(when (package-installed-p 'pkgbuild-mode)
+  (add-to-list 'auto-mode-alist '("PKGBUILD\\'" . pkgbuild-mode)))
+</code></pre>
+
+<h1>
+<a id="user-interface" class="anchor" href="#user-interface" aria-hidden="true"><span class="octicon octicon-link"></span></a>User Interface<a id="sec-4" name="sec-4"></a>
+</h1>
+
+<blockquote>
+<p>An editor can only improve my efficiency, if it pleases my eyes.
+— <a href="http://github.com/nikhgupta">Nikhil Gupta</a></p>
+</blockquote>
+
+<p>This is true, since I work for almost 12-16 hours on my computer, with almost 70% time either in
+my Shell or in my Editor, and hence, these two things need to be so adorable, and so damn
+impressive, that I would never want to leave them alone.</p>
+
+<h2>
+<a id="themes" class="anchor" href="#themes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Themes<a id="sec-4-1" name="sec-4-1"></a>
+</h2>
+
+<h3>
+<a id="functions-3" class="anchor" href="#functions-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functions<a id="sec-4-1-1" name="sec-4-1-1"></a>
+</h3>
+
+<pre><code>;; ensures that themes will be applied even if they have not been customized
+(defun preamble/reapply-themes ()
+  "Forcibly load the themes listed in `custom-enabled-themes'."
+  (dolist (theme custom-enabled-themes)
+    (unless (custom-theme-p theme) (load-theme theme)))
+  (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+
+;; lets run the above function after Emacs has loaded this configuration.
+(add-hook 'after-init-hook 'preamble/reapply-themes)
+</code></pre>
+
+<h3>
+<a id="installed-themes" class="anchor" href="#installed-themes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installed Themes<a id="sec-4-1-2" name="sec-4-1-2"></a>
+</h3>
+
+<p>I am in love with elegance, and only prefer the themes which show such elegance. Emacs' Preamble
+uses a very specific set of 5 themes (or theme groups) at any time, since as per me, I would never
+need more than that, even if I am bored.</p>
+
+<pre><code>(preamble/require-packages '( noctilux-theme zenburn-theme sublime-themes
+                                             color-theme-sanityinc-solarized
+                                             color-theme-sanityinc-tomorrow base16-theme ))
+</code></pre>
+
+<h3>
+<a id="current-theme" class="anchor" href="#current-theme" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current Theme<a id="sec-4-1-3" name="sec-4-1-3"></a>
+</h3>
+
+<pre><code>(setq-default custom-enabled-themes '(sanityinc-tomorrow-eighties))
+</code></pre>
+
+<h3>
+<a id="quick-access-to-themes" class="anchor" href="#quick-access-to-themes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Access to Themes<a id="sec-4-1-4" name="sec-4-1-4"></a>
+</h3>
+
+<pre><code>;; quick access for some themes, I use often.
+(defun light() "Activate a light color theme."
+  (interactive) (color-theme-sanityinc-solarized-light))
+(defun dark() "Activate a dark color theme."
+  (interactive) (color-theme-sanityinc-solarized-dark))
+(defun eighties() "Activate an 80's theme."
+  (interactive) (color-theme-sanityinc-tomorrow-eighties))
+(defun day() "Activate theme for a day."
+  (interactive) (color-theme-sanityinc-tomorrow-day))
+(defun night() "Activate theme for a night."
+  (interactive) (color-theme-sanityinc-tomorrow-night))
+</code></pre>
+
+<h2>
+<a id="frame-and-windows" class="anchor" href="#frame-and-windows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frame and Windows<a id="sec-4-2" name="sec-4-2"></a>
+</h2>
+
+<h3>
+<a id="fullscreen-support" class="anchor" href="#fullscreen-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fullscreen Support<a id="sec-4-2-1" name="sec-4-2-1"></a>
+</h3>
+
+<p>Simple fullscreen support for Emacs. Note that, Emacs in OSX already has a fullscreen support, and a
+similar support is built-in inside Emacs v24.4+.</p>
+
+<pre><code>(defun preamble/fullscreen ()
+  "Make Emacs window fullscreen.
+  This follows freedesktop standards, should work in X servers."
+  (interactive)
+  (if (eq window-system 'x)
+      (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+                             '(2 "_NET_WM_STATE_FULLSCREEN" 0))
+    (error "Only X server is supported")))
+</code></pre>
+
+<h3>
+<a id="better-frame-title" class="anchor" href="#better-frame-title" aria-hidden="true"><span class="octicon octicon-link"></span></a>Better Frame Title<a id="sec-4-2-2" name="sec-4-2-2"></a>
+</h3>
+
+<pre><code>(setq frame-title-format
+'((:eval (if (buffer-file-name)
+    (abbreviate-file-name (buffer-file-name)) "%b"))))
+</code></pre>
+
+<h3>
+<a id="adjust-frames-opacity" class="anchor" href="#adjust-frames-opacity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adjust Frame's Opacity<a id="sec-4-2-3" name="sec-4-2-3"></a>
+</h3>
+
+<pre><code>(defun preamble/adjust-opacity (frame incr)
+  (let* ((oldalpha (or (frame-parameter frame 'alpha) 100))
+         (newalpha (+ incr oldalpha)))
+    (when (and (&lt;= frame-alpha-lower-limit newalpha) (&gt;= 100 newalpha))
+      (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
+</code></pre>
+
+<h3>
+<a id="mouse-support-in-terminal" class="anchor" href="#mouse-support-in-terminal" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mouse Support in Terminal<a id="sec-4-2-4" name="sec-4-2-4"></a>
+</h3>
+
+<p>When making new Terminal, i.e. <code>tty</code> frames in Emacs, I want to ensure that I am able to use mouse
+there, as well as paste by clicking mouse middle button.</p>
+
+<pre><code>(xterm-mouse-mode)
+(when (fboundp 'mwheel-install) (mwheel-install))
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+(setq scroll-conservatively 10000)
+(setq auto-window-vscroll nil)
+</code></pre>
+
+<h3>
+<a id="switching-between-windows" class="anchor" href="#switching-between-windows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Switching between Windows<a id="sec-4-2-5" name="sec-4-2-5"></a>
+</h3>
+
+<p>Switching windows, when more than 2 of them are open, with <code>C-x o</code> is a real pain in the fingers
+and eyes, therefore, I make use of the really nice <a href="http://github.com/dimitri/switch-window">switch-window</a> package, as well as the
+<code>winner-mode</code> built-in Emacs. Winner Mode allows us to <em>undo</em> (and <em>redo</em>) changes in the window
+configuration with the key commands <code>C-c left</code>, and <code>C-c right</code> (which, is pretty neat!)</p>
+
+<pre><code>(when (fboundp 'winner-mode) (winner-mode))
+
+(preamble/require-package 'switch-window)
+(require 'switch-window)
+;; we must bind the "C-x o" key appropriately, now.
+(setq switch-window-shortcut-style 'quail)
+</code></pre>
+
+<h1>
+<a id="basic-modules" class="anchor" href="#basic-modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Modules<a id="sec-5" name="sec-5"></a>
+</h1>
+
+<p>Modules defines either a package or a mode or both, and this section defines various modules along
+with the relevant configuration required by them. Each module is tagged with appropriate tags to
+refer to the kind of feature, it provides, e.g. a module can be tagged as <code>editor</code>, which means that
+the module provides a feature related to the editing inside Emacs.</p>
+
+<h2>
+<a id="auto-complete" class="anchor" href="#auto-complete" aria-hidden="true"><span class="octicon octicon-link"></span></a>auto-complete<a id="sec-5-1" name="sec-5-1"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/AutoComplete">AutoComplete</a> is an excellent auto-completion feature with popup menu for quick selection. It can
+complete words at the point from a number of different sources, and includes fuzzy-matching,
+in-built.</p>
+
+<p>I have, first, setup <strong>AutoComplete</strong> as the default completion function, by hooking it inside
+<code>auto-complete-mode</code>.</p>
+
+<pre><code>(preamble/require-package 'auto-complete)
+(require 'auto-complete-config)
+
+(defun preamble/auto-complete-at-point ()
+"Use AutoComplete to provide completion at the current point."
+(when (and (not (minibufferp))
+            (fboundp 'auto-complete-mode)
+            auto-complete-mode)
+    (auto-complete)))
+
+;; hook AC into completion-at-point
+(defun preamble/set-auto-complete-as-completion-at-point-function ()
+"Set AutoComplete as Completion-At-Point function."
+(add-to-list 'completion-at-point-functions 'preamble/auto-complete-at-point))
+
+(add-hook 'auto-complete-mode-hook 'preamble/set-auto-complete-as-completion-at-point-function)
+</code></pre>
+
+<p>I want to customize behavior of AC to match my workflow, and have setup <code>TAB</code> key to trigger
+completions. Further, I want to exclude very large buffer from interfering with AC.</p>
+
+<pre><code>(global-auto-complete-mode)          ; enable auto-complete mode globally
+
+(after 'auto-complete
+  (setq ac-expand-on-auto-complete t ; auto-complete whole match on TAB
+        ac-auto-start 3              ; enable auto-complete after 3 chars
+        ac-dwim nil                  ; get pop-ups with docs even if word is uniquely completed
+        tab-always-indent 'complete  ; use TAB to trigger auto-complete
+        dabbrev-friend-buffer-function
+          '(lambda() (&lt; (buffer-size other-buffer (1024 1024))))) ; exclude large buffers
+  (add-to-list 'completion-styles 'initials t))
+</code></pre>
+
+<p>Finally, define some sources for AC, and setup some modes to use AC, by default.</p>
+
+<pre><code>(after 'auto-complete
+  ;; define sources for auto-completion
+  (set-default 'ac-sources '( ac-source-imenu ac-source-dictionary
+                                              ac-source-words-in-buffer
+                                              ac-source-words-in-same-mode-buffers
+                                              ac-source-words-in-all-buffer))
+
+  ;; add various modes to auto-complete
+  (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode
+                                      text-mode haml-mode ruby-mode sass-mode yaml-mode
+                                      csv-mode espresso-mode haskell-mode html-mode
+                                      nxml-mode sh-mode smarty-mode clojure-mode
+                                      lisp-mode textile-mode markdown-mode tuareg-mode
+                                      js3-mode css-mode less-css-mode sql-mode
+                                      ielm-mode))
+    (add-to-list 'ac-modes mode)))
+</code></pre>
+
+<h2>
+<a id="diminish" class="anchor" href="#diminish" aria-hidden="true"><span class="octicon octicon-link"></span></a>diminish<a id="sec-5-2" name="sec-5-2"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/DiminishedModes">Diminished modes</a> is an internal feature, which lets us fight mode-line clutter by diminishing
+(removing or abbreviating) minor mode indicators in the modeline.</p>
+
+<pre><code>(preamble/require-package 'diminish)
+</code></pre>
+
+<h3>
+<a id="diminishing-major-modes" class="anchor" href="#diminishing-major-modes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Diminishing Major Modes<a id="sec-5-2-1" name="sec-5-2-1"></a>
+</h3>
+
+<pre><code>(add-hook 'emacs-lisp-mode-hook (lambda() (setq mode-name "eL"))) ; emacs lisp
+</code></pre>
+
+<h2>
+<a id="dired" class="anchor" href="#dired" aria-hidden="true"><span class="octicon octicon-link"></span></a>dired<a id="sec-5-3" name="sec-5-3"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/DiredPlus">Dired+</a> enhances our file-exploring experience, and provides additional features to <a href="http://www.emacswiki.org/emacs/Dired">Dired Mode</a>.</p>
+
+<pre><code>(preamble/require-package 'dired+)
+(setq diredp-hide-details-initially-flag nil
+      global-dired-hide-details-mode -1)
+(after 'dired
+  (require 'dired+)
+  (setq dired-recursive-deletes 'top))
+;; disable line wrapping in dired mode
+(add-hook 'dired-mode-hook (lambda () (setq truncate-lines t)))
+</code></pre>
+
+<h3>
+<a id="related-key-bindings" class="anchor" href="#related-key-bindings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Related Key Bindings<a id="sec-5-3-1" name="sec-5-3-1"></a>
+</h3>
+
+<pre><code>(after 'dired
+  (define-key dired-mode-map [mouse-2] 'dired-find-file))
+</code></pre>
+
+<h2>
+<a id="fci-mode" class="anchor" href="#fci-mode" aria-hidden="true"><span class="octicon octicon-link"></span></a>fci-mode<a id="sec-5-4" name="sec-5-4"></a>
+</h2>
+
+<p>Many modern editors and IDEs can graphically indicate the location of the fill column by drawing a
+thin line (in design parlance, a "rule") down the length of the editing window. <code>fci-mode</code>,
+i.e. <a href="https://github.com/alpaker/Fill-Column-Indicator">Fill Column Indicator</a> implements this facility in Emacs.</p>
+
+<pre><code>(preamble/require-package 'fill-column-indicator)
+(after 'fill-column-indicator
+  (setq fci-rule-width 10)
+  (setq fci-rule-character ?❚)
+; (setq fci-rule-character-color "#999999")
+  (setq fci-dash-pattern 1.00))
+</code></pre>
+
+<p>However, I only want to see column indicator when one of the <code>org-mode</code>, <code>text-mode</code> or <code>prog-mode</code>
+is active. Moreover, whenever I switch themes, I would like to regenerate the indicator. Lastly,
+<code>fci-mode</code> is not compatible with <code>show-trailing-whitespace</code> property, and hence, I have added a
+function to properly activate <code>fci-mode</code> in this case.</p>
+
+<pre><code>(defun preamble/fci-mode-settings()
+  "Turn of `fci-mode' properly, when trailing whitespace is being shown."
+  (turn-on-fci-mode)
+  (when show-trailing-whitespace
+    (set (make-local-variable 'whitespace-style) '(face trailing))
+    (whitespace-mode)))
+
+;; enable `fci-mode' in `org-mode' and programming mode
+(add-hook 'prog-mode-hook 'preamble/fci-mode-settings)
+(add-hook 'org-mode-hook  'preamble/fci-mode-settings)
+
+;; regenerate fci-mode line images after switching themes
+(defadvice enable-theme (after recompute-fci-face activate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (when (and (boundp 'fci-mode) fci-mode)
+        (turn-on-fci-mode)))))
+</code></pre>
+
+<h2>
+<a id="flycheck" class="anchor" href="#flycheck" aria-hidden="true"><span class="octicon octicon-link"></span></a>flycheck<a id="sec-5-5" name="sec-5-5"></a>
+</h2>
+
+<p><a href="http://github.com/flycheck/flycheck">FlyCheck</a> is a modern on-the-fly syntax-checker for GNU Emacs, which selects syntax-checkers based on
+the major mode of the current buffer.</p>
+
+<pre><code>(preamble/require-package 'flycheck)
+(add-hook 'after-init-hook 'global-flycheck-mode)
+</code></pre>
+
+<h2>
+<a id="hippie-expand" class="anchor" href="#hippie-expand" aria-hidden="true"><span class="octicon octicon-link"></span></a>hippie-expand<a id="sec-5-6" name="sec-5-6"></a>
+</h2>
+
+<blockquote>
+<p><a href="http://www.emacswiki.org/emacs/HippieExpand">HippieExpand</a> looks at the word before point and tries to expand it in various ways including
+expanding from a fixed list (like <code>expand-abbrev</code>), expanding from matching text found in a
+buffer (like <code>dabbrev-expand</code>) or expanding in ways defined by your own functions. Which of
+these it tries and in what order is controlled by a configurable list of functions.</p>
+</blockquote>
+
+<p>As stated above, <code>hippie-expand</code> uses a list of functions, which has been defined below in our case:</p>
+
+<pre><code>(after 'hippie-expand
+  (setq hippie-expand-try-functions-list
+          '(try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-dabbrev
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill)))
+</code></pre>
+
+<h2>
+<a id="ibuffer" class="anchor" href="#ibuffer" aria-hidden="true"><span class="octicon octicon-link"></span></a>ibuffer<a id="sec-5-7" name="sec-5-7"></a>
+</h2>
+
+<p><a href="https://github.com/purcell/ibuffer-vc">ibuffer-vc</a> adds functionality to Emacs' <a href="http://www.emacswiki.org/emacs/IbufferMode">iBuffer Mode</a> by grouping buffers according to their parent
+VC (version-control) root directory, and by displaying and/or sorting files by their VC status.
+Therefore, <code>ibuffer-mode</code> will, now, show different groups of buffers based on the <code>git</code> repository
+path. <em>Pretty Awesome!</em></p>
+
+<p>First, lets make sure that the buffers are grouped according to version control system, they are
+in, then by filename or process name.</p>
+
+<pre><code>(preamble/require-package 'ibuffer-vc)
+(after 'ibuffer (require 'ibuffer-vc))
+
+(defun preamble/ibuffer-set-up-preferred-filters ()
+  "Sort ibuffers according to Version Control or Filename or Process."
+  (ibuffer-vc-set-filter-groups-by-vc-root)
+  (unless (eq ibuffer-sorting-mode 'filename/process)
+    (ibuffer-do-sort-by-filename/process)))
+
+(add-hook 'ibuffer-hook 'preamble/ibuffer-set-up-preferred-filters)
+</code></pre>
+
+<p>Now, the default display of <code>dired</code> command is a bit non-resonating with what my eyes want to see,
+and therefore, lets change the configuration of <code>ibuffer</code> to suit my pair of eyes.</p>
+
+<pre><code>(after 'ibuffer
+  ;; use human readable size column instead of original one
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t)
+    (cond
+     ((&gt; (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+     ((&gt; (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+     (t (format "%8d" (buffer-size))))))
+
+;; modify the default ibuffer-formats
+(setq ibuffer-formats
+      '((mark modified read-only vc-status-mini " "
+              (name 18 18 :left :elide)         " "
+              (size-h 9 -1 :right)              " "
+              (mode 16 16 :left :elide)         " "
+              (vc-status 16 16 :left)           " "
+              filename-and-process)))
+
+(setq ibuffer-filter-group-name-face 'font-lock-doc-face)
+</code></pre>
+
+<h2>
+<a id="ido-mode" class="anchor" href="#ido-mode" aria-hidden="true"><span class="octicon octicon-link"></span></a>ido-mode<a id="sec-5-8" name="sec-5-8"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/InteractivelyDoThings">IDO Mode</a> is, simply, amazin'! It lets us do things interactively with buffers and files. When
+combined with <a href="https://github.com/technomancy/ido-ubiquitous">IDO Ubiquitous</a> and <a href="https://github.com/nonsequitur/smex">Smex</a>, it creates a powerful combination of fuzzy-file searching
+and the same power is available for executings commands, as well as a heap of other places.</p>
+
+<h3>
+<a id="bug-fix" class="anchor" href="#bug-fix" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bug-Fix<a id="sec-5-8-1" name="sec-5-8-1"></a>
+</h3>
+
+<pre><code>;; suppress warnings from ido-ubiquitous
+(defvar predicate 'nil)
+(defvar inherit-input-method 'nil)
+(defvar ido-cur-item 'nil)
+(defvar ido-default-item 'nil)
+(defvar ido-cur-list 'nil)
+</code></pre>
+
+<h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration<a id="sec-5-8-2" name="sec-5-8-2"></a>
+</h3>
+
+<pre><code>(preamble/require-packages '( smex idomenu ido-ubiquitous))
+
+(ido-mode)                              ; enable ido mode
+(ido-everywhere)                        ; use ido-mode wherever possible
+(ido-ubiquitous-mode)                   ; enable ido-ubiquitous
+(setq ido-enable-flex-matching 't       ; enable fuzzy search
+      ido-use-filename-at-point 'nil    ; look for filename at point
+      ido-use-virtual-buffers 't        ; allow me to open closed buffers, even
+      ido-auto-merge-work-directories-length 0
+      ido-default-buffer-method 'selected-window) ; allow buffer to be open in different frames
+</code></pre>
+
+<h3>
+<a id="functions-4" class="anchor" href="#functions-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functions<a id="sec-5-8-3" name="sec-5-8-3"></a>
+</h3>
+
+<pre><code>(defun preamble/ido-choose-from-recentf ()
+  "Use ido to select a recently opened file from the `recentf-list'."
+  (interactive)
+  (if (and ido-use-virtual-buffers (fboundp 'ido-toggle-virtual-buffers))
+      (ido-switch-buffer)
+    (find-file (ido-completing-read "Open file: " recentf-list nil t))))
+</code></pre>
+
+<h2>
+<a id="isearch" class="anchor" href="#isearch" aria-hidden="true"><span class="octicon octicon-link"></span></a>isearch<a id="sec-5-9" name="sec-5-9"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/IncrementalSearch">Incremental Search</a>, i.e. Emacs' <code>isearch</code> is the Incremental Search feature of Emacs, and while it
+is really nice on its own, it may need some basic extensions and features related to it.</p>
+
+<h3>
+<a id="functions-5" class="anchor" href="#functions-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functions<a id="sec-5-9-1" name="sec-5-9-1"></a>
+</h3>
+
+<ol>
+<li>
+<p>Search for Current Word</p>
+
+<pre><code>;; Search back/forth for the symbol at point
+;; See http://www.emacswiki.org/emacs/SearchAtPoint
+(defun preamble/isearch-yank-symbol ()
+"*Put symbol at current point into search string."
+(interactive)
+(let ((sym (symbol-at-point)))
+    (if sym
+        (progn
+        (setq isearch-regexp t
+                isearch-string (concat "\\_&lt;" (regexp-quote (symbol-name sym)) "\\_&gt;")
+                isearch-message (mapconcat 'isearch-text-char-description isearch-string "")
+                isearch-yank-flag t))
+    (ding)))
+(isearch-search-and-update))
+</code></pre>
+</li>
+<li>
+<p>Zap till First Match</p>
+
+<pre><code>;; http://www.emacswiki.org/emacs/ZapToISearch
+(defun zap-to-isearch (rbeg rend)
+"Kill the region between the mark and the closest portion of
+the isearch match string. The behaviour is meant to be analogous
+to zap-to-char; let's call it zap-to-isearch. The deleted region
+does not include the isearch word. This is meant to be bound only
+in isearch mode.  The point of this function is that oftentimes
+you want to delete some portion of text, one end of which happens
+to be an active isearch word. The observation to make is that if
+you use isearch a lot to move the cursor around (as you should,
+it is much more efficient than using the arrows), it happens a
+lot that you could just delete the active region between the mark
+and the point, not include the isearch word."
+(interactive "r")
+(when (not mark-active)
+    (error "Mark is not active"))
+(let* ((isearch-bounds (list isearch-other-end (point)))
+        (ismin (apply 'min isearch-bounds))
+        (ismax (apply 'max isearch-bounds))
+        )
+    (if (&lt; (mark) ismin)
+        (kill-region (mark) ismin)
+    (if (&gt; (mark) ismax)
+        (kill-region ismax (mark))
+        (error "Internal error in isearch kill function.")))
+    (isearch-exit)
+    ))
+
+;; http://www.emacswiki.org/emacs/ZapToISearch
+(defun isearch-exit-other-end (rbeg rend)
+"Exit isearch, but at the other end of the search string.
+This is useful when followed by an immediate kill."
+(interactive "r")
+(isearch-exit)
+(goto-char isearch-other-end))
+</code></pre>
+</li>
+</ol>
+
+<h3>
+<a id="key-bindings" class="anchor" href="#key-bindings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Bindings<a id="sec-5-9-2" name="sec-5-9-2"></a>
+</h3>
+
+<pre><code>(define-key isearch-mode-map (kbd "C-y") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "C-M-w") 'isearch-yank-symbol)
+(define-key isearch-mode-map (kbd "M-z") 'zap-to-isearch)
+(define-key isearch-mode-map (kbd "C-RET") 'isearch-exit-other-end)
+(define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
+</code></pre>
+
+<h2>
+<a id="mmm-mode" class="anchor" href="#mmm-mode" aria-hidden="true"><span class="octicon octicon-link"></span></a>mmm-mode<a id="sec-5-10" name="sec-5-10"></a>
+</h2>
+
+<p><a href="https://github.com/purcell/mmm-mode">Multiple Major Modes</a> is a minor mode for Emacs that allows multiple major modes to coexist in one
+buffer. It is well-suited to editing:</p>
+
+<ul>
+<li>  Preprocessed code, e.g. server-side Ruby, Perl or PHP embedded in HTML</li>
+<li>  Code generating code, such as HTML output by CGI scripts</li>
+<li>  Embedded code, such as Javascript in HTML</li>
+<li>
+<p>Literate programming: code interspersed with documentation, e.g. Noweb</p>
+
+<p>(preamble/require-package 'mmm-mode)
+(require 'mmm-auto)
+; only enable when `mmm' is required
+(setq mmm-global-mode 'buffers-with-submode-classes)
+(setq mmm-submode-decoration-level 2)</p>
+</li>
+</ul>
+
+<h2>
+<a id="recentf" class="anchor" href="#recentf" aria-hidden="true"><span class="octicon octicon-link"></span></a>recentf<a id="sec-5-11" name="sec-5-11"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/RecentFiles">Recent Files</a> is a minor mode that builds a list of recently opened files. This list is is auto-saved
+across Emacs sessions. You can then access this list through a menu, or keybinding.</p>
+
+<pre><code>(require 'recentf)
+(recentf-mode)
+(after 'recentf
+  (setq recentf-max-menu-items 25
+        recentf-max-saved-items 1000
+        recentf-exclude '("/tmp/" "/ssh:")))
+</code></pre>
+
+<h2>
+<a id="silver-searcher" class="anchor" href="#silver-searcher" aria-hidden="true"><span class="octicon octicon-link"></span></a>silver-searcher<a id="sec-5-12" name="sec-5-12"></a>
+</h2>
+
+<p><a href="https://github.com/ggreer/the_silver_searcher">The Silver Searcher</a> (<code>ag</code>) is an awesome utility, somewhat like <code>ack</code>, but faster. This module
+allows me to use the power of <code>ag</code> inside Emacs' Preamble. The github repository for this package
+can be found at: <a href="https://github.com/Wilfred/ag.el">Github: The Silver Searcher</a>.</p>
+
+<pre><code>(when (executable-find "ag")
+  (preamble/require-packages '(ag wgrep-ag))
+  (setq-default ag-highlight-search t))
+</code></pre>
+
+<h2>
+<a id="tramp" class="anchor" href="#tramp" aria-hidden="true"><span class="octicon octicon-link"></span></a>tramp<a id="sec-5-13" name="sec-5-13"></a>
+</h2>
+
+<pre><code>(setq tramp-default-method "ftp")
+</code></pre>
+
+<h2>
+<a id="undo-tree" class="anchor" href="#undo-tree" aria-hidden="true"><span class="octicon octicon-link"></span></a>undo-tree<a id="sec-5-14" name="sec-5-14"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/UndoTree">UndoTree</a> is amazin'. It visually describes your change history for the current buffer in a nice
+ascii-tree like structure. From there, it is trivially easy to view your changes, and easily
+undo/redo according to Emacs' undo structure.</p>
+
+<pre><code>(preamble/require-package 'undo-tree)
+(global-undo-tree-mode)
+(diminish 'undo-tree-mode)
+</code></pre>
+
+<h2>
+<a id="uniquify" class="anchor" href="#uniquify" aria-hidden="true"><span class="octicon octicon-link"></span></a>uniquify<a id="sec-5-15" name="sec-5-15"></a>
+</h2>
+
+<p><a href="http://www.emacswiki.org/emacs/uniquify">Uniquify</a> is a built-in library that makes buffer names unique, when two files with same name are
+open, so as to make them distinguishable.</p>
+
+<pre><code>(require 'uniquify)
+
+(after 'uniquify
+  (setq uniquify-buffer-name-style 'reverse)
+  (setq uniquify-separator " • ")
+  (setq uniquify-after-kill-buffer-p t)
+  (setq uniquify-ignore-buffers-re "^\\*"))
+</code></pre>
+
+<h1>
+<a id="editing" class="anchor" href="#editing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Editing<a id="sec-6" name="sec-6"></a>
+</h1>
+
+<h2>
+<a id="packages-1" class="anchor" href="#packages-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Packages<a id="sec-6-1" name="sec-6-1"></a>
+</h2>
+
+<pre><code>(preamble/require-packages
+ '( unfill                ; join several lines inside a region/para
+    whole-line-or-region  ; kill whole region/line based on if region is active
+    mic-paren             ; matching parenthesis even if outside current screen
+    pointback             ; per-window memory of buffer-point positions
+    multiple-cursors      ; self-explanatory
+    ace-jump-mode         ; quickly jump to a character on screen
+    page-break-lines      ; display ^L page breaks as tidy horizontal lines
+    move-text             ; move text easily up and down
+    visual-regexp         ; get visual indications for matched regexp
+    highlight-escape-sequences ))
+</code></pre>
+
+<h2>
+<a id="configurations" class="anchor" href="#configurations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configurations<a id="sec-6-2" name="sec-6-2"></a>
+</h2>
+
+<pre><code>;; settings for `highlight-escape-sequences' package
+(hes-mode)
+
+;; settings for `page-break-lines' package
+(global-page-break-lines-mode)
+(after 'page-break-lines (diminish 'page-break-lines-mode))
+
+;; settings for `pointback' package
+(global-pointback-mode)
+(after 'skeleton
+  (defadvice skeleton-insert (before disable-pointback activate)
+    "Disable pointback when using skeleton functions like `sgml-tag'."
+    (when pointback-mode
+      (message "Disabling pointback.")
+      (pointback-mode -1))))
+
+;; settings for `whole-line-or-region' package
+(whole-line-or-region-mode)
+(after 'whole-line-or-region
+  (diminish 'whole-line-or-region-mode)
+  (make-variable-buffer-local 'whole-line-or-region-mode))
+</code></pre>
+
+<h2>
+<a id="paredit" class="anchor" href="#paredit" aria-hidden="true"><span class="octicon octicon-link"></span></a>ParEdit<a id="sec-6-3" name="sec-6-3"></a>
+</h2>
+
+<h3>
+<a id="activation" class="anchor" href="#activation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Activation<a id="sec-6-3-1" name="sec-6-3-1"></a>
+</h3>
+
+<pre><code>(preamble/require-packages '(paredit paredit-everywhere))
+(autoload 'enable-paredit-mode "paredit")
+(after 'paredit (diminish 'paredit-mode " Par"))
+;; enable some handy paredit functions in all prog modes
+(add-hook 'prog-mode-hook 'paredit-everywhere-mode)
+</code></pre>
+
+<h3>
+<a id="key-bindings-1" class="anchor" href="#key-bindings-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Bindings<a id="sec-6-3-2" name="sec-6-3-2"></a>
+</h3>
+
+<pre><code>(after 'paredit
+  (dolist (binding (list (kbd "C-&lt;left&gt;") (kbd "C-&lt;right&gt;")
+                         (kbd "C-M-&lt;left&gt;") (kbd "C-M-&lt;right&gt;")))
+    (define-key paredit-mode-map binding nil))
+
+  ;; disable kill-sentence, which is easily confused with the kill-sexp binding, but doesn't
+  ;; preserve sexp structure
+  (define-key paredit-mode-map [remap kill-sentence] nil)
+  (define-key paredit-mode-map [remap backward-kill-sentence] nil))
+</code></pre>
+
+<h3>
+<a id="paredit-inside-mini-buffer" class="anchor" href="#paredit-inside-mini-buffer" aria-hidden="true"><span class="octicon octicon-link"></span></a>ParEdit inside <code>mini-buffer</code><a id="sec-6-3-3" name="sec-6-3-3"></a>
+</h3>
+
+<pre><code>;; use paredit in the minibuffer
+;; http://emacsredux.com/blog/2013/04/18/evaluate-emacs-lisp-in-the-minibuffer/
+(defvar paredit-minibuffer-commands '(eval-expression
+                                      pp-eval-expression
+                                      eval-expression-with-eldoc
+                                      ibuffer-do-eval
+                                      ibuffer-do-view-and-eval)
+  "Interactive commands for which paredit should be enabled in the minibuffer.")
+(defun conditionally-enable-paredit-mode ()
+  "Enable paredit during lisp-related minibuffer commands."
+  (if (memq this-command paredit-minibuffer-commands)
+      (enable-paredit-mode)))
+(add-hook 'minibuffer-setup-hook 'conditionally-enable-paredit-mode)
+</code></pre>
+
+<h2>
+<a id="spell-check" class="anchor" href="#spell-check" aria-hidden="true"><span class="octicon octicon-link"></span></a>Spell Check<a id="sec-6-4" name="sec-6-4"></a>
+</h2>
+
+<pre><code>(when *spell-check-support-enabled*
+  (require 'ispell)
+  (when (executable-find ispell-program-name)
+    (require 'init-flyspell)))
+</code></pre>
+
+<h1>
+<a id="org-mode" class="anchor" href="#org-mode" aria-hidden="true"><span class="octicon octicon-link"></span></a>Org Mode<a id="sec-7" name="sec-7"></a>
+</h1>
+
+<h2>
+<a id="general-configuration" class="anchor" href="#general-configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>General Configuration<a id="sec-7-1" name="sec-7-1"></a>
+</h2>
+
+<pre><code>;; set directories used by `org-mode'
+(setq org-directory (expand-file-name "~/Organizer"))
+(setq org-archive-location (concat org-directory "/archives" ))
+(setq org-special-directory (concat org-directory "/special"))
+
+(setq org-global-properties
+            '(("Effort_ALL". "0 0:10 0:30 1:00 2:00 3:00 4:00")))
+
+;; replace initial/scratch buffer with our primary `.org' file
+(setq initial-buffer-choice (concat org-special-directory "/start.org"))
+
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(setq org-log-done t                            ; record information when task is marked as DONE
+      org-completion-use-ido t                  ; use ido-completion when possible
+      org-edit-timestamp-down-means-later t     ; S-down will increase time in timestamp
+      org-fast-tag-selection-single-key 'expert ; fast tag selection
+      org-tags-column -100                      ; indent tags to the right
+      org-special-ctrl-a/e 't                   ; make them jump to start/end of headings
+      org-src-fontify-natively t                ; syntax-highlight source blocks
+      org-export-kill-product-buffer-when-displayed t)
+
+(after 'org-mode (setq 'fill-column 100))       ; set column width to 100 for org-mode files
+(add-hook 'org-mode-hook 'turn-on-auto-fill)    ; Turn on `auto-fill'
+</code></pre>
+
+<h2>
+<a id="agenda-setup" class="anchor" href="#agenda-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Agenda Setup<a id="sec-7-2" name="sec-7-2"></a>
+</h2>
+
+<pre><code>  (setq org-agenda-start-on-weekday nil             ; monday as week's start
+        org-agenda-span 14                          ; show 2 weeks of agenda, by default
+;        org-agenda-include-diary 't                 ; include `diary' in agenda
+;        org-agenda-window-setup 'other-window      ; use `other-window' for agenda
+        org-deadline-warning-days 14
+        org-agenda-skip-scheduled-if-done 't
+        org-habit-show-habits-only-for-today 't
+        org-agenda-dim-blocked-tasks 't
+        org-agenda-files (quote ("~/Organizer"
+                                 "~/Organizer/articles"
+                                 "~/Organizer/ideas"
+                                 "~/Organizer/special"
+                                 "~/Organizer/tidbits"
+                                 "~/Organizer/work")))
+
+   (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
+
+   (setq org-agenda-custom-commands
+           '(("n" "Next Tasks to Work on" todo "NEXT"
+              ((org-agenda-max-entries 5)
+               (org-agenda-sorting-strategy '(priority-up effort-down))))
+             ("r" "Tasks that need refiling" tags-todo "REFILE")
+             ("i" "Important Tasks" tags-todo "important")))
+</code></pre>
+
+<h2>
+<a id="osx-integration" class="anchor" href="#osx-integration" aria-hidden="true"><span class="octicon octicon-link"></span></a>OSX Integration<a id="sec-7-3" name="sec-7-3"></a>
+</h2>
+
+<p>I am using <strong>MacOSX</strong>, and I want my <code>org-mode</code> to interact with various applications on it, e.g. I
+want to capture links from my Mac applications and add them to <code>org-mode</code>, as well as with
+<code>iCal</code>. Moreover, I often require to put a file-system subtree inside my <code>org-mode</code> documents.</p>
+
+<pre><code>(preamble/require-package 'org-fstree)
+(when *is-mac*
+  (preamble/require-packages '(org-mac-link org-mac-iCal))
+  (autoload 'omlg-grab-link "org-mac-link"))
+</code></pre>
+
+<h2>
+<a id="refile--archives" class="anchor" href="#refile--archives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Refile / Archives<a id="sec-7-4" name="sec-7-4"></a>
+</h2>
+
+<p>I have defined some configuration to make <a href="http://www.gnu.org/software/emacs/manual/html_node/org/Capture-_002d-Refile-_002d-Archive.html">refiling</a> easier.</p>
+
+<pre><code>; Refile targets include this file and any file contributing to the agenda - up to 2 levels deep
+(setq org-refile-targets (quote ((nil :maxlevel . 3) (org-agenda-files :maxlevel . 3))))
+
+; Use full outline paths for refile targets - we file directly with IDO
+(setq org-refile-use-outline-path t)
+
+; Targets complete directly with IDO
+(setq org-outline-path-complete-in-steps nil)
+
+; Allow refile to create parent tasks with confirmation
+(setq org-refile-allow-creating-parent-nodes (quote confirm))
+
+; Use IDO for org-completion
+(setq org-completion-use-ido t)
+
+; Use the current window for indirect buffer display
+(setq org-indirect-buffer-display 'current-window)
+
+;;;; Refile settings
+; Exclude DONE state tasks from refile targets
+(defun preamble/verify-refile-target ()
+    "Exclude todo keywords with a done state from refile targets"
+      (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+(setq org-refile-target-verify-function 'preamble/verify-refile-target)
+
+; timestamp refiling
+(setq org-log-refile 'time)
+
+; update counters
+(add-hook 'org-after-refile-insert-hook 'org-update-parent-todo-statistics)
+</code></pre>
+
+<h2>
+<a id="todo-keywords--tagging" class="anchor" href="#todo-keywords--tagging" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO Keywords / Tagging<a id="sec-7-5" name="sec-7-5"></a>
+</h2>
+
+<p>I have set <code>org-mode</code> to log the time when a task is repeated (for habit-tracking) and when it is
+rescheduled. Furthermore, I would like to take a quick note, when I am changing the deadline for a
+task. I am using custom workflows for task management:</p>
+
+<ul>
+<li>  <strong>TODO</strong>: a task.</li>
+<li>  <strong>STARTED</strong>: when I have started working on a <strong>TODO</strong>.</li>
+<li>  <strong>NEXT</strong>: <strong>TODOs</strong> I want to work on, next. Possibly, a next action in a project.</li>
+<li>  <strong>REVIEW</strong>: tasks that I have completed, but I need to check if there is something I need to check
+or share from the experience of this task. Furthermore, it is a persistent tag for some of the
+review processes, I use in my workflow, e.g. reviewing this emacs setup once a month.</li>
+<li>  <strong>DONE</strong>: a completed task, which will be either archived using org-archive or deleted within 7 days.</li>
+<li>  <strong>ARCHIVE</strong>: a completed task that I will like to keep for a longer time.</li>
+</ul>
+
+<p>Being a developer, I need an additional set of workflow, which tackles bug-fixing scenario.</p>
+
+<p>A last set of todo workflow involves keywords such as <strong>WAITING</strong>, <strong>HOLD</strong>, <strong>SOMEDAY</strong>, <strong>CANCELLED</strong>,
+etc. and give a special meaning to the task.</p>
+
+<ul>
+<li>  <strong>WAITING</strong>: a part of the task was delegated and can not be continued for this reason.</li>
+<li>  <strong>HOLD</strong>: tasks that I have started working on, but can not continue for some reason.</li>
+<li>  <strong>SOMEDAY</strong>: tasks I would like to finish in future, but have no specific deadlines.</li>
+<li>  <strong>CANCELLED</strong>: tasks which have been cancelled for some reason.</li>
+</ul>
+
+<p>For me, a project is any task which has sub-tasks. Easy for me to remember and less burden classifying
+what constitutes a project and what not.</p>
+
+<pre><code>(setq org-log-repeat 'time
+      org-log-redeadline 'note
+      org-log-reschedule 'time
+      org-use-fast-todo-selection 't
+      org-enforce-todo-dependencies 't
+      org-enforce-todo-checkbox-dependencies 't
+      org-treat-S-cursor-todo-selection-as-state-change 'nil
+      org-hierarchical-todo-statistics 'nil)
+
+(setq org-enable-priority-commands t)
+(setq org-highest-priority ?A)
+(setq org-default-priority ?E)
+(setq org-lowest-priority ?E)
+
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "STARTED(s!)" "NEXT(n)" "REVIEW(r@/!)" "|" "DONE(d!)" "ARCHIVED(a)")
+              (sequence "REPORT(R!)" "BUG(b@/!)" "KNOWNCAUSE(k@/!)" "|" "FIXED(f@/!)")
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)" "DUPE(D)"))))
+
+;; Setting Colours (faces) for todo states to give clearer view of work
+(setq org-todo-keyword-faces
+  '(("TODO" . org-warning)
+    ("STARTED" . "yellow")
+    ("NEXT" . "magenta")
+    ("REVIEW" . "orange")
+    ("DONE" . "green")
+    ("ARCHIVED" . "blue")
+    ("WAITING" . "cyan")
+    ("HOLD" . "cyan")
+    ("SOMEDAY" . "grey")
+    ("CANCELLED" . outline-9)))
+
+; position the habit graph on the agenda to the right of the default
+(setq org-habit-graph-column 50)
+(run-at-time "10:00" 86400 '(lambda () (setq org-habit-show-habits t)))
+
+;; configure most used tags for fast access
+;; (setq org-tag-alist '(("@work" . ?w) ("@home" . ?h) ("laptop" . ?l) (:newline . nil)
+;;                       ("@personal" . ?p)
+;;                       ("relationships" . ?r) ("introspection" . ?i) (:newline . nil)
+;;                       ("@devesh" . ?d)
+;;                       ("code" . ?c) ("emacs" . ?e) ("zsh" . ?z)     (:newline . nil)))
+</code></pre>
+
+<h2>
+<a id="clocking" class="anchor" href="#clocking" aria-hidden="true"><span class="octicon octicon-link"></span></a>Clocking<a id="sec-7-6" name="sec-7-6"></a>
+</h2>
+
+<pre><code>;; save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persist t
+      org-clock-in-resume t
+      org-clock-persistence-insinuate t
+      org-clock-in-switch-to-state "STARTED"  ;; change task state to STARTED when clocking in
+      org-clock-into-drawer t  ;; save clock data and notes in the LOGBOOK drawer
+      org-clock-out-remove-zero-time-clocks t  ;; removes clocked tasks with 0:00 duration
+      )
+;; show the clocked-in task - if any - in the header line
+(defun preamble/show-org-clock-in-header-line ()
+  (setq-default header-line-format '((" " org-mode-line-string " "))))
+(defun preamble/hide-org-clock-from-header-line ()
+  (setq-default header-line-format nil))
+
+(add-hook 'org-clock-in-hook 'preamble/show-org-clock-in-header-line)
+(add-hook 'org-clock-out-hook 'preamble/hide-org-clock-from-header-line)
+(add-hook 'org-clock-cancel-hook 'preamble/hide-org-clock-from-header-line)
+</code></pre>
+
+<h2>
+<a id="captures" class="anchor" href="#captures" aria-hidden="true"><span class="octicon octicon-link"></span></a>Captures<a id="sec-7-7" name="sec-7-7"></a>
+</h2>
+
+<pre><code>;; set files used by `org-capture'
+(setq org-journal-file (concat org-special-directory "/diary.org"))
+(setq org-default-notes-file (concat org-special-directory "/refile.org"))
+(setq org-default-tasks-file (concat org-special-directory "/tasks.org"))
+(defun org-journal-entry-time() (format-time-string "%I:%M %p"))
+
+;; customizations for `org-capture'
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline org-default-tasks-file "Captured")
+         "* TODO %?\n%i\n")
+        ("n" "Note" entry (file+datetree org-default-notes-file "Notes")
+         "* %? :NOTE:\n%U\n%a\n%?" :clock-in t :clock-resume t)
+        ("j" "Journal" entry (file+datetree org-journal-file "Journal")
+         "* at %(org-journal-entry-time) :crypt:\n  %U\n  %?" :clock-in t :clock-resume t)
+        ("l" "Link" plain (file org-default-notes-file "Links")
+         "- %?\n %x\n")
+        ("r" "respond" entry (file org-default-notes-file)
+         "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+        ("w" "org-protocol" entry (file org-default-notes-file)
+         "* TODO Review %c\n%U\n" :immediate-finish t)
+        ("m" "Meeting" entry (file org-default-notes-file)
+         "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+        ("p" "Phone call" entry (file org-default-notes-file)
+         "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+        ("h" "Habit" entry (file+headline org-default-tasks-file "Captured")
+         "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"&lt;%Y-%m-%d %a .+1d/3d&gt;\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))
+</code></pre>
+
+<h2>
+<a id="encryption" class="anchor" href="#encryption" aria-hidden="true"><span class="octicon octicon-link"></span></a>Encryption<a id="sec-7-8" name="sec-7-8"></a>
+</h2>
+
+<pre><code>;;; file encryption
+(setq epa-file-inhibit-auto-save 't)
+
+;;; encryption sections of a file
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+;; GPG key to use for encryption
+;; Either the Key ID or set to nil to use symmetric encryption.
+(setq org-crypt-key "me@nikhgupta.com")
+(setq org-crypt-disable-auto-save 'encrypt)
+</code></pre>
+
+<h2>
+<a id="key-bindings-2" class="anchor" href="#key-bindings-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Bindings<a id="sec-7-9" name="sec-7-9"></a>
+</h2>
+
+<pre><code>(after 'org
+  (define-key org-mode-map (kbd "C-M-&lt;up&gt;") 'org-up-element)
+  (when *is-mac*
+    (define-key org-mode-map (kbd "M-h") nil)
+    (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
+
+;; Standard key bindings
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c b") 'org-iswitchb)
+(global-set-key (kbd "C-c c") 'org-capture)
+</code></pre>
+
+<h1>
+<a id="programming" class="anchor" href="#programming" aria-hidden="true"><span class="octicon octicon-link"></span></a>Programming<a id="sec-8" name="sec-8"></a>
+</h1>
+
+<h2>
+<a id="ruby-group" class="anchor" href="#ruby-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ruby Group<a id="sec-8-1" name="sec-8-1"></a>
+</h2>
+
+<h3>
+<a id="packages-2" class="anchor" href="#packages-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Packages<a id="sec-8-1-1" name="sec-8-1-1"></a>
+</h3>
+
+<pre><code>(preamble/require-packages '(ruby-mode
+                             ruby-hash-syntax
+                             inf-ruby
+                             robe
+                             ruby-compilation
+                             yari
+                             yaml-mode
+                             tagedit
+                             rinari))
+</code></pre>
+
+<h3>
+<a id="registered-file-patterns" class="anchor" href="#registered-file-patterns" aria-hidden="true"><span class="octicon octicon-link"></span></a>Registered File Patterns<a id="sec-8-1-2" name="sec-8-1-2"></a>
+</h3>
+
+<pre><code>;; files recognized by ruby mode
+(add-to-list 'auto-mode-alist '("Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
+                                "\\.rjs\\'" ".irbrc\\'" "\\.builder\\'" "\\.ru\\'"
+                                "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'" . 'ruby-mode))
+</code></pre>
+
+<h3>
+<a id="configuration-1" class="anchor" href="#configuration-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration<a id="sec-8-1-3" name="sec-8-1-3"></a>
+</h3>
+
+<pre><code>(defalias 'ri 'yari)
+(setq ruby-use-encoding-map nil)
+
+(after 'ruby-mode
+  ;; stupidly the non-bundled ruby-mode isn't a derived mode of
+  ;; prog-mode: we run the latter's hooks anyway in that case.
+  (add-hook 'ruby-mode-hook
+            '(lambda () (unless (derived-mode-p 'prog-mode) (run-hooks 'prog-mode-hook)))))
+
+;;; robe: Code navigation, documentation and completion for Ruby
+(after 'ruby-mode (add-hook 'ruby-mode-hook 'robe-mode))
+(after 'robe (add-hook 'robe-mode-hook
+                       (lambda ()
+                         (add-to-list 'ac-sources 'ac-source-robe)
+                         (set-auto-complete-as-completion-at-point-function))))
+</code></pre>
+
+<h3>
+<a id="rails" class="anchor" href="#rails" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rails<a id="sec-8-1-4" name="sec-8-1-4"></a>
+</h3>
+
+<pre><code>(after 'rinari (diminish 'rinari-minor-mode "Rin"))
+(global-rinari-mode)
+
+(defun update-rails-ctags ()
+  (interactive)
+  (let ((default-directory (or (rinari-root) default-directory)))
+    (shell-command (concat "ctags -a -e -f " rinari-tags-file-name
+                           " --tag-relative -R app lib vendor test"))))
+</code></pre>
+
+<h3>
+<a id="embedded-ruby-erb-using-mmm-mode" class="anchor" href="#embedded-ruby-erb-using-mmm-mode" aria-hidden="true"><span class="octicon octicon-link"></span></a>Embedded Ruby (ERB) using <code>mmm-mode</code><a id="sec-8-1-5" name="sec-8-1-5"></a>
+</h3>
+
+<pre><code>(require 'derived)
+(defun preamble/ensure-mmm-erb-loaded () (require 'mmm-erb))
+(defun preamble/set-up-mode-for-erb (mode)
+  (add-hook (derived-mode-hook-name mode) 'preamble/ensure-mmm-erb-loaded)
+  (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb))
+
+(dolist (mode '(html-mode html-erb-mode nxml-mode))
+  (progn
+    (preamble/set-up-mode-for-erb mode)
+    (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-js)
+    (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
+
+(mapc 'preamble/set-up-mode-for-erb
+      '(coffee-mode js-mode js2-mode js3-mode markdown-mode textile-mode))
+
+(add-to-list 'auto-mode-alist '("\\.rhtml\\'" "\\.html\\.erb\\'" . 'html-erb-mode))
+(add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
+(mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\'" 'erb)
+(mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
+
+(dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
+  (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
+</code></pre>
+
+<h3>
+<a id="key-bindings-3" class="anchor" href="#key-bindings-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Bindings<a id="sec-8-1-6" name="sec-8-1-6"></a>
+</h3>
+
+<pre><code>(after 'ruby-mode
+  (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+  (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command))
+
+;; ruby compilation
+(let ((m ruby-mode-map))
+  (define-key m [S-f7] 'ruby-compilation-this-buffer)
+  (define-key m [f7] 'ruby-compilation-this-test)
+  (define-key m [f6] 'recompile))
+</code></pre>
+
+<h2>
+<a id="php-group" class="anchor" href="#php-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>PHP Group<a id="sec-8-2" name="sec-8-2"></a>
+</h2>
+
+<pre><code>(preamble/require-packages '(php-mode smarty-mode))
+</code></pre>
+
+<h2>
+<a id="javascript-group" class="anchor" href="#javascript-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>Javascript Group<a id="sec-8-3" name="sec-8-3"></a>
+</h2>
+
+<h3>
+<a id="packages-and-configuration" class="anchor" href="#packages-and-configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Packages and Configuration<a id="sec-8-3-1" name="sec-8-3-1"></a>
+</h3>
+
+<pre><code>(preamble/require-packages '( json js2-mode ac-js2 rainbow-delimiters coffee-mode))
+
+(defvar preferred-javascript-indent-level 2)
+(defcustom preferred-javascript-mode
+  (first (remove-if-not #'fboundp '(js2-mode js-mode)))
+  "Javascript mode to use for .js files."
+  :type 'symbol
+  :group 'programming
+  :options '(js2-mode js-mode))
+
+;; json
+(add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+;; js-mode
+(setq js-indent-level preferred-javascript-indent-level)
+(setq javascript-indent-level preferred-javascript-indent-level)
+;; node interpreter
+(add-to-list 'interpreter-mode-alist (cons "node" preferred-javascript-mode))
+;; javascript (even inside erb)
+(setq auto-mode-alist (cons `("\\.js\\(\\.erb\\)?\\'" . ,preferred-javascript-mode)
+                            (loop for entry in auto-mode-alist
+                                  unless (eq preferred-javascript-mode (cdr entry))
+                                  collect entry)))
+</code></pre>
+
+<h3>
+<a id="js2-mode" class="anchor" href="#js2-mode" aria-hidden="true"><span class="octicon octicon-link"></span></a>js2-mode<a id="sec-8-3-2" name="sec-8-3-2"></a>
+</h3>
+
+<pre><code>(setq js2-use-font-lock-faces t
+      js2-mode-must-byte-compile nil
+      js2-basic-offset preferred-javascript-indent-level
+      js2-indent-on-enter-key t
+      js2-auto-indent-p t
+      js2-bounce-indent-p nil)
+(after 'js2-mode
+  (add-hook 'js2-mode-hook '(lambda() (setq mode-name "JS2")))
+  (js2-imenu-extras-setup))
+</code></pre>
+
+<h3>
+<a id="coffeescript" class="anchor" href="#coffeescript" aria-hidden="true"><span class="octicon octicon-link"></span></a>CoffeeScript<a id="sec-8-3-3" name="sec-8-3-3"></a>
+</h3>
+
+<pre><code>(after 'coffee-mode
+  (setq coffee-js-mode preferred-javascript-mode
+        coffee-tab-width preferred-javascript-indent-level))
+
+(add-to-list 'auto-mode-alist '("\\.coffee\\.erb\\'" . coffee-mode))
+</code></pre>
+
+<h2>
+<a id="text-group" class="anchor" href="#text-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>Text Group<a id="sec-8-4" name="sec-8-4"></a>
+</h2>
+
+<h3>
+<a id="textile" class="anchor" href="#textile" aria-hidden="true"><span class="octicon octicon-link"></span></a>Textile<a id="sec-8-4-1" name="sec-8-4-1"></a>
+</h3>
+
+<pre><code>(preamble/require-package 'textile-mode)
+
+(autoload 'textile-mode "textile-mode" "Mode for editing Textile documents" t)
+(add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
+</code></pre>
+
+<h3>
+<a id="markdown" class="anchor" href="#markdown" aria-hidden="true"><span class="octicon octicon-link"></span></a>Markdown<a id="sec-8-4-2" name="sec-8-4-2"></a>
+</h3>
+
+<pre><code>(preamble/require-package 'markdown-mode)
+
+(add-to-list 'auto-mode-alist '("\\.\\(md\\|markdown\\)\\'" . markdown-mode))
+</code></pre>
+
+<h2>
+<a id="xml-group" class="anchor" href="#xml-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>XML Group<a id="sec-8-5" name="sec-8-5"></a>
+</h2>
+
+<h3>
+<a id="configuration-2" class="anchor" href="#configuration-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration<a id="sec-8-5-1" name="sec-8-5-1"></a>
+</h3>
+
+<pre><code>(add-to-list 'auto-mode-alist '("\\.\\(xml\\|xsd\\|sch\\|rng\\|xslt\\|svg\\|rss\\|gpx\\|tcx\\)\\'" . nxml-mode))
+; generic xml-mode
+(fset 'xml-mode 'nxml-mode)
+(setq magic-mode-alist (cons '("&lt;\\?xml " . nxml-mode) magic-mode-alist))
+(add-hook 'nxml-mode-hook
+          '(lambda () (set (make-local-variable 'ido-use-filename-at-point) nil)))
+(setq nxml-slash-auto-complete-flag t)
+</code></pre>
+
+<h3>
+<a id="pretty-format-xml-markup" class="anchor" href="#pretty-format-xml-markup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pretty Format XML Markup<a id="sec-8-5-2" name="sec-8-5-2"></a>
+</h3>
+
+<pre><code>;; see: http://sinewalker.wordpress.com/2008/06/26/pretty-printing-xml-with-emacs-nxml-mode/
+(defun pp-xml-region (begin end)
+  "Pretty format XML markup in region. The function inserts
+    linebreaks to separate tags that have nothing but whitespace
+    between them.  It then indents the markup by using nxml's
+    indentation rules."
+  (interactive "r")
+  (save-excursion
+    (nxml-mode)
+    (goto-char begin)
+    (while (search-forward-regexp "\&gt;[ \\t]*\&lt;" nil t)
+      (backward-char) (insert "\n"))
+    (indent-region begin end)))
+</code></pre>
+
+<h3>
+<a id="tidy-integration" class="anchor" href="#tidy-integration" aria-hidden="true"><span class="octicon octicon-link"></span></a>TIDY integration<a id="sec-8-5-3" name="sec-8-5-3"></a>
+</h3>
+
+<pre><code>(preamble/require-package 'tidy)
+(add-hook 'nxml-mode-hook (lambda () (tidy-build-menu nxml-mode-map)))
+(add-hook 'html-mode-hook (lambda () (tidy-build-menu html-mode-map)))
+</code></pre>
+
+<h2>
+<a id="design-group" class="anchor" href="#design-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>Design Group<a id="sec-8-6" name="sec-8-6"></a>
+</h2>
+
+<h3>
+<a id="configuration-3" class="anchor" href="#configuration-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration<a id="sec-8-6-1" name="sec-8-6-1"></a>
+</h3>
+
+<pre><code>(preamble/require-packages '(css-eldoc haml-mode htmlize))
+(require 'rainbow-mode)
+
+;;; colourise hex colors
+(dolist (hook '(css-mode-hook html-mode-hook sass-mode-hook)) (add-hook hook 'rainbow-mode))
+
+;; use eldoc for syntax hints
+(autoload 'turn-on-css-eldoc "css-eldoc")
+(add-hook 'css-mode-hook 'turn-on-css-eldoc)
+
+;; to enable Skewer mode, check:
+;; https://github.com/purcell/emacs.d/blob/master/init-css.el
+
+;; SASS, SCSS, and Less
+(preamble/require-packages '(sass-mode scss-mode less-css-mode))
+(setq-default scss-compile-at-save nil)
+
+;;; auto-complete CSS keywords
+(after 'auto-complete
+  (dolist (hook '(css-mode-hook sass-mode-hook scss-mode-hook))
+    (add-hook hook 'ac-css-mode-setup)))
+</code></pre>
+
+<h3>
+<a id="css-embedded-in-html" class="anchor" href="#css-embedded-in-html" aria-hidden="true"><span class="octicon octicon-link"></span></a>CSS embedded in HTML<a id="sec-8-6-2" name="sec-8-6-2"></a>
+</h3>
+
+<pre><code>(after 'mmm-vars
+  (mmm-add-group
+   'html-css
+   '((css-cdata
+      :submode css-mode
+      :face mmm-code-submode-face
+      :front "&lt;style[^&gt;]*&gt;[ \t\n]*\\(//\\)?&lt;!\\[CDATA\\[[ \t]*\n?"
+      :back "[ \t]*\\(//\\)?]]&gt;[ \t\n]*&lt;/style&gt;"
+      :insert ((?j js-tag nil @ "&lt;style type=\"text/css\"&gt;"
+                   @ "\n" _ "\n" @ "&lt;/script&gt;" @)))
+     (css
+      :submode css-mode
+      :face mmm-code-submode-face
+      :front "&lt;style[^&gt;]*&gt;[ \t]*\n?"
+      :back "[ \t]*&lt;/style&gt;"
+      :insert ((?j js-tag nil @ "&lt;style type=\"text/css\"&gt;"
+                   @ "\n" _ "\n" @ "&lt;/style&gt;" @)))
+     (css-inline
+      :submode css-mode
+      :face mmm-code-submode-face
+      :front "style=\""
+      :back "\""))))
+</code></pre>
+
+<h2>
+<a id="lisp-group" class="anchor" href="#lisp-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lisp Group<a id="sec-8-7" name="sec-8-7"></a>
+</h2>
+
+<h3>
+<a id="packages-3" class="anchor" href="#packages-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Packages<a id="sec-8-7-1" name="sec-8-7-1"></a>
+</h3>
+
+<pre><code>(preamble/require-packages '(elisp-slime-nav     ; use M-.|M- to jump-in and out of definitions
+                             lively              ; interactively updated text: http://git.io/gbjLUw
+                             pretty-mode         ; redisplay parts of buffer as pretty symbols
+                             auto-compile        ; automatically compile emacs-lisp libraries
+                             hl-sexp             ; highlight current `sexp'
+                             rainbow-delimiters  ; colorize parenthesis
+                             redshank            ; common-lisp editing extensions
+                             macrostep))         ; interactive macro expension inside eLisp
+</code></pre>
+
+<h3>
+<a id="activation-1" class="anchor" href="#activation-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Activation<a id="sec-8-7-2" name="sec-8-7-2"></a>
+</h3>
+
+<pre><code>(global-pretty-mode)
+(after 'redshank (diminish 'redshank-mode))
+
+;; activate `emacs-slime-nav'
+(dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+  (add-hook hook 'turn-on-elisp-slime-nav-mode))
+
+;; `hl-sexp': prevent flickery behaviour as `hl-sexp-mode' unhighlights before each command
+(after 'hl-sexp
+  (defadvice hl-sexp-mode (after unflicker (&amp;optional turn-on) activate)
+    (when turn-on
+      (remove-hook 'pre-command-hook #'hl-sexp-unhighlight))))
+</code></pre>
+
+<h3>
+<a id="emacs-lisp" class="anchor" href="#emacs-lisp" aria-hidden="true"><span class="octicon octicon-link"></span></a>Emacs Lisp<a id="sec-8-7-3" name="sec-8-7-3"></a>
+</h3>
+
+<pre><code>(require 'derived)
+(defun preamble/emacs-lisp-setup ()
+  "Enable features useful when working with elisp."
+  (elisp-slime-nav-mode)
+  (ac-emacs-lisp-mode-setup))
+
+(defconst preamble/elispy-modes
+  '(emacs-lisp-mode ielm-mode)
+  "Major modes relating to elisp.")
+
+(dolist (hook (mapcar #'derived-mode-hook-name preamble/elispy-modes))
+  (add-hook hook 'preamble/emacs-lisp-setup))
+
+(add-to-list 'auto-mode-alist '("\\.emacs-project\\'" . emacs-lisp-mode))
+(add-to-list 'auto-mode-alist '("archive-contents\\'" . emacs-lisp-mode))
+</code></pre>
+
+<ol>
+<li>
+<p>Key Bindings</p>
+
+<pre><code>(define-key emacs-lisp-mode-map (kbd "C-x C-a") 'pp-macroexpand-last-sexp)
+(define-key emacs-lisp-mode-map (kbd "C-x C-e") 'pp-eval-last-sexp)
+</code></pre>
+</li>
+<li>
+<p>AutoCompiled Emacs Lisp Buffers</p>
+
+<pre><code>(auto-compile-on-save-mode)
+(auto-compile-on-load-mode)
+</code></pre>
+</li>
+</ol>
+
+<h3>
+<a id="lisp" class="anchor" href="#lisp" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lisp<a id="sec-8-7-4" name="sec-8-7-4"></a>
+</h3>
+
+<pre><code>(require 'derived)
+(defun preamble/lisp-setup ()
+  "Enable features useful in any Lisp mode."
+  (rainbow-delimiters-mode)
+  (enable-paredit-mode)
+  (turn-on-eldoc-mode)
+  (redshank-mode)
+  (hl-sexp-mode))
+
+(defconst preamble/lispy-modes
+  (append preamble/elispy-modes
+          '(lisp-mode inferior-lisp-mode lisp-interaction-mode))
+  "All lispy major modes.")
+
+(dolist (hook (mapcar #'derived-mode-hook-name preamble/lispy-modes))
+  (add-hook hook 'preamble/lisp-setup))
+
+(defun preamble/maybe-check-parens ()
+  "Run `check-parens' if this is a lispy mode."
+  (when (memq major-mode preamble/lispy-modes)
+    (check-parens)))
+
+(add-hook 'after-save-hook #'preamble/maybe-check-parens)
+</code></pre>
+
+<h2>
+<a id="other-languages" class="anchor" href="#other-languages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other Languages<a id="sec-8-8" name="sec-8-8"></a>
+</h2>
+
+<pre><code>(preamble/require-packages '( crontab-mode
+                              csv-mode
+                              csv-nav
+                              sql-indent ))
+
+;; crontab
+(add-to-list 'auto-mode-alist '("\\.?cron\\(tab\\)?\\'" . 'crontab-mode))
+
+;; csv
+(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . 'csv_mode))
+(setq csv-separators '("," ";" "|" " "))
+</code></pre>
+
+<h3>
+<a id="sql" class="anchor" href="#sql" aria-hidden="true"><span class="octicon octicon-link"></span></a>SQL<a id="sec-8-8-1" name="sec-8-8-1"></a>
+</h3>
+
+<pre><code>(after 'sql
+  (require 'sql-indent)
+  (when (package-installed-p 'dash-at-point)
+    (defun preamble/maybe-set-dash-db-docset ()
+      (when (eq sql-product 'postgres)
+        (setq dash-at-point-docset "psql")))
+
+    (add-hook 'sql-mode-hook 'preamble/maybe-set-dash-db-docset)
+    (add-hook 'sql-interactive-mode-hook 'preamble/maybe-set-dash-db-docset)
+    (defadvice sql-set-product (after set-dash-docset activate)
+      (preamble/maybe-set-dash-db-docset))))
+
+(setq-default sql-input-ring-file-name
+              (expand-file-name ".sqli_history" preamble-dir))
+</code></pre>
+
+<h1>
+<a id="session-management" class="anchor" href="#session-management" aria-hidden="true"><span class="octicon octicon-link"></span></a>Session Management<a id="sec-9" name="sec-9"></a>
+</h1>
+
+<h2>
+<a id="configuration-4" class="anchor" href="#configuration-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration<a id="sec-9-1" name="sec-9-1"></a>
+</h2>
+
+<pre><code>  ;; save a list of open files in ~/.emacs.d/.emacs.desktop
+;  (setq desktop-path (list preamble-dir))
+;  (desktop-save-mode)
+
+  ;; display time taken in restoring desktop
+  (defadvice desktop-read (around time-restore activate)
+    (let ((start-time (current-time)))
+      (prog1
+          ad-do-it
+        (message "Desktop restored in %.2fms"
+                 (preamble/time-subtract-millis (current-time) start-time)))))
+
+  ;; display time taken in restoring a buffer
+  (defadvice desktop-create-buffer (around time-create activate)
+    (let ((start-time (current-time))
+          (filename (ad-get-arg 1)))
+      (prog1
+          ad-do-it
+        (message "Desktop: took me %.2fms to restore %s"
+                 (preamble/time-subtract-millis (current-time) start-time)
+                 (when filename
+                   (abbreviate-file-name filename))))))
+</code></pre>
+
+<h2>
+<a id="restore-session-variables" class="anchor" href="#restore-session-variables" aria-hidden="true"><span class="octicon octicon-link"></span></a>Restore Session Variables<a id="sec-9-2" name="sec-9-2"></a>
+</h2>
+
+<pre><code>;; restore histories and registers after saving
+(preamble/require-package 'session)
+
+(setq session-save-file (expand-file-name ".session" preamble-dir))
+(add-hook 'after-init-hook 'session-initialize)
+
+;; save a bunch of variables to the desktop file
+;; for lists specify the len of the maximal saved data also
+(setq desktop-globals-to-save
+      (append '((extended-command-history . 30)
+                (file-name-history        . 100)
+                (ido-last-directory-list  . 100)
+                (ido-work-directory-list  . 100)
+                (ido-work-file-list       . 100)
+                (grep-history             . 30)
+                (compile-history          . 30)
+                (minibuffer-history       . 50)
+                (query-replace-history    . 60)
+                (read-expression-history  . 60)
+                (regexp-history           . 60)
+                (regexp-search-ring       . 20)
+                (search-ring              . 20)
+                (comint-input-ring        . 50)
+                (shell-command-history    . 50)
+                desktop-missing-file-warning
+                tags-file-name
+                register-alist)))
+</code></pre>
+
+<h2>
+<a id="restore-frame" class="anchor" href="#restore-frame" aria-hidden="true"><span class="octicon octicon-link"></span></a>Restore Frame<a id="sec-9-3" name="sec-9-3"></a>
+</h2>
+
+<pre><code>(when (eval-when-compile (string&lt; emacs-version "24.3.50"))
+  (unless (boundp 'desktop-restore-frames)
+    (preamble/require-package 'frame-restore)
+    (frame-restore)))
+</code></pre>
+
+<h1>
+<a id="version-management" class="anchor" href="#version-management" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version Management<a id="sec-10" name="sec-10"></a>
+</h1>
+
+<p>Version management is the heart of my projects, in particular, <a href="http://git-scm.com">git</a>. This section defines various
+settings so as to allow me to version control my projects from within Emacs' Preamble.</p>
+
+<h2>
+<a id="related-modules" class="anchor" href="#related-modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Related Modules<a id="sec-10-1" name="sec-10-1"></a>
+</h2>
+
+<pre><code>(preamble/require-packages
+ '(  magit             ;; awesome git interface inside Emacs
+     git-blame         ;; emacs frontend for `git-blame' tool
+     gitignore-mode    ;; major mode for gitignore
+     gitconfig-mode    ;; major mode for gitconfig
+     git-commit-mode   ;; major mode for git commit
+     git-rebase-mode   ;; major mode for git rebase
+     git-messenger     ;; display why a line was changed as per git commits
+     git-gutter-fringe ;; display git status of lines in gutter
+     yagist            ;; gist management
+     github-browse-file ;; view the file we're editing in Github
+     bug-reference-github ;; Automatically set bug-reference-url-format and enable
+     ;; bug-reference-prog-mode buffers from Github repositories.
+     ))
+
+;; activate `bug-reference-github' in programming mode
+(after 'bug-reference-github
+  (add-hook 'prog-mode-hook 'bug-reference-prog-mode))
+</code></pre>
+
+<h2>
+<a id="magit-configuration" class="anchor" href="#magit-configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Magit Configuration<a id="sec-10-2" name="sec-10-2"></a>
+</h2>
+
+<p>Now, all I need is to setup <a href="https://github.com/magit/magit">magit</a> as I intend it to perform inside my workflow.</p>
+
+<pre><code>(setq-default magit-save-some-buffers nil
+              magit-process-popup-time 10
+              magit-diff-refine-hunk t
+              magit-completing-read-function 'magit-ido-completing-read)
+
+(after 'magit
+  ;; don't let magit-status mess up window configurations
+  ;; http://whattheemacsd.com/setup-magit.el-01.html
+  (defadvice magit-status (around magit-fullscreen activate)
+    (window-configuration-to-register :magit-fullscreen)
+    ad-do-it
+    (delete-other-windows))
+
+  (defadvice magit-quit-window (around magit-restore-screen activate)
+    ad-do-it
+    (jump-to-register :magit-fullscreen)))
+
+;;; when we start working on git-backed files, use git-wip if available
+(after 'vc-git
+  (global-magit-wip-save-mode)
+  (diminish 'magit-wip-save-mode))
+</code></pre>
+
+<h1>
+<a id="osx-specific-configuration" class="anchor" href="#osx-specific-configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>OSX Specific Configuration<a id="sec-11" name="sec-11"></a>
+</h1>
+
+<p>When working on my Macbook Pro '13, I prefer my keys to work a bit differently, and want some
+opitons to behave differently. The following code summarises so:</p>
+
+<pre><code>(when *is-mac*
+  (setq-default locate-command "mdfind")
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'none)
+  (setq default-input-method "MacOSX")
+  ;; make mouse wheel / trackpad scrolling less jerky
+  (setq mouse-wheel-scroll-amount '(0.001)))
+
+;; when using cocoa-emacs
+(when *is-mac-gui*
+  ;; Woohoo!!
+  (global-set-key (kbd "M-`") 'ns-next-frame)
+  (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+  ;; what describe-key reports for cmd-option-h
+  (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
+  (after-load 'nxml-mode (define-key nxml-mode-map (kbd "M-h") nil)))
+</code></pre>
+
+<h1>
+<a id="key-bindings-4" class="anchor" href="#key-bindings-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Bindings<a id="sec-12" name="sec-12"></a>
+</h1>
+
+<h2>
+<a id="fixme-global-mappings" class="anchor" href="#fixme-global-mappings" aria-hidden="true"><span class="octicon octicon-link"></span></a>FIXME Global Mappings<a id="sec-12-1" name="sec-12-1"></a>
+</h2>
+
+<pre><code>(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c p") 'duplicate-line-or-region)
+(global-set-key (kbd "C-f") 'ace-jump-char-mode)
+
+(global-set-key (kbd "&lt;mouse-4&gt;") 'scroll-down-line)
+(global-set-key (kbd "&lt;mouse-5&gt;") 'scroll-up-line)
+
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-c C-\\") '(lambda() (interactive) (indent-region (point-min) (point-max))))
+(global-set-key (kbd "C-x v f") 'vc-git-grep)
+(global-set-key (kbd "C-x v p") #'git-messenger:popup-message)
+(global-set-key (kbd "C-c j") '(lambda()(interactive)(join-line -1)))
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-x o") 'switch-window)
+; (global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
+; (global-set-key (kbd "C-c c c") 'mc/edit-lines)
+; (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
+; (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "&lt;f7&gt;") 'preamble/split-window)
+(global-set-key (kbd "&lt;f6&gt;") '(lambda() (interactive)(switch-to-buffer nil)))
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-x C-d") 'preamble/ido-choose-from-recentf)
+
+(global-set-key (kbd "C-.") 'set-mark-command)
+(global-set-key (kbd "C-x C-.") 'pop-global-mark)
+
+;; multiple-cursors
+(global-set-key (kbd "C-&lt;") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-&gt;") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-+") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c C-&lt;") 'mc/mark-all-like-this)
+; key (kbd "M-Z") 'zap-up-to-char)
+(global-set-key (kbd "C-M-=") 'preamble/increase-default-font-height)
+(global-set-key (kbd "C-M--") 'preamble/decrease-default-font-height)
+
+;; stop C-z from minimizing windows under OS X
+(global-set-key (kbd "C-z") '(lambda ()
+                                (interactive) (unless *is-mac-gui*) (suspend-frame)))
+
+(when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+    ;; Command-Option-f to toggle fullscreen mode
+    ;; Hint: Customize `ns-use-native-fullscreen'
+    (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+
+(global-set-key (kbd "M-C-8") '(lambda () (interactive) (adjust-opacity nil -5)))
+(global-set-key (kbd "M-C-9") '(lambda () (interactive) (adjust-opacity nil 5)))
+(global-set-key (kbd "M-C-0") '(lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+
+(global-set-key [remap query-replace-regexp] 'vr/query-replace)
+(global-set-key [remap replace-regexp] 'vr/replace)
+(after 'move-text (move-text-default-bindings))
+(global-set-key [M-S-up] 'move-text-up)
+(global-set-key [M-S-down] 'move-text-down)
+(global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
+(global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
+(global-set-key [remap query-replace-regexp] 'vr/query-replace)
+(global-set-key [remap replace-regexp] 'vr/replace)
+
+(global-set-key (kbd "C-M-&lt;backspace&gt;") 'kill-back-to-indentation)
+</code></pre>
+
+<h1>
+<a id="updates" class="anchor" href="#updates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Updates<a id="sec-13" name="sec-13"></a>
+</h1>
+
+<p>Emacs' Preamble is really smart! It can update itself, on the go.</p>
+
+<pre><code>(defun preamble/recompile-init ()
+  "Byte-compile all your dotfiles again."
+  (interactive)
+  (byte-recompile-directory preamble-dir 0))
+
+(defun preamble/update ()
+  "Update Preamble to its latest version."
+  (interactive)
+  (when (y-or-n-p "Do you want to update Preamble? ")
+    (message "Updating Preamble...")
+    (cd preamble-dir)
+    (shell-command "git pull")
+    (preamble/recompile-init)
+    (message "Update finished. Restart Emacs to complete the process.")))
+</code></pre>
+
+<h2>
+<a id="todo-there-should-be-a-scheduler-to-automatically-check-for-updates" class="anchor" href="#todo-there-should-be-a-scheduler-to-automatically-check-for-updates" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO there should be a scheduler to automatically check for updates.<a id="sec-13-1" name="sec-13-1"></a>
+</h2>
+
+<h1>
+<a id="epilogue" class="anchor" href="#epilogue" aria-hidden="true"><span class="octicon octicon-link"></span></a>Epilogue<a id="sec-14" name="sec-14"></a>
+</h1>
+
+<p>Things that need to be run at the end of the configuration have been specified here.</p>
+
+<pre><code>; (require 'init-locales)
+
+(provide 'preamble)
+;;; preamble.el ends here
+</code></pre>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
